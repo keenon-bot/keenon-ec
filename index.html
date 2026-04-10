@@ -78,7 +78,7 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit}
 .hero-stat-lab{font-size:.72rem;color:var(--g300);margin-top:2px;font-weight:500}
 
 /* CAROUSEL */
-.hero-right{position:relative;animation:slideR .9s ease-out both}
+.hero-right{position:relative;animation:slideR .9s ease-out both;display:flex;flex-direction:column;align-items:center}
 .carousel{position:relative;width:100%;max-width:480px;height:460px;margin:0 auto;perspective:1000px}
 .carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .8s cubic-bezier(.4,0,.2,1);transform:scale(.92);pointer-events:none}
 .carousel-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
@@ -247,11 +247,12 @@ section{padding:90px 0}
 
 /* ──── RESPONSIVE ──── */
 @media(max-width:1024px){
-.hero .container{grid-template-columns:1fr;text-align:center}
+.hero .container{grid-template-columns:1fr;text-align:center;padding-top:60px;padding-bottom:40px}
 .hero-left{order:1}.hero-right{order:0}
 .hero h1{font-size:2.5rem}.hero-desc{margin:0 auto 30px}.hero-btns{justify-content:center}.hero-stats{justify-content:center}
 .hero-trust{justify-content:center}
 .carousel{max-width:340px;height:340px}.carousel-slide .robot-frame{max-width:300px;height:300px}
+.carousel-dots{margin-top:20px}
 .prod-grid{grid-template-columns:repeat(2,1fr)}
 .ind-grid{grid-template-columns:repeat(2,1fr)}
 .why-grid{grid-template-columns:repeat(2,1fr)}
@@ -266,9 +267,12 @@ section{padding:90px 0}
 .nav-links{display:none}.burger{display:flex}
 .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--white);padding:16px 24px;box-shadow:var(--shadow);gap:0}
 .nav-links.open a{color:var(--g600)!important;padding:10px 0;border-bottom:1px solid var(--g50)}
-.hero{min-height:auto;padding:100px 0 50px}
+.hero{min-height:auto;padding:70px 0 40px}
+.hero .container{padding-top:0;padding-bottom:0;gap:20px}
 .hero h1{font-size:2rem}.hero-stats{gap:20px;flex-wrap:wrap}
+.hero-right{margin-bottom:0}
 .carousel{max-width:260px;height:280px}.carousel-slide .robot-frame{max-width:240px;height:240px}
+.carousel-dots{margin-top:20px}
 .prod-grid,.ind-grid,.why-grid{grid-template-columns:1fr}
 .footer-grid{grid-template-columns:1fr}
 .f-row{grid-template-columns:1fr}
@@ -418,7 +422,7 @@ section{padding:60px 0}
 <div class="contact-grid">
 <div class="contact-info">
 <div class="c-detail"><div class="c-detail-ico"><i class="fas fa-phone"></i></div><div><h4>WhatsApp</h4><p>+593 99 716 1797</p></div></div>
-<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>jmendozap@soyoda.com</p></div></div>
+<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="eb81868e858f84918a9bab988492848f8ac5888486">[email&#160;protected]</a></p></div></div>
 <div class="c-detail"><div class="c-detail-ico"><i class="fas fa-map-marker-alt"></i></div><div><h4>Ubicación</h4><p>Guayaquil, Ecuador</p></div></div>
 <div class="c-detail"><div class="c-detail-ico"><i class="fas fa-globe"></i></div><div><h4>Web Global</h4><p>www.keenon.com</p></div></div>
 <div style="margin-top:20px">
@@ -462,7 +466,7 @@ section{padding:60px 0}
 <div class="footer-brand"><span>KEEN<em style="color:var(--sky);font-style:normal">ON</em> Ecuador</span><p>Robots de servicio inteligentes con IA integrada para restaurantes, hoteles, hospitales y más. Líder mundial en robótica de servicio comercial.</p></div>
 <div class="footer-col"><h4>Productos</h4><a href="#" onclick="showProduct('t10');return false">DINERBOT T10</a><a href="#" onclick="showProduct('t9');return false">DINERBOT T9</a><a href="#" onclick="showProduct('w3');return false">BUTLERBOT W3</a><a href="#" onclick="showProduct('s100');return false">KEENON S100</a><a href="#" onclick="showProduct('c30');return false">KLEENBOT C30</a><a href="#" onclick="showProduct('c40');return false">KLEENBOT C40</a></div>
 <div class="footer-col"><h4>Industrias</h4><a href="#industrias" onclick="showPage('home')">Restaurantes</a><a href="#industrias" onclick="showPage('home')">Hoteles</a><a href="#industrias" onclick="showPage('home')">Hospitales</a><a href="#industrias" onclick="showPage('home')">Retail</a><a href="#industrias" onclick="showPage('home')">Logística</a></div>
-<div class="footer-col"><h4>Contacto</h4><a href="#contacto" onclick="showPage('home')">Solicitar Demo</a><a href="https://wa.me/593997161797" target="_blank">WhatsApp</a><a href="mailto:jmendozap@soyoda.com">Email</a><a href="https://www.keenon.com" target="_blank">KEENON Global</a></div>
+<div class="footer-col"><h4>Contacto</h4><a href="#contacto" onclick="showPage('home')">Solicitar Demo</a><a href="https://wa.me/593997161797" target="_blank">WhatsApp</a><a href="/cdn-cgi/l/email-protection#b2d8dfd7dcd6ddc8d3c2f2c1ddcbddd6d39cd1dddf">Email</a><a href="https://www.keenon.com" target="_blank">KEENON Global</a></div>
 </div>
 <div class="footer-bottom">
 <p>&copy; 2026 KEENON Robotics Ecuador. Todos los derechos reservados.</p>
@@ -485,7 +489,7 @@ section{padding:60px 0}
 <div class="chat-inp"><input type="text" id="chatInp" placeholder="Escribe tu mensaje..." autocomplete="off"><button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button></div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══ PRODUCT DATA ═══
 const PRODUCTS={
 t10:{id:'t10',name:'DINERBOT T10',tagline:'Solución definitiva para entrega y publicidad',desc:'El DINERBOT T10 combina entrega inteligente con una poderosa pantalla publicitaria. Con interacción multimodal (primera en la industria), accesorios expresivos para la cabeza y sistema multilingüe, eleva la experiencia del cliente mientras optimiza tus operaciones.',
