@@ -81,6 +81,14 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit}
 .hero-right{position:relative;animation:slideR .9s ease-out both}
 .carousel{position:relative;width:100%;max-width:480px;height:460px;margin:0 auto;perspective:1000px}
 .carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .8s cubic-bezier(.4,0,.2,1);transform:scale(.92);pointer-events:none}
+.carousel-slide {
+    display: none; /* Por defecto ocultos */
+    width: 100%;
+    flex-shrink: 0;
+}
+.carousel-slide.active {
+    display: block !important; /* El activo DEBE mostrarse siempre */
+}
 .carousel-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 .carousel-slide .robot-frame{width:100%;max-width:400px;height:400px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden}
 .carousel-slide .robot-frame::before{content:'';position:absolute;top:-40%;right:-40%;width:300px;height:300px;background:radial-gradient(circle,rgba(83,186,237,.08),transparent 70%);border-radius:50%}
