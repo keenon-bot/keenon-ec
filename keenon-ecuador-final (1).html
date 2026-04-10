@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="KEENON Robotics Ecuador — Robots de servicio inteligentes con IA integrada para restaurantes, hoteles, hospitales y más. Líder mundial en robótica de servicio.">
+<title>KEENON Robotics Ecuador | Robots de Servicio Inteligentes con IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+--sky:#53BAED;--blue:#0164A8;--navy:#302974;--dark:#3A4C55;
+--bg:#f7f9fc;--white:#fff;--g50:#f0f4f8;--g100:#e1e8ef;--g200:#c9d4df;
+--g300:#9aadbe;--g400:#6b8199;--g500:#4a6275;--g600:#35495e;
+--font:'Barlow',sans-serif;--body:'DM Sans',sans-serif;
+--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.08);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--body);color:var(--g600);background:var(--white);line-height:1.6;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;outline:none;font-family:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* PAGE ROUTER */
+.page{display:none}.page.active{display:block}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideR{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideL{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.anim{opacity:0;transform:translateY(24px);transition:all .65s cubic-bezier(.4,0,.2,1)}.anim.vis{opacity:1;transform:translateY(0)}
+
+/* ──── NAV ──── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:14px 0;transition:all .35s}
+.nav.solid{background:rgba(255,255,255,.97);backdrop-filter:blur(16px);box-shadow:0 1px 12px rgba(0,0,0,.06);padding:8px 0}
+.nav .container{display:flex;align-items:center;justify-content:space-between}
+.nav-brand{display:flex;align-items:center;gap:8px}
+.nav-brand svg{height:32px;width:auto}
+.nav-brand span{font-family:var(--font);font-weight:800;font-size:1.3rem;color:var(--white);letter-spacing:-.5px;transition:color .3s}
+.nav-brand span em{font-style:normal;font-weight:400;opacity:.5;font-size:.75rem;margin-left:2px}
+.nav.solid .nav-brand span{color:var(--dark)}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{font-size:.88rem;font-weight:600;color:rgba(255,255,255,.85);transition:color .2s}
+.nav.solid .nav-links a{color:var(--g500)}
+.nav-links a:hover{color:var(--sky)}
+.nav-cta{background:var(--sky);color:var(--white)!important;padding:10px 22px;border-radius:50px;font-weight:700;font-size:.82rem;transition:all .25s;display:inline-flex;align-items:center;gap:6px}
+.nav-cta:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 4px 16px rgba(1,100,168,.35)}
+.burger{display:none;flex-direction:column;gap:5px;background:0;padding:4px}
+.burger span{width:22px;height:2px;background:var(--white);transition:all .3s}
+.nav.solid .burger span{background:var(--dark)}
+
+/* ──── HERO ──── */
+.hero{position:relative;min-height:100vh;background:linear-gradient(135deg,#0c1929 0%,#0a2a4a 40%,#0d3461 100%);display:flex;align-items:center;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(83,186,237,.08),transparent 65%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+.hero .container{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding-top:90px;padding-bottom:60px}
+.hero-left{animation:slideL .9s ease-out both}
+.hero-trust{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.hero-trust-item{display:flex;align-items:center;gap:6px;background:rgba(83,186,237,.12);border:1px solid rgba(83,186,237,.2);padding:6px 14px;border-radius:50px;font-size:.72rem;font-weight:700;color:var(--sky);backdrop-filter:blur(6px)}
+.hero-trust-item i{font-size:.65rem}
+.hero h1{font-family:var(--font);font-size:3.2rem;font-weight:900;color:var(--white);line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px}
+.hero h1 span{color:var(--sky)}
+.hero-desc{font-size:1.05rem;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:36px;max-width:460px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-main{display:inline-flex;align-items:center;gap:8px;background:var(--sky);color:var(--white);padding:14px 28px;border-radius:50px;font-weight:700;font-size:.92rem;transition:all .25s}
+.btn-main:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 6px 24px rgba(1,100,168,.35)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--white);padding:14px 28px;border-radius:50px;font-weight:700;font-size:.92rem;transition:all .25s;backdrop-filter:blur(6px)}
+.btn-ghost:hover{background:rgba(255,255,255,.1);border-color:var(--sky)}
+.hero-stats{display:flex;gap:36px;margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
+.hero-stat-num{font-family:var(--font);font-size:1.8rem;font-weight:900;color:var(--white);letter-spacing:-1px}
+.hero-stat-num em{font-style:normal;color:var(--sky)}
+.hero-stat-lab{font-size:.72rem;color:var(--g300);margin-top:2px;font-weight:500}
+
+/* CAROUSEL */
+.hero-right{position:relative;animation:slideR .9s ease-out both}
+.carousel{position:relative;width:100%;max-width:480px;height:460px;margin:0 auto;perspective:1000px}
+.carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .8s cubic-bezier(.4,0,.2,1);transform:scale(.92);pointer-events:none}
+.carousel-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
+.carousel-slide .robot-frame{width:100%;max-width:400px;height:400px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden}
+.carousel-slide .robot-frame::before{content:'';position:absolute;top:-40%;right:-40%;width:300px;height:300px;background:radial-gradient(circle,rgba(83,186,237,.08),transparent 70%);border-radius:50%}
+.carousel-slide .robot-icon{font-size:5rem;color:var(--sky);opacity:.25;position:relative;z-index:1}
+.carousel-slide .robot-name{font-family:var(--font);font-size:1.6rem;font-weight:900;color:var(--white);letter-spacing:-1px;position:relative;z-index:1}
+.carousel-slide .robot-tag{font-size:.78rem;color:var(--sky);font-weight:600;position:relative;z-index:1}
+.carousel-slide .robot-note{font-size:.65rem;color:var(--g400);background:rgba(83,186,237,.08);padding:6px 14px;border-radius:50px;border:1px dashed rgba(83,186,237,.2);position:relative;z-index:1;margin-top:8px}
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.carousel-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .3s}
+.carousel-dot.active{background:var(--sky);width:28px;border-radius:5px}
+
+/* ──── SECTIONS SHARED ──── */
+section{padding:90px 0}
+.sec-label{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:.7rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;background:rgba(1,100,168,.06);padding:6px 16px;border-radius:50px}
+.sec-title{font-family:var(--font);font-size:2.5rem;font-weight:900;color:var(--dark);line-height:1.12;letter-spacing:-1px;margin-bottom:14px}
+.sec-sub{font-size:1rem;color:var(--g400);max-width:540px;line-height:1.7}
+.sec-header{text-align:center;margin-bottom:56px}
+.sec-header .sec-sub{margin:0 auto}
+
+/* ──── PRODUCTS GRID ──── */
+.products-sec{background:var(--white)}
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.prod-card{background:var(--white);border:1px solid var(--g100);border-radius:16px;overflow:hidden;transition:all .35s;position:relative}
+.prod-card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,.1);border-color:var(--sky)}
+.prod-card-img{height:220px;background:linear-gradient(135deg,var(--g50),#e8f4fb);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.prod-card-img i{font-size:3.5rem;color:var(--g200)}
+.prod-card-img .img-note{position:absolute;bottom:6px;font-size:.6rem;color:var(--g300);background:rgba(255,255,255,.8);padding:3px 10px;border-radius:50px}
+.prod-card-body{padding:22px}
+.prod-card-name{font-family:var(--font);font-size:1.15rem;font-weight:800;color:var(--dark);margin-bottom:2px}
+.prod-card-tag{font-size:.78rem;color:var(--blue);font-weight:600;margin-bottom:10px}
+.prod-card-desc{font-size:.82rem;color:var(--g400);line-height:1.55;margin-bottom:14px}
+.prod-card-feats{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.prod-feat{font-size:.65rem;padding:3px 9px;background:var(--g50);color:var(--g500);border-radius:50px;font-weight:600}
+.prod-card-actions{display:flex;gap:8px;align-items:center}
+.prod-link{font-size:.82rem;font-weight:700;color:var(--blue);display:inline-flex;align-items:center;gap:4px;transition:color .2s}
+.prod-link:hover{color:var(--sky)}
+.prod-link i{font-size:.7rem;transition:transform .2s}
+.prod-link:hover i{transform:translateX(3px)}
+.prod-demo{font-size:.72rem;font-weight:700;color:var(--white);background:var(--sky);padding:6px 14px;border-radius:50px;transition:all .2s}
+.prod-demo:hover{background:var(--blue)}
+
+/* ──── INDUSTRIES ──── */
+.ind-sec{background:var(--g50)}
+.ind-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.ind-card{background:var(--white);border-radius:14px;padding:28px 20px;text-align:center;transition:all .3s;border:1px solid transparent;position:relative;overflow:hidden}
+.ind-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--blue));transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.ind-card:hover::after{transform:scaleX(1)}
+.ind-card:hover{box-shadow:var(--shadow);transform:translateY(-4px);border-color:var(--g100)}
+.ind-icon{width:52px;height:52px;margin:0 auto 14px;background:rgba(83,186,237,.08);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--blue);transition:all .3s}
+.ind-card:hover .ind-icon{background:var(--blue);color:var(--white)}
+.ind-card h3{font-family:var(--font);font-size:.9rem;font-weight:700;color:var(--dark);margin-bottom:6px}
+.ind-card p{font-size:.75rem;color:var(--g400);line-height:1.5}
+
+/* ──── WHY KEENON ──── */
+.why-sec{background:linear-gradient(135deg,#081621,#0a2a4a,#0d1d2f);position:relative;overflow:hidden}
+.why-sec::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(83,186,237,.06),transparent 70%);pointer-events:none}
+.why-sec .sec-title{color:var(--white)}.why-sec .sec-sub{color:var(--g300)}
+.why-sec .sec-label{background:rgba(83,186,237,.12);color:var(--sky)}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1}
+.why-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:32px 24px;transition:all .3s}
+.why-card:hover{background:rgba(83,186,237,.04);border-color:rgba(83,186,237,.15);transform:translateY(-4px)}
+.why-num{font-family:var(--font);font-size:2.4rem;font-weight:900;color:var(--sky);opacity:.25;line-height:1;margin-bottom:12px}
+.why-card h3{font-family:var(--font);font-size:1.02rem;font-weight:700;color:var(--white);margin-bottom:8px}
+.why-card p{font-size:.82rem;color:var(--g300);line-height:1.6}
+
+/* ──── STATS ──── */
+.stats-bar{background:var(--white);border-top:1px solid var(--g100);border-bottom:1px solid var(--g100);padding:60px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;text-align:center}
+.stat-num{font-family:var(--font);font-size:2.4rem;font-weight:900;color:var(--dark);letter-spacing:-1.5px}
+.stat-num em{font-style:normal;color:var(--sky)}
+.stat-lab{font-size:.8rem;color:var(--g400);margin-top:4px;font-weight:500}
+
+/* ──── CONTACT ──── */
+.contact-sec{background:linear-gradient(135deg,#081621,#0a2a4a);position:relative;overflow:hidden}
+.contact-sec::after{content:'';position:absolute;top:-200px;right:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(83,186,237,.08),transparent 70%);pointer-events:none}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;position:relative;z-index:1}
+.contact-info h2{font-family:var(--font);font-size:2.2rem;font-weight:900;color:var(--white);line-height:1.15;margin-bottom:16px;letter-spacing:-.5px}
+.contact-info>p{color:var(--g300);margin-bottom:32px;line-height:1.7}
+.c-detail{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.c-detail-ico{width:44px;height:44px;min-width:44px;background:rgba(83,186,237,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--sky);font-size:.95rem}
+.c-detail h4{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:1px}
+.c-detail p{font-size:.78rem;color:var(--g300)}
+.form-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:36px}
+.form-card h3{font-family:var(--font);font-size:1.3rem;font-weight:800;color:var(--white);margin-bottom:4px}
+.form-card>p{font-size:.82rem;color:var(--g300);margin-bottom:24px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.75rem;font-weight:600;color:var(--g200);margin-bottom:4px}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:var(--white);font-family:inherit;font-size:.85rem;transition:border-color .2s}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--g400)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--sky);outline:0;box-shadow:0 0 0 3px rgba(83,186,237,.12)}
+.fg select option{background:#1a2e42;color:var(--white)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f-submit{width:100%;background:var(--sky);color:var(--white);padding:13px;border-radius:8px;font-weight:700;font-size:.95rem;margin-top:6px;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px}
+.f-submit:hover{background:var(--blue);transform:translateY(-2px);box-shadow:0 4px 16px rgba(1,100,168,.3)}
+.f-note{font-size:.65rem;color:var(--g400);margin-top:10px;text-align:center}
+
+/* ──── FOOTER ──── */
+.footer{background:#091520;padding:48px 0 24px;color:var(--g400)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+.footer-brand span{font-family:var(--font);font-weight:800;font-size:1.2rem;color:var(--white);display:block;margin-bottom:12px}
+.footer-brand p{font-size:.82rem;line-height:1.6;max-width:280px}
+.footer-col h4{font-size:.78rem;font-weight:700;color:var(--white);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px}
+.footer-col a{display:block;font-size:.82rem;color:var(--g400);padding:3px 0;transition:color .2s}
+.footer-col a:hover{color:var(--sky)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:.75rem;flex-wrap:wrap;gap:12px}
+.footer-social{display:flex;gap:10px}
+.footer-social a{width:34px;height:34px;background:rgba(255,255,255,.04);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--g400);transition:all .2s}
+.footer-social a:hover{background:var(--sky);color:var(--white)}
+
+/* ──── FLOATING BTNS ──── */
+.wa-float{position:fixed;bottom:24px;left:24px;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.4rem;z-index:9999;box-shadow:0 4px 16px rgba(37,211,102,.35);transition:transform .2s}
+.wa-float:hover{transform:scale(1.1)}
+.chat-toggle{position:fixed;bottom:24px;right:24px;width:54px;height:54px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.3rem;z-index:9999;box-shadow:0 4px 20px rgba(1,100,168,.35);transition:all .2s;animation:pulse 2.5s infinite}
+.chat-toggle:hover{transform:scale(1.08);animation:none}
+.chat-toggle.on{animation:none}
+
+.chat-win{position:fixed;bottom:92px;right:24px;width:360px;max-height:480px;background:var(--white);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.18);z-index:9998;display:none;flex-direction:column;overflow:hidden;border:1px solid var(--g100)}
+.chat-win.open{display:flex}
+.chat-head{background:linear-gradient(135deg,var(--blue),#0a3d6b);padding:18px;color:var(--white);display:flex;align-items:center;gap:10px}
+.chat-avatar{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.chat-head-info h4{font-size:.9rem;font-weight:700}.chat-head-info p{font-size:.65rem;opacity:.7}
+.chat-msgs{flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;max-height:280px}
+.cmsg{max-width:82%;padding:10px 14px;border-radius:var(--radius);font-size:.82rem;line-height:1.45;animation:fadeUp .3s ease-out}
+.cmsg.bot{background:var(--g50);color:var(--g600);align-self:flex-start;border-bottom-left-radius:4px}
+.cmsg.usr{background:var(--blue);color:var(--white);align-self:flex-end;border-bottom-right-radius:4px}
+.chat-opts{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chat-opt{background:var(--white);border:1px solid var(--sky);color:var(--blue);padding:5px 12px;border-radius:50px;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s}
+.chat-opt:hover{background:var(--sky);color:var(--white)}
+.chat-inp{border-top:1px solid var(--g100);padding:12px;display:flex;gap:6px}
+.chat-inp input{flex:1;padding:9px 14px;border:1px solid var(--g100);border-radius:50px;font-size:.82rem;outline:0;font-family:inherit}
+.chat-inp input:focus{border-color:var(--sky)}
+.chat-inp button{width:36px;height:36px;background:var(--sky);border-radius:50%;color:var(--white);font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.chat-inp button:hover{background:var(--blue)}
+
+/* ──── PRODUCT DETAIL PAGE ──── */
+.detail-hero{padding:120px 0 60px;background:linear-gradient(135deg,#f0f7fc,#e4f0fa);position:relative;overflow:hidden}
+.detail-hero::before{content:'';position:absolute;top:-200px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(83,186,237,.1),transparent 70%);pointer-events:none}
+.detail-hero .container{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.detail-info h1{font-family:var(--font);font-size:2.6rem;font-weight:900;color:var(--dark);letter-spacing:-1px;margin-bottom:8px}
+.detail-info .tag{font-size:.9rem;color:var(--blue);font-weight:600;margin-bottom:18px}
+.detail-info .desc{font-size:.95rem;color:var(--g500);line-height:1.7;margin-bottom:28px}
+.detail-feats{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}
+.detail-feat{display:flex;gap:12px;align-items:flex-start}
+.detail-feat-ico{width:36px;height:36px;min-width:36px;background:rgba(1,100,168,.08);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:.85rem}
+.detail-feat h4{font-size:.85rem;font-weight:700;color:var(--dark);margin-bottom:1px}
+.detail-feat p{font-size:.78rem;color:var(--g400)}
+.detail-btns{display:flex;gap:12px;flex-wrap:wrap}
+.detail-img{display:flex;align-items:center;justify-content:center}
+.detail-img-box{width:100%;max-width:420px;height:380px;background:rgba(255,255,255,.6);border:1px solid var(--g100);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(8px)}
+.detail-img-box i{font-size:4.5rem;color:var(--g200)}
+.detail-img-box p{font-size:.75rem;color:var(--g300);text-align:center;padding:0 20px}
+.detail-img-box .note{background:rgba(1,100,168,.06);padding:6px 14px;border-radius:8px;font-size:.65rem;color:var(--blue);border:1px dashed rgba(1,100,168,.2)}
+
+.specs-sec{padding:60px 0;background:var(--white)}
+.specs-sec h2{font-family:var(--font);font-size:1.8rem;font-weight:900;color:var(--dark);text-align:center;margin-bottom:32px}
+.specs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:0 auto}
+.spec-item{background:var(--g50);border-radius:var(--radius);padding:18px;text-align:center}
+.spec-item .val{font-family:var(--font);font-size:1.3rem;font-weight:800;color:var(--dark)}
+.spec-item .lab{font-size:.72rem;color:var(--g400);margin-top:3px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:var(--blue);cursor:pointer;margin-bottom:16px;transition:color .2s}
+.back-btn:hover{color:var(--sky)}
+
+/* ──── RESPONSIVE ──── */
+@media(max-width:1024px){
+.hero .container{grid-template-columns:1fr;text-align:center}
+.hero-left{order:1}.hero-right{order:0}
+.hero h1{font-size:2.5rem}.hero-desc{margin:0 auto 30px}.hero-btns{justify-content:center}.hero-stats{justify-content:center}
+.hero-trust{justify-content:center}
+.carousel{max-width:340px;height:340px}.carousel-slide .robot-frame{max-width:300px;height:300px}
+.prod-grid{grid-template-columns:repeat(2,1fr)}
+.ind-grid{grid-template-columns:repeat(2,1fr)}
+.why-grid{grid-template-columns:repeat(2,1fr)}
+.contact-grid{grid-template-columns:1fr}
+.footer-grid{grid-template-columns:repeat(2,1fr)}
+.stats-grid{grid-template-columns:repeat(2,1fr)}
+.detail-hero .container{grid-template-columns:1fr}
+.specs-grid{grid-template-columns:repeat(2,1fr)}
+.sec-title{font-size:2rem}
+}
+@media(max-width:768px){
+.nav-links{display:none}.burger{display:flex}
+.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--white);padding:16px 24px;box-shadow:var(--shadow);gap:0}
+.nav-links.open a{color:var(--g600)!important;padding:10px 0;border-bottom:1px solid var(--g50)}
+.hero{min-height:auto;padding:100px 0 50px}
+.hero h1{font-size:2rem}.hero-stats{gap:20px;flex-wrap:wrap}
+.carousel{max-width:260px;height:280px}.carousel-slide .robot-frame{max-width:240px;height:240px}
+.prod-grid,.ind-grid,.why-grid{grid-template-columns:1fr}
+.footer-grid{grid-template-columns:1fr}
+.f-row{grid-template-columns:1fr}
+.chat-win{width:calc(100% - 32px);right:16px;bottom:88px}
+section{padding:60px 0}
+.detail-info h1{font-size:2rem}
+}
+@media(max-width:480px){
+.hero h1{font-size:1.7rem}.hero-btns{flex-direction:column;align-items:center}
+.btn-main,.btn-ghost{width:100%;justify-content:center}
+.sec-title{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+<div class="container">
+<a href="#" class="nav-brand" onclick="showPage('home');return false">
+<span>KEEN<em style="color:var(--sky);opacity:1;font-weight:800;font-size:inherit;margin:0">ON</em><em> Ecuador</em></span>
+</a>
+<ul class="nav-links" id="navLinks">
+<li><a href="#productos" onclick="showPage('home')">Productos</a></li>
+<li><a href="#industrias" onclick="showPage('home')">Industrias</a></li>
+<li><a href="#por-que" onclick="showPage('home')">¿Por qué KEENON?</a></li>
+<li><a href="#contacto" class="nav-cta" onclick="showPage('home')"><i class="fas fa-calendar-check"></i> Solicitar Demo</a></li>
+</ul>
+<button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<!-- ═══ HOME PAGE ═══ -->
+<div class="page active" id="page-home">
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-grid"></div>
+<div class="container">
+<div class="hero-left">
+<div class="hero-trust">
+<div class="hero-trust-item"><i class="fas fa-trophy"></i> #1 Cuota de Mercado (IDC)</div>
+<div class="hero-trust-item"><i class="fas fa-globe"></i> 60+ Países</div>
+<div class="hero-trust-item"><i class="fas fa-award"></i> Red Dot & iF Design Award</div>
+<div class="hero-trust-item"><i class="fas fa-shield-halved"></i> Certificación CB Global</div>
+</div>
+<h1>Robots de Servicio <span>Inteligentes</span> con IA Integrada</h1>
+<p class="hero-desc">Líder mundial en robótica de servicio comercial. Automatiza entregas, limpieza y atención en tu negocio con tecnología de vanguardia, ahora disponible en Ecuador.</p>
+<div class="hero-btns">
+<a href="#contacto" class="btn-main"><i class="fas fa-calendar-check"></i> Agendar Demostración</a>
+<a href="#productos" class="btn-ghost"><i class="fas fa-robot"></i> Ver Productos</a>
+</div>
+<div class="hero-stats">
+<div><div class="hero-stat-num">100K<em>+</em></div><div class="hero-stat-lab">Robots desplegados</div></div>
+<div><div class="hero-stat-num">60<em>+</em></div><div class="hero-stat-lab">Países</div></div>
+<div><div class="hero-stat-num">730<em>+</em></div><div class="hero-stat-lab">Patentes</div></div>
+<div><div class="hero-stat-num">6<em>+</em></div><div class="hero-stat-lab">Años operando</div></div>
+</div>
+</div>
+<div class="hero-right">
+<div class="carousel" id="carousel">
+<div class="carousel-slide active" data-idx="0">
+<div class="robot-frame"><i class="fas fa-robot robot-icon"></i><div class="robot-name">DINERBOT T10</div><div class="robot-tag">Entrega + Publicidad Dinámica</div><div class="robot-note">Reemplazar con foto del producto</div></div>
+</div>
+<div class="carousel-slide" data-idx="1">
+<div class="robot-frame"><i class="fas fa-robot robot-icon"></i><div class="robot-name">DINERBOT T9</div><div class="robot-tag">Alta Capacidad para Servicio Diario</div><div class="robot-note">Reemplazar con foto del producto</div></div>
+</div>
+<div class="carousel-slide" data-idx="2">
+<div class="robot-frame"><i class="fas fa-robot robot-icon"></i><div class="robot-name">BUTLERBOT W3</div><div class="robot-tag">Entregas Privadas Multi-Piso</div><div class="robot-note">Reemplazar con foto del producto</div></div>
+</div>
+<div class="carousel-slide" data-idx="3">
+<div class="robot-frame"><i class="fas fa-robot robot-icon"></i><div class="robot-name">KEENON S100</div><div class="robot-tag">Transporte de Carga Pesada</div><div class="robot-note">Reemplazar con foto del producto</div></div>
+</div>
+<div class="carousel-slide" data-idx="4">
+<div class="robot-frame"><i class="fas fa-robot robot-icon"></i><div class="robot-name">KLEENBOT C30</div><div class="robot-tag">Limpieza Comercial 3 en 1</div><div class="robot-note">Reemplazar con foto del producto</div></div>
+</div>
+<div class="carousel-slide" data-idx="5">
+<div class="robot-frame"><i class="fas fa-robot robot-icon"></i><div class="robot-name">KLEENBOT C40</div><div class="robot-tag">Limpieza Profesional 4 en 1</div><div class="robot-note">Reemplazar con foto del producto</div></div>
+</div>
+</div>
+<div class="carousel-dots" id="carouselDots"></div>
+</div>
+</div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-sec" id="productos">
+<div class="container">
+<div class="sec-header"><div class="sec-label"><i class="fas fa-microchip"></i> Portafolio</div><h2 class="sec-title">Nuestros Robots</h2><p class="sec-sub">6 modelos disponibles en Ecuador para entrega, hotelería, limpieza y logística.</p></div>
+<div class="prod-grid" id="prodGrid"></div>
+</div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="ind-sec" id="industrias">
+<div class="container">
+<div class="sec-header"><div class="sec-label"><i class="fas fa-building"></i> Industrias</div><h2 class="sec-title">Soluciones Para Cada Sector</h2><p class="sec-sub">Robots KEENON operando con éxito en más de 15 escenarios alrededor del mundo.</p></div>
+<div class="ind-grid">
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-utensils"></i></div><h3>Restaurantes</h3><p>Entrega de platos, recolección y guía de comensales.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-hotel"></i></div><h3>Hoteles</h3><p>Room service, equipaje y limpieza autónoma 24/7.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-hospital"></i></div><h3>Hospitales</h3><p>Entrega de suministros y desinfección autónoma.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-shopping-cart"></i></div><h3>Retail</h3><p>Promociones interactivas y transporte de productos.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-building"></i></div><h3>Centros Comerciales</h3><p>Limpieza de grandes superficies y guía de visitantes.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-futbol"></i></div><h3>Deportes</h3><p>Entrega de F&B en venues y transporte de equipo.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-car"></i></div><h3>Concesionarios</h3><p>Orientación, servicio premium y refuerzo de marca.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-industry"></i></div><h3>Logística</h3><p>Transporte de cargas pesadas entre pisos y áreas.</p></div>
+</div>
+</div>
+</section>
+
+<!-- WHY KEENON -->
+<section class="why-sec" id="por-que">
+<div class="container">
+<div class="sec-header"><div class="sec-label"><i class="fas fa-star"></i> Ventajas</div><h2 class="sec-title">¿Por Qué Elegir KEENON?</h2><p class="sec-sub">La tecnología que impulsa a los líderes mundiales de la hospitalidad.</p></div>
+<div class="why-grid">
+<div class="why-card anim"><div class="why-num">01</div><h3>Líder Global — 60.4% de Cuota</h3><p>Primera posición en el mercado de robots de servicio para restauración en China según IDC.</p></div>
+<div class="why-card anim"><div class="why-num">02</div><h3>IA Embebida de Vanguardia</h3><p>Navegación fusionada LIDAR + visión, percepción 3D NeRF y toma de decisiones autónoma.</p></div>
+<div class="why-card anim"><div class="why-num">03</div><h3>Respaldado por SoftBank</h3><p>Unicornio 4 años consecutivos con USD 200M en inversión de SoftBank Vision Fund.</p></div>
+<div class="why-card anim"><div class="why-num">04</div><h3>730+ Patentes Internacionales</h3><p>Innovación protegida globalmente. Certificación GDPR y seguridad CB.</p></div>
+<div class="why-card anim"><div class="why-num">05</div><h3>Soporte Local en Ecuador</h3><p>Implementación, capacitación, soporte técnico y repuestos con respuesta inmediata.</p></div>
+<div class="why-card anim"><div class="why-num">06</div><h3>Garantía hasta 48 Meses</h3><p>Respuesta en línea en menos de 30 min y soluciones entregadas en menos de 4 horas.</p></div>
+</div>
+</div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+<div class="container">
+<div class="stats-grid">
+<div class="anim"><div class="stat-num">100,000<em>+</em></div><div class="stat-lab">Robots desplegados</div></div>
+<div class="anim"><div class="stat-num">730<em>+</em></div><div class="stat-lab">Patentes internacionales</div></div>
+<div class="anim"><div class="stat-num">60.4<em>%</em></div><div class="stat-lab">Cuota de mercado líder</div></div>
+<div class="anim"><div class="stat-num">48<em> m</em></div><div class="stat-lab">Meses de garantía máxima</div></div>
+</div>
+</div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact-sec" id="contacto">
+<div class="container">
+<div class="sec-header"><div class="sec-label" style="background:rgba(83,186,237,.12);color:var(--sky)"><i class="fas fa-paper-plane"></i> Contáctanos</div><h2 class="sec-title" style="color:var(--white)">Solicita tu Demostración</h2><p class="sec-sub" style="color:var(--g300)">Completa el formulario o escríbenos por WhatsApp. Te contactamos en menos de 24 horas.</p></div>
+<div class="contact-grid">
+<div class="contact-info">
+<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-phone"></i></div><div><h4>WhatsApp</h4><p>+593 99 716 1797</p></div></div>
+<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>jmendozap@soyoda.com</p></div></div>
+<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-map-marker-alt"></i></div><div><h4>Ubicación</h4><p>Guayaquil, Ecuador</p></div></div>
+<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-globe"></i></div><div><h4>Web Global</h4><p>www.keenon.com</p></div></div>
+<div style="margin-top:20px">
+<a href="https://wa.me/593997161797?text=Hola,%20me%20interesa%20conocer%20más%20sobre%20los%20robots%20KEENON%20en%20Ecuador" target="_blank" class="btn-main" style="background:#25D366"><i class="fab fa-whatsapp"></i> Escribir por WhatsApp</a>
+</div>
+</div>
+<div>
+<div class="form-card">
+<h3>Solicita tu Demo Gratuita</h3>
+<p>Completa los datos y te contactaremos pronto.</p>
+<form id="leadForm" onsubmit="handleSubmit(event)">
+<div class="f-row"><div class="fg"><label>Nombre completo *</label><input type="text" name="nombre" placeholder="Tu nombre" required></div><div class="fg"><label>Empresa *</label><input type="text" name="empresa" placeholder="Nombre de tu empresa" required></div></div>
+<div class="f-row"><div class="fg"><label>Email *</label><input type="email" name="email" placeholder="correo@empresa.com" required></div><div class="fg"><label>Teléfono / WhatsApp *</label><input type="tel" name="telefono" placeholder="+593 9XX XXX XXXX" required></div></div>
+<div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Deportes</option><option>Logística / Industrial</option><option>Otro</option></select></div>
+<div class="fg"><label>¿Qué producto te interesa?</label><select name="producto"><option value="">Selecciona</option><option>DINERBOT T10</option><option>DINERBOT T9</option><option>BUTLERBOT W3</option><option>KEENON S100</option><option>KLEENBOT C30</option><option>KLEENBOT C40</option><option>Necesito asesoría</option></select></div>
+<div class="fg"><label>Mensaje (opcional)</label><textarea name="mensaje" rows="3" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
+<button type="submit" class="f-submit"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
+<p class="f-note"><i class="fas fa-lock" style="color:#10B981;margin-right:4px"></i> Tus datos están protegidos. No compartimos tu información.</p>
+<div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)">
+<p style="font-size:.75rem;color:var(--g400);margin-bottom:8px">¿Prefieres contacto directo?</p>
+<a href="https://wa.me/593997161797?text=Hola,%20me%20interesa%20una%20demostración%20de%20robots%20KEENON%20para%20mi%20negocio" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:white;padding:10px 20px;border-radius:50px;font-size:.82rem;font-weight:700;transition:all .2s"><i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp</a>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+</div><!-- /page-home -->
+
+<!-- ═══ PRODUCT DETAIL PAGES (generated by JS) ═══ -->
+<div class="page" id="page-detail">
+<div id="detailContent"></div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand"><span>KEEN<em style="color:var(--sky);font-style:normal">ON</em> Ecuador</span><p>Robots de servicio inteligentes con IA integrada para restaurantes, hoteles, hospitales y más. Líder mundial en robótica de servicio comercial.</p></div>
+<div class="footer-col"><h4>Productos</h4><a href="#" onclick="showProduct('t10');return false">DINERBOT T10</a><a href="#" onclick="showProduct('t9');return false">DINERBOT T9</a><a href="#" onclick="showProduct('w3');return false">BUTLERBOT W3</a><a href="#" onclick="showProduct('s100');return false">KEENON S100</a><a href="#" onclick="showProduct('c30');return false">KLEENBOT C30</a><a href="#" onclick="showProduct('c40');return false">KLEENBOT C40</a></div>
+<div class="footer-col"><h4>Industrias</h4><a href="#industrias" onclick="showPage('home')">Restaurantes</a><a href="#industrias" onclick="showPage('home')">Hoteles</a><a href="#industrias" onclick="showPage('home')">Hospitales</a><a href="#industrias" onclick="showPage('home')">Retail</a><a href="#industrias" onclick="showPage('home')">Logística</a></div>
+<div class="footer-col"><h4>Contacto</h4><a href="#contacto" onclick="showPage('home')">Solicitar Demo</a><a href="https://wa.me/593997161797" target="_blank">WhatsApp</a><a href="mailto:jmendozap@soyoda.com">Email</a><a href="https://www.keenon.com" target="_blank">KEENON Global</a></div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2026 KEENON Robotics Ecuador. Todos los derechos reservados.</p>
+<div class="footer-social">
+<a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+<a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+<a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+<a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- FLOATING -->
+<a href="https://wa.me/593997161797?text=Hola,%20me%20interesa%20conocer%20más%20sobre%20los%20robots%20KEENON" class="wa-float" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<button class="chat-toggle" id="chatToggle" aria-label="Chat"><i class="fas fa-comments" id="chatIcon"></i></button>
+<div class="chat-win" id="chatWin">
+<div class="chat-head"><div class="chat-avatar"><i class="fas fa-robot"></i></div><div class="chat-head-info"><h4>Asistente KEENON</h4><p>En línea — Respuesta inmediata</p></div></div>
+<div class="chat-msgs" id="chatMsgs"></div>
+<div class="chat-inp"><input type="text" id="chatInp" placeholder="Escribe tu mensaje..." autocomplete="off"><button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button></div>
+</div>
+
+<script>
+// ═══ PRODUCT DATA ═══
+const PRODUCTS={
+t10:{id:'t10',name:'DINERBOT T10',tagline:'Solución definitiva para entrega y publicidad',desc:'El DINERBOT T10 combina entrega inteligente con una poderosa pantalla publicitaria. Con interacción multimodal (primera en la industria), accesorios expresivos para la cabeza y sistema multilingüe, eleva la experiencia del cliente mientras optimiza tus operaciones.',
+feats:['Capacidad publicitaria dinámica','Pasa a través de pasajes de 59 cm','Carga de 40 kg con guía inteligente de auto-recogida','Evasión completa de obstáculos','Interacción multimodal con movimientos de cabeza y voz','Sistema multilingüe'],
+tags:['iF Design Award 2025','40 kg carga','Multilingüe','IA Multimodal'],
+specs:[{v:'48.6×55.5×139.9',l:'Dimensiones (cm)'},{v:'58 kg',l:'Peso'},{v:'40 kg',l:'Capacidad de carga'},{v:'8 horas',l:'Batería'},{v:'58.5 cm',l:'Paso mínimo'},{v:'1 m/s',l:'Velocidad máx.'},{v:'23.8"',l:'Pantalla publicitaria'},{v:'11.6"',l:'Pantalla operación'},{v:'5.5 h',l:'Tiempo de carga'}],
+category:'Entrega + Publicidad',icon:'fa-robot',efficiency:'Equipado con 4 sensores de visión estéreo para detección 3D de 300°, pantalla publicitaria de 23.8" para mensajes personalizados, y pantalla de operación de 11.6" (1920×1080). Reemplaza hasta 3 meseros en horas pico. Su cabeza móvil con expresiones faciales y sistema multilingüe generan una experiencia memorable que aumenta la satisfacción del cliente.'},
+t9:{id:'t9',name:'DINERBOT T9',tagline:'Alta capacidad de carga para servicio diario',desc:'El DINERBOT T9 es el caballo de fuerza de la línea KEENON. Con bandejas ajustables y 40 kg de capacidad, autocarga y colaboración multi-robot, es ideal para operaciones de alto volumen en restaurantes, buffets y servicios de catering.',
+feats:['Bandejas ajustables con carga de 40 kg','Carga autónoma','Colaboración multi-robot','Navegación inteligente VSLAM','Chasis amortiguador para estabilidad','Recogida y entrega inteligente'],
+tags:['Good Design 2023','40 kg carga','Multi-robot','VSLAM'],
+specs:[{v:'40 kg',l:'Capacidad'},{v:'4',l:'Bandejas'},{v:'Auto',l:'Carga'},{v:'Multi',l:'Robots coord.'},{v:'VSLAM',l:'Navegación'},{v:'24/7',l:'Operación'}],
+category:'Entrega de Alimentos',icon:'fa-robot',efficiency:'Maneja hasta 400 entregas diarias. Reduce la necesidad de personal de planta en un 30% y minimiza derrames gracias a su chasis amortiguado.'},
+w3:{id:'w3',name:'BUTLERBOT W3',tagline:'Entregas privadas y seguras en varios pisos',desc:'El BUTLERBOT W3 redefine el room service. Con cuatro cabinas privadas, acceso autónomo al ascensor y hasta 12 horas de batería, garantiza entregas higiénicas y discretas a las habitaciones sin intervención humana.',
+feats:['Acceso fluido al ascensor (E-BOX)','4 cabinas privadas para entrega higiénica','Hasta 12 horas de servicio continuo','Capacidad de 90L','Visión estéreo dual y evasión 3D','Diseño innovador y práctico'],
+tags:['4 Cabinas','12h batería','90L','Ascensor'],
+specs:[{v:'90 L',l:'Capacidad'},{v:'4',l:'Cabinas'},{v:'12 h',l:'Batería'},{v:'3D',l:'Evasión'},{v:'Multi',l:'Pisos'},{v:'Auto',l:'Ascensor'}],
+category:'Hotelería',icon:'fa-concierge-bell',efficiency:'Un W3 puede atender hasta 150 entregas de room service por día, reduciendo la carga de trabajo del personal de hotel en un 45% durante turnos nocturnos.'},
+s100:{id:'s100',name:'KEENON S100',tagline:'Transporte fiable de cargas pesadas',desc:'El KEENON S100 es la solución para logística interna pesada. Con más de 100 kg de capacidad, diseño plug-and-play y 3 opciones de carga, optimiza el transporte de sábanas, suministros, equipos y más entre pisos y áreas.',
+feats:['Capacidad de carga superior a 100 kg','Diseño listo para usar (plug-and-play)','3 opciones de carga para mayor flexibilidad','Funciones de seguridad avanzadas','Transporte autónomo entre pisos','Integración con ascensores'],
+tags:['+100 kg','Plug & Play','3 modos','Seguridad'],
+specs:[{v:'100+ kg',l:'Capacidad'},{v:'3',l:'Modos carga'},{v:'Auto',l:'Navegación'},{v:'Multi',l:'Pisos'},{v:'P&P',l:'Instalación'},{v:'Avanz.',l:'Seguridad'}],
+category:'Carga Pesada',icon:'fa-dolly',efficiency:'Transporta el equivalente a 5 viajes manuales por trayecto. Reduce el riesgo de lesiones laborales y optimiza la logística interna con entregas 24/7.'},
+c30:{id:'c30',name:'KLEENBOT C30',tagline:'Solución comercial de limpieza en seco 3 en 1',desc:'El KLEENBOT C30 aspira, barre y desempolva en una sola unidad. Cubre hasta 2,500 m² por carga, con autocarga inteligente y seguimiento remoto. Ideal para grandes superficies comerciales.',
+feats:['Aspira, barre y desempolva (3 en 1)','Cubre hasta 2,500 m² por carga','3 modos de limpieza versátiles','Modos duales con seguimiento remoto','Fácil de usar y operar','Autocarga inteligente'],
+tags:['3 en 1','2,500 m²','Autocarga','Remoto'],
+specs:[{v:'49×52×75',l:'Dimensiones (cm)'},{v:'35 kg',l:'Peso'},{v:'600 m²/h',l:'Eficiencia limpieza'},{v:'6-10 h',l:'Batería'},{v:'61 cm',l:'Ancho limpieza'},{v:'0.8 m/s',l:'Velocidad'},{v:'19,000 Pa',l:'Succión'},{v:'≤70 dB',l:'Ruido'},{v:'5-6 h',l:'Tiempo de carga'}],
+category:'Limpieza Comercial',icon:'fa-broom',efficiency:'Dimensiones: 49×52×75 cm. Peso: 35 kg con batería. Eficiencia de limpieza de 600 m²/h (6,458 ft²/h). Batería de hasta 6 horas en barrido/aspirado y hasta 10 horas con trapeador. Succión máxima de 19,000 Pa. Equipado con sensores de visión estéreo, sensor LiDAR y puerto de carga automática.'},
+c40:{id:'c40',name:'KLEENBOT C40',tagline:'Robot profesional de limpieza 4 en 1',desc:'El KLEENBOT C40 combina barrido, aspirado, fregado y desempolvado con sistema de triple cepillo para separación seco-húmedo. Diseñado para espacios de 500-4,500 m² como tiendas, supermercados y oficinas.',
+feats:['Barrido, aspirado, fregado y desempolvado','Sistema triple cepillo separación seco-húmedo','Percepción 3D multimodal para entornos complejos','Secado rápido tras el fregado','Depósito extraíble y lavable sin olores','Control inteligente vía App/Web'],
+tags:['4 en 1','Triple cepillo','Percepción 3D','IoT'],
+specs:[{v:'4 en 1',l:'Funciones'},{v:'500-4500 m²',l:'Espacios'},{v:'Triple',l:'Cepillo'},{v:'3D',l:'Percepción'},{v:'IoT',l:'Control'},{v:'Auto',l:'Recarga'}],
+category:'Limpieza Profesional',icon:'fa-broom',efficiency:'Barre y friega en una sola pasada, eliminando la necesidad de dos equipos separados. Secado rápido reduce riesgos de resbalones. Apto para moqueta, mármol, madera, azulejos y vinilo.'}
+};
+
+// ═══ RENDER PRODUCT CARDS ═══
+function renderProducts(){
+const g=document.getElementById('prodGrid');
+g.innerHTML='';
+Object.values(PRODUCTS).forEach(p=>{
+g.innerHTML+=`<div class="prod-card anim">
+<div class="prod-card-img"><i class="fas ${p.icon}" style="font-size:3.5rem;color:var(--g200)"></i><div class="img-note">Reemplazar con imagen</div></div>
+<div class="prod-card-body">
+<div class="prod-card-name">${p.name}</div>
+<div class="prod-card-tag">${p.tagline}</div>
+<p class="prod-card-desc">${p.desc.substring(0,120)}...</p>
+<div class="prod-card-feats">${p.tags.map(t=>`<span class="prod-feat">${t}</span>`).join('')}</div>
+<div class="prod-card-actions">
+<a href="#" class="prod-link" onclick="showProduct('${p.id}');return false">Más información <i class="fas fa-arrow-right"></i></a>
+<a href="#contacto" class="prod-demo">Solicitar Demo</a>
+</div>
+</div></div>`;
+});
+initObserver();
+}
+
+// ═══ PRODUCT DETAIL PAGE ═══
+function showProduct(id){
+const p=PRODUCTS[id];if(!p)return;
+document.getElementById('detailContent').innerHTML=`
+<section class="detail-hero">
+<div class="container">
+<div class="detail-info">
+<div class="back-btn" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Volver a productos</div>
+<div class="sec-label"><i class="fas fa-${p.icon}"></i> ${p.category}</div>
+<h1>${p.name}</h1>
+<div class="tag">${p.tagline}</div>
+<p class="desc">${p.desc}</p>
+<div class="detail-feats">${p.feats.map(f=>`<div class="detail-feat"><div class="detail-feat-ico"><i class="fas fa-check"></i></div><div><p>${f}</p></div></div>`).join('')}</div>
+<div class="detail-btns">
+<a href="#contacto" class="btn-main" onclick="showPage('home');setTimeout(()=>document.getElementById('contacto').scrollIntoView({behavior:'smooth'}),100)"><i class="fas fa-calendar-check"></i> Solicitar Demostración</a>
+<a href="https://wa.me/593997161797?text=Hola,%20me%20interesa%20el%20${encodeURIComponent(p.name)}%20para%20mi%20negocio" target="_blank" class="btn-ghost" style="color:var(--dark);border-color:var(--g200)"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+</div>
+</div>
+<div class="detail-img">
+<div class="detail-img-box"><i class="fas fa-${p.icon}"></i><p>Imagen del ${p.name}</p><div class="note">Reemplazar con foto del flyer</div></div>
+</div>
+</div>
+</section>
+<section class="specs-sec">
+<div class="container">
+<h2>Especificaciones y Eficiencia</h2>
+<div class="specs-grid">${p.specs.map(s=>`<div class="spec-item"><div class="val">${s.v}</div><div class="lab">${s.l}</div></div>`).join('')}</div>
+<div style="max-width:700px;margin:32px auto 0;background:var(--g50);border-radius:14px;padding:24px 28px;border-left:4px solid var(--sky)">
+<h3 style="font-family:var(--font);font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:8px"><i class="fas fa-chart-line" style="color:var(--sky);margin-right:6px"></i>Eficiencia y Productividad</h3>
+<p style="font-size:.88rem;color:var(--g500);line-height:1.65">${p.efficiency}</p>
+</div>
+<div style="text-align:center;margin-top:32px">
+<a href="#contacto" class="btn-main" onclick="showPage('home');setTimeout(()=>document.getElementById('contacto').scrollIntoView({behavior:'smooth'}),100)"><i class="fas fa-calendar-check"></i> Solicitar Demostración del ${p.name}</a>
+</div>
+</div>
+</section>`;
+showPage('detail');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══ PAGE ROUTING ═══
+function showPage(page){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+if(page==='home'){document.getElementById('page-home').classList.add('active');
+}else if(page==='detail'){document.getElementById('page-detail').classList.add('active')}
+}
+
+// ═══ CAROUSEL ═══
+let carIdx=0;const slides=document.querySelectorAll('.carousel-slide');
+function initCarousel(){
+const dots=document.getElementById('carouselDots');
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='carousel-dot'+(i===0?' active':'');d.onclick=()=>goSlide(i);dots.appendChild(d)});
+setInterval(()=>goSlide((carIdx+1)%slides.length),4000);
+}
+function goSlide(i){
+slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');
+document.querySelectorAll('.carousel-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
+carIdx=i;
+}
+
+// ═══ NAV ═══
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>50));
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+
+// ═══ SCROLL ANIMATIONS ═══
+function initObserver(){
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.anim').forEach(el=>obs.observe(el));
+}
+
+// ═══ FORM ═══
+// CONFIG — email destino (modificable)
+const CONTACT_EMAIL='jmendozap@soyoda.com';
+
+function handleSubmit(e){
+e.preventDefault();
+const fd=new FormData(e.target);const data=Object.fromEntries(fd);
+data.timestamp=new Date().toISOString();data.source='web_form';data.contact_email=CONTACT_EMAIL;
+
+// Store locally + log
+const leads=JSON.parse(localStorage.getItem('keenon_leads')||'[]');
+leads.push(data);localStorage.setItem('keenon_leads',JSON.stringify(leads));
+
+const btn=e.target.querySelector('.f-submit');
+btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';btn.style.background='#10B981';
+setTimeout(()=>{btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar Solicitud';btn.style.background='';e.target.reset()},3000);
+
+// WordPress integration point:
+// fetch(keenon_ajax.ajax_url, { method:'POST', body:formData_with_action_and_nonce })
+console.log('Lead:',data);
+}
+
+// ═══ CHATBOT ═══
+const chatToggle=document.getElementById('chatToggle'),chatWin=document.getElementById('chatWin'),chatIcon=document.getElementById('chatIcon'),chatMsgs=document.getElementById('chatMsgs'),chatInp=document.getElementById('chatInp');
+let chatState='init',leadD={};
+chatToggle.onclick=()=>{const o=chatWin.classList.toggle('open');chatToggle.classList.toggle('on',o);chatIcon.className=o?'fas fa-times':'fas fa-comments';if(o&&!chatMsgs.children.length)setTimeout(()=>addMsg('¡Hola! Soy el asistente de KEENON Ecuador. ¿En qué puedo ayudarte?','bot',[{l:'Ver productos',a:()=>botFlow('prods')},{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Hablar con asesor',a:()=>botFlow('asesor')}]),400)};
+chatInp.onkeypress=e=>{if(e.key==='Enter')sendChat()};
+
+function addMsg(t,type,opts){
+const m=document.createElement('div');m.className='cmsg '+type;m.textContent=t;
+if(opts){const c=document.createElement('div');c.className='chat-opts';
+opts.forEach(o=>{const b=document.createElement('button');b.className='chat-opt';b.textContent=o.l;b.onclick=()=>{addMsg(o.l,'usr');c.remove();if(o.a)o.a()};c.appendChild(b)});m.appendChild(c)}
+chatMsgs.appendChild(m);chatMsgs.scrollTop=chatMsgs.scrollHeight;
+}
+
+function botFlow(f){
+if(f==='prods')setTimeout(()=>addMsg('Tenemos 6 modelos disponibles en Ecuador. ¿Qué tipo de solución buscas?','bot',[{l:'Entrega de alimentos',a:()=>showProd('t10')},{l:'Hotelería',a:()=>showProd('w3')},{l:'Limpieza',a:()=>showProd('c40')},{l:'Carga pesada',a:()=>showProd('s100')}]),500);
+else if(f==='demo'){chatState='name';setTimeout(()=>addMsg('Para agendar tu demo gratuita, ¿cuál es tu nombre?','bot'),500)}
+else if(f==='asesor')setTimeout(()=>addMsg('Puedes contactar a nuestro asesor directamente por WhatsApp o dejarnos tus datos.','bot',[{l:'Abrir WhatsApp',a:()=>window.open('https://wa.me/593997161797?text=Hola,%20necesito%20asesoría%20sobre%20robots%20KEENON','_blank')},{l:'Dejar mis datos',a:()=>botFlow('demo')}]),500);
+}
+function showProd(id){const p=PRODUCTS[id];setTimeout(()=>addMsg(`El ${p.name}: ${p.tagline}. ${p.desc.substring(0,150)}...`,'bot',[{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Ver otros',a:()=>botFlow('prods')}]),500)}
+
+function sendChat(){
+const t=chatInp.value.trim();if(!t)return;addMsg(t,'usr');chatInp.value='';
+if(chatState==='name'){leadD.nombre=t;chatState='empresa';setTimeout(()=>addMsg(`Gracias, ${t}. ¿Cuál es tu empresa?`,'bot'),500)}
+else if(chatState==='empresa'){leadD.empresa=t;chatState='tel';setTimeout(()=>addMsg('¿Tu número de WhatsApp?','bot'),500)}
+else if(chatState==='tel'){leadD.telefono=t;chatState='email';setTimeout(()=>addMsg('¿Y tu correo electrónico?','bot'),500)}
+else if(chatState==='email'){leadD.email=t;leadD.timestamp=new Date().toISOString();leadD.source='chatbot';
+const leads=JSON.parse(localStorage.getItem('keenon_leads')||'[]');leads.push(leadD);localStorage.setItem('keenon_leads',JSON.stringify(leads));
+chatState='done';setTimeout(()=>addMsg(`¡Listo, ${leadD.nombre}! Tu solicitud fue registrada. Te contactaremos en menos de 24 horas.`,'bot',[{l:'Ver productos',a:()=>{showPage('home');chatWin.classList.remove('open');chatIcon.className='fas fa-comments';setTimeout(()=>document.getElementById('productos').scrollIntoView({behavior:'smooth'}),200)}},{l:'WhatsApp',a:()=>window.open('https://wa.me/593997161797','_blank')}]),600)}
+else setTimeout(()=>addMsg('¿En qué más puedo ayudarte?','bot',[{l:'Ver productos',a:()=>botFlow('prods')},{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Hablar con asesor',a:()=>botFlow('asesor')}]),500);
+}
+
+// ═══ SMOOTH SCROLL ═══
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}));
+
+// ═══ INIT ═══
+renderProducts();
+initCarousel();
+initObserver();
+</script>
+</body>
+</html>
