@@ -301,6 +301,39 @@ section{padding:60px 0}
 .btn-main,.btn-ghost{width:100%;justify-content:center}
 .sec-title{font-size:1.6rem}
 }
+/* --- AJUSTES PARA EL CARRUSEL (Añade esto al final de tu <style>) --- */
+
+.hero-carousel {
+    height: 70vh !important; /* Ajusta la altura al 70% de la pantalla */
+    min-height: 450px !important; /* Evita que se vea muy pequeño en móviles */
+}
+
+.carousel-inner, .carousel-item {
+    height: 100% !important;
+}
+
+.carousel-item img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important; /* Esto hace que la imagen llene el espacio sin estirarse */
+    object-position: center !important; /* Centra la parte importante de la foto */
+}
+
+/* Ajuste específico para celulares */
+@media (max-width: 768px) {
+    .hero-carousel {
+        height: 55vh !important; /* En celular lo hacemos un poco más bajo */
+        min-height: 350px !important;
+    }
+    
+    .carousel-caption {
+        bottom: 15% !important; /* Sube un poco el texto para que no tape los pies del robot */
+    }
+
+    .carousel-caption h1 {
+        font-size: 1.8rem !important; /* Achica un poco el título en el celular */
+    }
+}
 </style>
 </head>
 <body>
