@@ -82,6 +82,19 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit}
 .carousel{position:relative;width:100%;max-width:480px;height:460px;margin:0 auto;perspective:1000px}
 .carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .8s cubic-bezier(.4,0,.2,1);transform:scale(.92);pointer-events:none}
 .carousel-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
+/* Busca esta sección y asegúrate de que esté así */
+.carousel-slide.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    z-index: 2; /* Añade esto para asegurar que esté al frente */
+}
+
+/* Añade esta regla específica para la primera carga */
+.carousel-slide[data-idx="0"] {
+    opacity: 1;
+    transform: scale(1);
+}
 .carousel-slide .robot-frame{width:100%;max-width:400px;height:400px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative;overflow:hidden}
 .carousel-slide .robot-frame::before{content:'';position:absolute;top:-40%;right:-40%;width:300px;height:300px;background:radial-gradient(circle,rgba(83,186,237,.08),transparent 70%);border-radius:50%}
 .carousel-slide .robot-icon{font-size:5rem;color:var(--sky);opacity:.25;position:relative;z-index:1}
@@ -584,9 +597,22 @@ if(page==='home'){document.getElementById('page-home').classList.add('active');
 // ═══ CAROUSEL ═══
 let carIdx=0;const slides=document.querySelectorAll('.carousel-slide');
 function initCarousel(){
-const dots=document.getElementById('carouselDots');
-slides.forEach((_,i)=>{const d=document.createElement('div');d.className='carousel-dot'+(i===0?' active':'');d.onclick=()=>goSlide(i);dots.appendChild(d)});
-setInterval(()=>goSlide((carIdx+1)%slides.length),4000);
+const dots = document.getElementById('carouselDots');
+    // Limpiamos dots por si acaso para evitar duplicados
+    dots.innerHTML = ''; 
+    
+    slides.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        d.onclick = () => goSlide(i);
+        dots.appendChild(d);
+    });
+
+    // FORZAR PRIMER SLIDE AL INICIO
+    goSlide(0); 
+
+    // Cambiamos el intervalo a 5000ms para dar más tiempo de lectura
+    setInterval(() => goSlide((carIdx + 1) % slides.length), 5000);
 }
 function goSlide(i){
 slides.forEach(s=>s.classList.remove('active'));slides[i].classList.add('active');
