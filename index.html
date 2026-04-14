@@ -530,7 +530,7 @@ const g=document.getElementById('prodGrid');
 g.innerHTML='';
 Object.values(PRODUCTS).forEach(p=>{
   const imgHTML = p.img
-    ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;padding:12px;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
     : '';
   const iconHTML = `<div style="display:${p.img?'none':'flex'};flex-direction:column;align-items:center;gap:8px;width:100%;height:100%;justify-content:center;"><i class="fas ${p.icon}" style="font-size:3.5rem;color:var(--g200)"></i><div class="img-note">Imagen no disponible</div></div>`;
   g.innerHTML+=`<div class="prod-card anim">
