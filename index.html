@@ -442,7 +442,7 @@ section{padding:60px 0}
 <div class="contact-grid">
 <div class="contact-info">
 <div class="c-detail"><div class="c-detail-ico"><i class="fas fa-phone"></i></div><div><h4>WhatsApp</h4><p>+593 99 716 1797</p></div></div>
-<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="eb81868e858f84918a9bab988492848f8ac5888486">[email&#160;protected]</a></p></div></div>
+<div class="c-detail"><div class="c-detail-ico"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p id="contact-email-display"></p></div></div>
 <div class="c-detail"><div class="c-detail-ico"><i class="fas fa-map-marker-alt"></i></div><div><h4>Ubicación</h4><p>Guayaquil, Ecuador</p></div></div>
 <div class="c-detail"><div class="c-detail-ico"><i class="fas fa-globe"></i></div><div><h4>Web Global</h4><p>www.keenon.com</p></div></div>
 <div style="margin-top:20px">
@@ -486,7 +486,7 @@ section{padding:60px 0}
 <div class="footer-brand"><span>KEEN<em style="color:var(--sky);font-style:normal">ON</em> Ecuador</span><p>Robots de servicio inteligentes con IA integrada para restaurantes, hoteles, hospitales y más. Líder mundial en robótica de servicio comercial.</p></div>
 <div class="footer-col"><h4>Productos</h4><a href="#" onclick="showProduct('t10');return false">DINERBOT T10</a><a href="#" onclick="showProduct('t9');return false">DINERBOT T9</a><a href="#" onclick="showProduct('w3');return false">BUTLERBOT W3</a><a href="#" onclick="showProduct('s100');return false">KEENON S100</a><a href="#" onclick="showProduct('c30');return false">KLEENBOT C30</a><a href="#" onclick="showProduct('c40');return false">KLEENBOT C40</a></div>
 <div class="footer-col"><h4>Industrias</h4><a href="#industrias" onclick="showPage('home')">Restaurantes</a><a href="#industrias" onclick="showPage('home')">Hoteles</a><a href="#industrias" onclick="showPage('home')">Hospitales</a><a href="#industrias" onclick="showPage('home')">Retail</a><a href="#industrias" onclick="showPage('home')">Logística</a></div>
-<div class="footer-col"><h4>Contacto</h4><a href="#contacto" onclick="showPage('home')">Solicitar Demo</a><a href="https://wa.me/593997161797" target="_blank">WhatsApp</a><a href="/cdn-cgi/l/email-protection#b2d8dfd7dcd6ddc8d3c2f2c1ddcbddd6d39cd1dddf">Email</a><a href="https://www.keenon.com" target="_blank">KEENON Global</a></div>
+<div class="footer-col"><h4>Contacto</h4><a href="#contacto" onclick="showPage('home')">Solicitar Demo</a><a href="https://wa.me/593997161797" target="_blank">WhatsApp</a><a id="footer-email-link" href="#">Email</a><a href="https://www.keenon.com" target="_blank">KEENON Global</a></div>
 </div>
 <div class="footer-bottom">
 <p>&copy; 2026 KEENON Robotics Ecuador. Todos los derechos reservados.</p>
@@ -659,7 +659,15 @@ document.querySelectorAll('.anim').forEach(el=>obs.observe(el));
  
 // ═══ FORM ═══
 // CONFIG — email destino (modificable)
-const CONTACT_EMAIL = '<a href="mailto:jmendozap@soyoda.com">jmendozap&#64;soyoda.com</a>';
+const _e=['jmendozap','soyoda.com'];
+const CONTACT_EMAIL=_e[0]+'@'+_e[1];
+// Inject email into DOM after page loads
+document.addEventListener('DOMContentLoaded',function(){
+  const d=document.getElementById('contact-email-display');
+  const f=document.getElementById('footer-email-link');
+  if(d){d.innerHTML='<a href="mailto:'+CONTACT_EMAIL+'" style="color:var(--g300);text-decoration:none">'+CONTACT_EMAIL+'</a>';}
+  if(f){f.href='mailto:'+CONTACT_EMAIL;f.textContent='Email';}
+});
  
 function handleSubmit(e){
 e.preventDefault();
