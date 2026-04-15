@@ -516,7 +516,7 @@ t10:{id:'t10',name:'DINERBOT T10',tagline:'Solución definitiva para entrega y p
 feats:['Capacidad publicitaria dinámica','Pasa a través de pasajes de 59 cm','Carga de 40 kg con guía inteligente de auto-recogida','Evasión completa de obstáculos','Interacción multimodal con movimientos de cabeza y voz','Sistema multilingüe'],
 tags:['iF Design Award 2025','40 kg carga','Multilingüe','IA Multimodal'],
 specs:[{v:'48.6×55.5×139.9',l:'Dimensiones (cm)'},{v:'58 kg',l:'Peso'},{v:'40 kg',l:'Capacidad de carga'},{v:'8 horas',l:'Batería'},{v:'58.5 cm',l:'Paso mínimo'},{v:'1 m/s',l:'Velocidad máx.'},{v:'23.8"',l:'Pantalla publicitaria'},{v:'11.6"',l:'Pantalla operación'},{v:'5.5 h',l:'Tiempo de carga'}],
-category:'Entrega + Publicidad',icon:'fa-robot',img:'images/dinerbot_t10 tarjeta.jpg',video:'https://www.youtube.com/watch?v=5TP6MokvFnQ',efficiency:'Equipado con 4 sensores de visión estéreo para detección 3D de 300°, pantalla publicitaria de 23.8" para mensajes personalizados, y pantalla de operación de 11.6" (1920×1080). Reemplaza hasta 3 meseros en horas pico. Su cabeza móvil con expresiones faciales y sistema multilingüe generan una experiencia memorable que aumenta la satisfacción del cliente.'},
+category:'Entrega + Publicidad',icon:'fa-robot',img:'images/dinerbot_t10 tarjeta.jpg',efficiency:'Equipado con 4 sensores de visión estéreo para detección 3D de 300°, pantalla publicitaria de 23.8" para mensajes personalizados, y pantalla de operación de 11.6" (1920×1080). Reemplaza hasta 3 meseros en horas pico. Su cabeza móvil con expresiones faciales y sistema multilingüe generan una experiencia memorable que aumenta la satisfacción del cliente.'},
 t9:{id:'t9',name:'DINERBOT T9',tagline:'Alta capacidad de carga para servicio diario',desc:'El DINERBOT T9 es el caballo de fuerza de la línea KEENON. Con bandejas ajustables y 40 kg de capacidad, autocarga y colaboración multi-robot, es ideal para operaciones de alto volumen en restaurantes, buffets y servicios de catering.',
 feats:['Bandejas ajustables con carga de 40 kg','Carga autónoma','Colaboración multi-robot','Navegación inteligente VSLAM','Chasis amortiguador para estabilidad','Recogida y entrega inteligente'],
 tags:['Good Design 2023','40 kg carga','Multi-robot','VSLAM'],
@@ -553,6 +553,7 @@ Object.values(PRODUCTS).forEach(p=>{
     ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
     : '';
   const iconHTML = `<div style="display:${p.img?'none':'flex'};flex-direction:column;align-items:center;gap:8px;width:100%;height:100%;justify-content:center;"><i class="fas ${p.icon}" style="font-size:3.5rem;color:var(--g200)"></i><div class="img-note">Imagen no disponible</div></div>`;
+  const playBtn = p.video ? `<div class="play-btn-wrap"><button class="play-btn" onclick="openVideo('${p.video}')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>` : '';
   g.innerHTML+=`<div class="prod-card anim">
 <div class="prod-card-img" style="position:relative;overflow:hidden;">${imgHTML}${iconHTML}${playBtn}</div>
 <div class="prod-card-body">
