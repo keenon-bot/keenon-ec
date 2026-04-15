@@ -553,7 +553,6 @@ Object.values(PRODUCTS).forEach(p=>{
     ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
     : '';
   const iconHTML = `<div style="display:${p.img?'none':'flex'};flex-direction:column;align-items:center;gap:8px;width:100%;height:100%;justify-content:center;"><i class="fas ${p.icon}" style="font-size:3.5rem;color:var(--g200)"></i><div class="img-note">Imagen no disponible</div></div>`;
-  const playBtn = p.video ? `<div class="play-btn-wrap"><button class="play-btn" onclick="openVideo('${p.video}')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>` : '';
   g.innerHTML+=`<div class="prod-card anim">
 <div class="prod-card-img" style="position:relative;overflow:hidden;">${imgHTML}${iconHTML}${playBtn}</div>
 <div class="prod-card-body">
