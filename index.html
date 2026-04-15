@@ -231,10 +231,7 @@ section{padding:90px 0}
 .detail-feat p{font-size:.78rem;color:var(--g400)}
 .detail-btns{display:flex;gap:12px;flex-wrap:wrap}
 .detail-img{display:flex;align-items:center;justify-content:center}
-.detail-img-box{width:100%;max-width:420px;height:380px;background:rgba(255,255,255,.6);border:1px solid var(--g100);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;backdrop-filter:blur(8px)}
-.detail-img-box i{font-size:4.5rem;color:var(--g200)}
-.detail-img-box p{font-size:.75rem;color:var(--g300);text-align:center;padding:0 20px}
-.detail-img-box .note{background:rgba(1,100,168,.06);padding:6px 14px;border-radius:8px;font-size:.65rem;color:var(--blue);border:1px dashed rgba(1,100,168,.2)}
+/* detail-img-box styles moved below */
  
 .specs-sec{padding:60px 0;background:var(--white)}
 .specs-sec h2{font-family:var(--font);font-size:1.8rem;font-weight:900;color:var(--dark);text-align:center;margin-bottom:32px}
@@ -290,6 +287,29 @@ section{padding:60px 0}
 .btn-main,.btn-ghost{width:100%;justify-content:center}
 .sec-title{font-size:1.6rem}
 }
+ 
+/* ── PLAY BUTTON + RIPPLE ── */
+.play-btn-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;pointer-events:none;}
+.play-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.22);backdrop-filter:blur(4px);border:2px solid rgba(255,255,255,0.55);display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;position:relative;transition:transform .2s,background .2s;}
+.play-btn:hover{background:rgba(255,255,255,0.38);transform:scale(1.08);}
+.play-btn svg{width:26px;height:26px;fill:rgba(255,255,255,0.95);margin-left:4px;}
+.play-btn::before,.play-btn::after{content:'';position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,0.35);animation:ripple 2.2s ease-out infinite;}
+.play-btn::before{width:90px;height:90px;animation-delay:0s;}
+.play-btn::after{width:120px;height:120px;animation-delay:.7s;}
+@keyframes ripple{0%{transform:scale(.8);opacity:.7}100%{transform:scale(1.5);opacity:0}}
+ 
+/* ── DETAIL IMAGE BOX ── */
+.detail-img-box{width:100%;max-width:420px;height:380px;border-radius:20px;overflow:hidden;position:relative;background:#e8f4fb;border:1px solid var(--g100);}
+.detail-img-box img{width:100%;height:100%;object-fit:cover;display:block;}
+.detail-img-box .play-btn-wrap{background:rgba(0,0,0,0.08);}
+ 
+/* ── VIDEO MODAL ── */
+.vid-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;align-items:center;justify-content:center;}
+.vid-overlay.open{display:flex;}
+.vid-box{position:relative;width:min(860px,92vw);aspect-ratio:16/9;border-radius:12px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.5);}
+.vid-box iframe{width:100%;height:100%;border:0;}
+.vid-close{position:absolute;top:-40px;right:0;width:36px;height:36px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4);border-radius:50%;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;backdrop-filter:blur(4px);}
+.vid-close:hover{background:rgba(255,255,255,.3);}
 </style>
 </head>
 <body>
@@ -496,32 +516,32 @@ t10:{id:'t10',name:'DINERBOT T10',tagline:'Solución definitiva para entrega y p
 feats:['Capacidad publicitaria dinámica','Pasa a través de pasajes de 59 cm','Carga de 40 kg con guía inteligente de auto-recogida','Evasión completa de obstáculos','Interacción multimodal con movimientos de cabeza y voz','Sistema multilingüe'],
 tags:['iF Design Award 2025','40 kg carga','Multilingüe','IA Multimodal'],
 specs:[{v:'48.6×55.5×139.9',l:'Dimensiones (cm)'},{v:'58 kg',l:'Peso'},{v:'40 kg',l:'Capacidad de carga'},{v:'8 horas',l:'Batería'},{v:'58.5 cm',l:'Paso mínimo'},{v:'1 m/s',l:'Velocidad máx.'},{v:'23.8"',l:'Pantalla publicitaria'},{v:'11.6"',l:'Pantalla operación'},{v:'5.5 h',l:'Tiempo de carga'}],
-category:'Entrega + Publicidad',icon:'fa-robot',img:'images/dinerbot_t10 tarjeta.jpg',efficiency:'Equipado con 4 sensores de visión estéreo para detección 3D de 300°, pantalla publicitaria de 23.8" para mensajes personalizados, y pantalla de operación de 11.6" (1920×1080). Reemplaza hasta 3 meseros en horas pico. Su cabeza móvil con expresiones faciales y sistema multilingüe generan una experiencia memorable que aumenta la satisfacción del cliente.'},
+category:'Entrega + Publicidad',icon:'fa-robot',img:'images/dinerbot_t10 tarjeta.jpg',video:'https://www.youtube.com/watch?v=5TP6MokvFnQ',efficiency:'Equipado con 4 sensores de visión estéreo para detección 3D de 300°, pantalla publicitaria de 23.8" para mensajes personalizados, y pantalla de operación de 11.6" (1920×1080). Reemplaza hasta 3 meseros en horas pico. Su cabeza móvil con expresiones faciales y sistema multilingüe generan una experiencia memorable que aumenta la satisfacción del cliente.'},
 t9:{id:'t9',name:'DINERBOT T9',tagline:'Alta capacidad de carga para servicio diario',desc:'El DINERBOT T9 es el caballo de fuerza de la línea KEENON. Con bandejas ajustables y 40 kg de capacidad, autocarga y colaboración multi-robot, es ideal para operaciones de alto volumen en restaurantes, buffets y servicios de catering.',
 feats:['Bandejas ajustables con carga de 40 kg','Carga autónoma','Colaboración multi-robot','Navegación inteligente VSLAM','Chasis amortiguador para estabilidad','Recogida y entrega inteligente'],
 tags:['Good Design 2023','40 kg carga','Multi-robot','VSLAM'],
 specs:[{v:'40 kg',l:'Capacidad'},{v:'4',l:'Bandejas'},{v:'Auto',l:'Carga'},{v:'Multi',l:'Robots coord.'},{v:'VSLAM',l:'Navegación'},{v:'24/7',l:'Operación'}],
-category:'Entrega de Alimentos',icon:'fa-robot',img:'images/dinerbot_t9 tarjeta.jpg',efficiency:'Maneja hasta 400 entregas diarias. Reduce la necesidad de personal de planta en un 30% y minimiza derrames gracias a su chasis amortiguado.'},
+category:'Entrega de Alimentos',icon:'fa-robot',img:'images/dinerbot_t9 tarjeta.jpg',video:'https://www.youtube.com/watch?v=5TP6MokvFnQ',efficiency:'Maneja hasta 400 entregas diarias. Reduce la necesidad de personal de planta en un 30% y minimiza derrames gracias a su chasis amortiguado.'},
 w3:{id:'w3',name:'BUTLERBOT W3',tagline:'Entregas privadas y seguras en varios pisos',desc:'El BUTLERBOT W3 redefine el room service. Con cuatro cabinas privadas, acceso autónomo al ascensor y hasta 12 horas de batería, garantiza entregas higiénicas y discretas a las habitaciones sin intervención humana.',
 feats:['Acceso fluido al ascensor (E-BOX)','4 cabinas privadas para entrega higiénica','Hasta 12 horas de servicio continuo','Capacidad de 90L','Visión estéreo dual y evasión 3D','Diseño innovador y práctico'],
 tags:['4 Cabinas','12h batería','90L','Ascensor'],
 specs:[{v:'90 L',l:'Capacidad'},{v:'4',l:'Cabinas'},{v:'12 h',l:'Batería'},{v:'3D',l:'Evasión'},{v:'Multi',l:'Pisos'},{v:'Auto',l:'Ascensor'}],
-category:'Hotelería',icon:'fa-concierge-bell',img:'images/butlerbot_w3 tarjeta.jpg',efficiency:'Un W3 puede atender hasta 150 entregas de room service por día, reduciendo la carga de trabajo del personal de hotel en un 45% durante turnos nocturnos.'},
+category:'Hotelería',icon:'fa-concierge-bell',img:'images/butlerbot_w3 tarjeta.jpg',video:'https://www.youtube.com/watch?v=5TP6MokvFnQ',efficiency:'Un W3 puede atender hasta 150 entregas de room service por día, reduciendo la carga de trabajo del personal de hotel en un 45% durante turnos nocturnos.'},
 s100:{id:'s100',name:'KEENON S100',tagline:'Transporte fiable de cargas pesadas',desc:'El KEENON S100 es la solución para logística interna pesada. Con más de 100 kg de capacidad, diseño plug-and-play y 3 opciones de carga, optimiza el transporte de sábanas, suministros, equipos y más entre pisos y áreas.',
 feats:['Capacidad de carga superior a 100 kg','Diseño listo para usar (plug-and-play)','3 opciones de carga para mayor flexibilidad','Funciones de seguridad avanzadas','Transporte autónomo entre pisos','Integración con ascensores'],
 tags:['+100 kg','Plug & Play','3 modos','Seguridad'],
 specs:[{v:'100+ kg',l:'Capacidad'},{v:'3',l:'Modos carga'},{v:'Auto',l:'Navegación'},{v:'Multi',l:'Pisos'},{v:'P&P',l:'Instalación'},{v:'Avanz.',l:'Seguridad'}],
-category:'Carga Pesada',icon:'fa-dolly',img:'images/keenon_s100 tarjeta.jpg',efficiency:'Transporta el equivalente a 5 viajes manuales por trayecto. Reduce el riesgo de lesiones laborales y optimiza la logística interna con entregas 24/7.'},
+category:'Carga Pesada',icon:'fa-dolly',img:'images/keenon_s100 tarjeta.jpg',video:'https://www.youtube.com/watch?v=5TP6MokvFnQ',efficiency:'Transporta el equivalente a 5 viajes manuales por trayecto. Reduce el riesgo de lesiones laborales y optimiza la logística interna con entregas 24/7.'},
 c30:{id:'c30',name:'KLEENBOT C30',tagline:'Solución comercial de limpieza en seco 3 en 1',desc:'El KLEENBOT C30 aspira, barre y desempolva en una sola unidad. Cubre hasta 2,500 m² por carga, con autocarga inteligente y seguimiento remoto. Ideal para grandes superficies comerciales.',
 feats:['Aspira, barre y desempolva (3 en 1)','Cubre hasta 2,500 m² por carga','3 modos de limpieza versátiles','Modos duales con seguimiento remoto','Fácil de usar y operar','Autocarga inteligente'],
 tags:['3 en 1','2,500 m²','Autocarga','Remoto'],
 specs:[{v:'49×52×75',l:'Dimensiones (cm)'},{v:'35 kg',l:'Peso'},{v:'600 m²/h',l:'Eficiencia limpieza'},{v:'6-10 h',l:'Batería'},{v:'61 cm',l:'Ancho limpieza'},{v:'0.8 m/s',l:'Velocidad'},{v:'19,000 Pa',l:'Succión'},{v:'≤70 dB',l:'Ruido'},{v:'5-6 h',l:'Tiempo de carga'}],
-category:'Limpieza Comercial',icon:'fa-broom',img:'images/kleenbot_c30 tarjeta.jpg',efficiency:'Dimensiones: 49×52×75 cm. Peso: 35 kg con batería. Eficiencia de limpieza de 600 m²/h (6,458 ft²/h). Batería de hasta 6 horas en barrido/aspirado y hasta 10 horas con trapeador. Succión máxima de 19,000 Pa. Equipado con sensores de visión estéreo, sensor LiDAR y puerto de carga automática.'},
+category:'Limpieza Comercial',icon:'fa-broom',img:'images/kleenbot_c30 tarjeta.jpg',video:'https://www.youtube.com/watch?v=5TP6MokvFnQ',efficiency:'Dimensiones: 49×52×75 cm. Peso: 35 kg con batería. Eficiencia de limpieza de 600 m²/h (6,458 ft²/h). Batería de hasta 6 horas en barrido/aspirado y hasta 10 horas con trapeador. Succión máxima de 19,000 Pa. Equipado con sensores de visión estéreo, sensor LiDAR y puerto de carga automática.'},
 c40:{id:'c40',name:'KLEENBOT C40',tagline:'Robot profesional de limpieza 4 en 1',desc:'El KLEENBOT C40 combina barrido, aspirado, fregado y desempolvado con sistema de triple cepillo para separación seco-húmedo. Diseñado para espacios de 500-4,500 m² como tiendas, supermercados y oficinas.',
 feats:['Barrido, aspirado, fregado y desempolvado','Sistema triple cepillo separación seco-húmedo','Percepción 3D multimodal para entornos complejos','Secado rápido tras el fregado','Depósito extraíble y lavable sin olores','Control inteligente vía App/Web'],
 tags:['4 en 1','Triple cepillo','Percepción 3D','IoT'],
 specs:[{v:'4 en 1',l:'Funciones'},{v:'500-4500 m²',l:'Espacios'},{v:'Triple',l:'Cepillo'},{v:'3D',l:'Percepción'},{v:'IoT',l:'Control'},{v:'Auto',l:'Recarga'}],
-category:'Limpieza Profesional',icon:'fa-broom',img:'images/kleenbot_c40 tarjeta.jpg',efficiency:'Barre y friega en una sola pasada, eliminando la necesidad de dos equipos separados. Secado rápido reduce riesgos de resbalones. Apto para moqueta, mármol, madera, azulejos y vinilo.'}
+category:'Limpieza Profesional',icon:'fa-broom',img:'images/kleenbot_c40 tarjeta.jpg',video:'https://www.youtube.com/watch?v=5TP6MokvFnQ',efficiency:'Barre y friega en una sola pasada, eliminando la necesidad de dos equipos separados. Secado rápido reduce riesgos de resbalones. Apto para moqueta, mármol, madera, azulejos y vinilo.'}
 };
  
 // ═══ RENDER PRODUCT CARDS ═══
@@ -530,11 +550,12 @@ const g=document.getElementById('prodGrid');
 g.innerHTML='';
 Object.values(PRODUCTS).forEach(p=>{
   const imgHTML = p.img
-    ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
     : '';
   const iconHTML = `<div style="display:${p.img?'none':'flex'};flex-direction:column;align-items:center;gap:8px;width:100%;height:100%;justify-content:center;"><i class="fas ${p.icon}" style="font-size:3.5rem;color:var(--g200)"></i><div class="img-note">Imagen no disponible</div></div>`;
+  const playBtn = p.video ? `<div class="play-btn-wrap"><button class="play-btn" onclick="openVideo('${p.video}')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>` : '';
   g.innerHTML+=`<div class="prod-card anim">
-<div class="prod-card-img" style="position:relative;overflow:hidden;">${imgHTML}${iconHTML}</div>
+<div class="prod-card-img" style="position:relative;overflow:hidden;">${imgHTML}${iconHTML}${playBtn}</div>
 <div class="prod-card-body">
 <div class="prod-card-name">${p.name}</div>
 <div class="prod-card-tag">${p.tagline}</div>
@@ -568,7 +589,10 @@ document.getElementById('detailContent').innerHTML=`
 </div>
 </div>
 <div class="detail-img">
-<div class="detail-img-box"><i class="fas fa-${p.icon}"></i><p>Imagen del ${p.name}</p><div class="note">Reemplazar con foto del flyer</div></div>
+<div class="detail-img-box">
+${p.img ? `<img src="${p.img}" alt="${p.name}" onerror="this.style.display='none'">` : `<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;"><i class="fas fa-${p.icon}" style="font-size:4rem;color:var(--g200)"></i></div>`}
+${p.video ? `<div class="play-btn-wrap"><button class="play-btn" onclick="openVideo('${p.video}')"><svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:rgba(255,255,255,0.95);margin-left:4px;"><polygon points="5,3 19,12 5,21"/></svg></button></div>` : ''}
+</div>
 </div>
 </div>
 </section>
@@ -689,11 +713,40 @@ else setTimeout(()=>addMsg('¿En qué más puedo ayudarte?','bot',[{l:'Ver produ
  
 // ═══ SMOOTH SCROLL ═══
 document.querySelectorAll('a[href^="#"]').forEach
-
+ 
 // ═══ INIT ═══
 renderProducts();
 initCarousel();
 initObserver();
+ 
+// ═══ VIDEO MODAL ═══
+function openVideo(url){
+  const overlay=document.getElementById('vidOverlay');
+  const frame=document.getElementById('vidFrame');
+  // convert youtube watch URL to embed
+  let embed=url.replace('watch?v=','embed/').replace('youtu.be/','www.youtube.com/embed/');
+  if(!embed.includes('?'))embed+='?autoplay=1';else embed+='&autoplay=1';
+  frame.src=embed;
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeVideo(e){
+  if(e.target===document.getElementById('vidOverlay'))closeVideoBtn();
+}
+function closeVideoBtn(){
+  document.getElementById('vidOverlay').classList.remove('open');
+  document.getElementById('vidFrame').src='';
+  document.body.style.overflow='';
+}
 </script>
+ 
+<!-- VIDEO MODAL -->
+<div class="vid-overlay" id="vidOverlay" onclick="closeVideo(event)">
+  <div class="vid-box" id="vidBox">
+    <button class="vid-close" onclick="closeVideoBtn()"><i class="fas fa-times"></i></button>
+    <iframe id="vidFrame" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+ 
 </body>
 </html>
