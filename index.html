@@ -725,28 +725,37 @@ document.addEventListener('DOMContentLoaded',function(){
 });
  
 // POP UP FUNCIONES
-const popup=document.getElementById('graciasPopup');
 function mostrarPopup(){
+const popup=document.getElementById('graciasPopup');
 if(popup){
 popup.classList.add('activo');
 document.body.style.overflow='hidden';
+console.log('POP UP mostrado');
 }
 }
 function cerrarPopup(){
+const popup=document.getElementById('graciasPopup');
 if(popup){
 popup.classList.remove('activo');
 document.body.style.overflow='';
 }
 }
-// Cerrar POP UP al hacer clic fuera
+// Setup event listeners para POP UP (ejecutar cuando DOM este listo)
+document.addEventListener('DOMContentLoaded',function(){
+const popup=document.getElementById('graciasPopup');
 if(popup){
+// Cerrar al hacer clic fuera
 popup.addEventListener('click',function(e){
 if(e.target===popup){cerrarPopup();}
 });
 }
-// Cerrar POP UP con tecla ESC
+// Cerrar con tecla ESC
 document.addEventListener('keydown',function(e){
-if(e.key==='Escape'&&popup&&popup.classList.contains('activo')){cerrarPopup();}
+if(e.key==='Escape'){
+const popup=document.getElementById('graciasPopup');
+if(popup&&popup.classList.contains('activo')){cerrarPopup();}
+}
+});
 });
 
 // Formspree submission without reCAPTCHA (simple AJAX)
