@@ -483,8 +483,7 @@ section{padding:60px 0}
 <div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Deportes</option><option>Logística / Industrial</option><option>Otro</option></select></div>
 <div class="fg"><label>¿Qué producto te interesa?</label><select name="producto"><option value="">Selecciona</option><option>DINERBOT T10</option><option>DINERBOT T9</option><option>BUTLERBOT W3</option><option>KEENON S100</option><option>KLEENBOT C30</option><option>KLEENBOT C40</option><option>Necesito asesoría</option></select></div>
 <div class="fg"><label>Mensaje (opcional)</label><textarea name="mensaje" rows="3" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
-<!-- Honeypot para protección contra bots -->
-<input type="text" name="_gotcha" style="display:none">
+<!-- Honeypot desactivado temporalmente para pruebas -->
 <!-- Configuración de Formspree -->
 <input type="hidden" name="_subject" value="🤖 Nuevo Lead KEENON Ecuador">
 <input type="hidden" name="_template" value="table">
@@ -711,13 +710,22 @@ const originalBg=btn.style.background;
 btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
 btn.disabled=true;
 
+// Preparar datos
+const formData=new FormData(form);
+
+// Debug: Ver datos enviados (temporal para diagnosticar)
+console.log('Enviando a:',form.action);
+for(let pair of formData.entries()){console.log('Campo:',pair[0],':',pair[1]);}
+
 // Submit to Formspree via fetch (AJAX)
 fetch(form.action,{
 method:'POST',
-body:new FormData(form),
-headers:{Accept:'application/json'}
+body:formData,
+headers:{'Accept':'application/json'}
 })
-.then(response=>{
+.then(async response=>{
+const data=await response.json().catch(()=>null);
+
 if(response.ok){
 // Success
 btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';
@@ -726,8 +734,8 @@ form.reset();
 // Store locally as backup
 const leads=JSON.parse(localStorage.getItem('keenon_leads')||'[]');
 leads.push({
-nombre:form.nombre.value,
-email:form.email.value,
+nombre:formData.get('nombre'),
+email:formData.get('email'),
 timestamp:new Date().toISOString(),
 source:'formspree_form'
 });
@@ -738,12 +746,17 @@ btn.style.background=originalBg;
 btn.disabled=false;
 },3000);
 }else{
-// Error from server
-throw new Error('Server error');
+// Error from server - log details for debugging
+console.error('Formspree error - Status:',response.status);
+console.error('Formspree error - Data:',data);
+const errorMsg=data?.error||'Error '+response.status;
+btn.innerHTML='<i class="fas fa-exclamation-circle"></i> '+errorMsg;
+throw new Error(errorMsg);
 }
 })
 .catch(error=>{
 // Error state
+console.error('Form submission error:',error);
 btn.innerHTML='<i class="fas fa-exclamation-circle"></i> Error, intenta de nuevo';
 btn.style.background='#EF4444';
 setTimeout(()=>{
