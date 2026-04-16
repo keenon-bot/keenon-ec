@@ -334,6 +334,32 @@ section{padding:60px 0}
 .vid-box iframe{width:100%;height:100%;border:0;}
 .vid-close{position:absolute;top:-40px;right:0;width:36px;height:36px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4);border-radius:50%;color:#fff;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;backdrop-filter:blur(4px);}
 .vid-close:hover{background:rgba(255,255,255,.3);}
+
+/* ── POP UP AGRADECIMIENTO FORMSPREE ── */
+.popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease;backdrop-filter:blur(4px);}
+.popup-overlay.activo{display:flex;opacity:1;}
+.popup-content{background:#0164A8;color:#fff;border-radius:16px;max-width:480px;width:90%;max-height:90vh;overflow-y:auto;position:relative;padding:40px 32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);transform:scale(.85) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);border:2px solid rgba(255,255,255,.1);}
+.popup-overlay.activo .popup-content{transform:scale(1) translateY(0);}
+.popup-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#fff;font-size:36px;line-height:1;cursor:pointer;opacity:.8;transition:all .2s;padding:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+.popup-close:hover{opacity:1;background:rgba(255,255,255,.15);transform:rotate(90deg);}
+.popup-image{max-width:180px;height:auto;margin:0 auto 24px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.popup-title{font-size:32px;margin-bottom:16px;color:#fff;font-weight:700;letter-spacing:-.5px;}
+.popup-message{font-size:17px;line-height:1.65;margin-bottom:28px;color:rgba(255,255,255,.95);max-width:380px;margin-left:auto;margin-right:auto;}
+.popup-btn{background:#fff;color:#0164A8;border:none;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;transition:all .25s ease;box-shadow:0 4px 15px rgba(0,0,0,.2);}
+.popup-btn:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(255,255,255,.25);}
+.popup-btn:active{transform:translateY(-1px);}
+@media (max-width:640px){
+.popup-content{padding:32px 24px;border-radius:14px;}
+.popup-title{font-size:26px;}
+.popup-message{font-size:15px;}
+.popup-image{max-width:140px;}
+.popup-btn{padding:12px 32px;font-size:15px;}
+}
+@media (max-width:400px){
+.popup-content{width:95%;padding:28px 20px;}
+.popup-title{font-size:24px;}
+.popup-close{font-size:32px;top:8px;right:12px;}
+}
 </style>
 </head>
 <body>
@@ -698,6 +724,31 @@ document.addEventListener('DOMContentLoaded',function(){
   if(f){f.href='mailto:'+CONTACT_EMAIL;f.textContent='Email';}
 });
  
+// POP UP FUNCIONES
+const popup=document.getElementById('graciasPopup');
+function mostrarPopup(){
+if(popup){
+popup.classList.add('activo');
+document.body.style.overflow='hidden';
+}
+}
+function cerrarPopup(){
+if(popup){
+popup.classList.remove('activo');
+document.body.style.overflow='';
+}
+}
+// Cerrar POP UP al hacer clic fuera
+if(popup){
+popup.addEventListener('click',function(e){
+if(e.target===popup){cerrarPopup();}
+});
+}
+// Cerrar POP UP con tecla ESC
+document.addEventListener('keydown',function(e){
+if(e.key==='Escape'&&popup&&popup.classList.contains('activo')){cerrarPopup();}
+});
+
 // Formspree submission without reCAPTCHA (simple AJAX)
 const form=document.getElementById('leadForm');
 if(form){
@@ -737,6 +788,8 @@ timestamp:new Date().toISOString(),
 source:'formspree_form'
 });
 localStorage.setItem('keenon_leads',JSON.stringify(leads));
+// Mostrar POP UP de agradecimiento
+mostrarPopup();
 setTimeout(()=>{
 btn.innerHTML=originalHTML;
 btn.style.background=originalBg;
@@ -834,6 +887,19 @@ function closeVideoBtn(){
     <iframe id="vidFrame" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe>
   </div>
 </div>
- 
+
+<!-- POP UP AGRADECIMIENTO FORMSPREE -->
+<div id="graciasPopup" class="popup-overlay">
+  <div class="popup-content">
+    <button class="popup-close" onclick="cerrarPopup()" aria-label="Cerrar">×</button>
+    <img src="images/Pop up t10.png" alt="Gracias" class="popup-image">
+    <h2 class="popup-title">¡Gracias!</h2>
+    <p class="popup-message">
+      Gracias por enviar el formulario. Tendrás una respuesta lo más pronto posible por parte de nuestros expertos.
+    </p>
+    <button class="popup-btn" onclick="cerrarPopup()">Aceptar</button>
+  </div>
+</div>
+
 </body>
 </html>
