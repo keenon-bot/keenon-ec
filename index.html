@@ -487,8 +487,6 @@ section{padding:60px 0}
 <!-- Configuración de Formspree -->
 <input type="hidden" name="_subject" value="🤖 Nuevo Lead KEENON Ecuador">
 <input type="hidden" name="_template" value="table">
-<!-- Contenedor reCAPTCHA invisible -->
-<div id="recaptcha-container"></div>
 <button type="submit" class="f-submit" id="formSubmitBtn"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
 <p class="f-note"><i class="fas fa-lock" style="color:#10B981;margin-right:4px"></i> Tus datos están protegidos. No compartimos tu información.</p>
 <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)">
@@ -539,8 +537,6 @@ section{padding:60px 0}
 <div class="chat-inp"><input type="text" id="chatInp" placeholder="Escribe tu mensaje..." autocomplete="off"><button onclick="sendChat()"><i class="fas fa-paper-plane"></i></button></div>
 </div>
 
-<!-- Google reCAPTCHA v2 invisible -->
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══ PRODUCT DATA ═══
@@ -702,28 +698,23 @@ document.addEventListener('DOMContentLoaded',function(){
   if(f){f.href='mailto:'+CONTACT_EMAIL;f.textContent='Email';}
 });
  
-// Formspree submission with reCAPTCHA
-const RECAPTCHA_SITE_KEY='6Ld0BrssAAAAAA7glDZEtYsStP5qXVDzluZIiACG';
+// Formspree submission without reCAPTCHA (simple AJAX)
 const form=document.getElementById('leadForm');
-
 if(form){
-// Crear widget de reCAPTCHA invisible
-let recaptchaWidgetId=null;
-
-// Funcion para ejecutar el envio con token de reCAPTCHA
-window.submitFormWithRecaptcha=function(token){
+form.addEventListener('submit',function(e){
+e.preventDefault();
 const btn=form.querySelector('.f-submit');
 const originalHTML=btn.innerHTML;
 const originalBg=btn.style.background;
 
-// Preparar datos incluyendo el token de reCAPTCHA
+// Loading state
+btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
+btn.disabled=true;
+
+// Preparar datos
 const formData=new FormData(form);
-formData.append('g-recaptcha-response',token);
 
-// Debug
-console.log('Enviando a Formspree con reCAPTCHA token');
-
-// Submit to Formspree via fetch (AJAX)
+// Submit to Formspree via fetch
 fetch(form.action,{
 method:'POST',
 body:formData,
@@ -737,7 +728,6 @@ if(response.ok){
 btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';
 btn.style.background='#10B981';
 form.reset();
-grecaptcha.reset(recaptchaWidgetId);
 // Store locally as backup
 const leads=JSON.parse(localStorage.getItem('keenon_leads')||'[]');
 leads.push({
@@ -757,7 +747,6 @@ btn.disabled=false;
 console.error('Formspree error:',response.status,data);
 const errorMsg=data?.error||'Error '+response.status;
 btn.innerHTML='<i class="fas fa-exclamation-circle"></i> '+errorMsg;
-grecaptcha.reset(recaptchaWidgetId);
 setTimeout(()=>{
 btn.innerHTML=originalHTML;
 btn.style.background=originalBg;
@@ -769,33 +758,12 @@ btn.disabled=false;
 console.error('Form submission error:',error);
 btn.innerHTML='<i class="fas fa-exclamation-circle"></i> Error, intenta de nuevo';
 btn.style.background='#EF4444';
-grecaptcha.reset(recaptchaWidgetId);
 setTimeout(()=>{
 btn.innerHTML=originalHTML;
 btn.style.background=originalBg;
 btn.disabled=false;
 },2500);
 });
-};
-
-// Inicializar cuando el API de reCAPTCHA este listo
-window.onloadCallback=function(){
-recaptchaWidgetId=grecaptcha.render('recaptcha-container',{
-'sitekey':RECAPTCHA_SITE_KEY,
-'size':'invisible',
-'callback':'submitFormWithRecaptcha'
-});
-};
-
-// Manejar submit del formulario
-form.addEventListener('submit',function(e){
-e.preventDefault();
-const btn=form.querySelector('.f-submit');
-btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
-btn.disabled=true;
-
-// Ejecutar reCAPTCHA - esto llamara a submitFormWithRecaptcha con el token
-grecaptcha.execute(recaptchaWidgetId);
 });
 }
  
