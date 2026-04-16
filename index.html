@@ -477,13 +477,18 @@ section{padding:60px 0}
 <div class="form-card">
 <h3>Solicita tu Demo Gratuita</h3>
 <p>Completa los datos y te contactaremos pronto.</p>
-<form id="leadForm" onsubmit="handleSubmit(event)">
+<form id="leadForm" action="https://formspree.io/f/myklepba" method="POST">
 <div class="f-row"><div class="fg"><label>Nombre completo *</label><input type="text" name="nombre" placeholder="Tu nombre" required></div><div class="fg"><label>Empresa *</label><input type="text" name="empresa" placeholder="Nombre de tu empresa" required></div></div>
 <div class="f-row"><div class="fg"><label>Email *</label><input type="email" name="email" placeholder="correo@empresa.com" required></div><div class="fg"><label>Teléfono / WhatsApp *</label><input type="tel" name="telefono" placeholder="+593 9XX XXX XXXX" required></div></div>
 <div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Deportes</option><option>Logística / Industrial</option><option>Otro</option></select></div>
 <div class="fg"><label>¿Qué producto te interesa?</label><select name="producto"><option value="">Selecciona</option><option>DINERBOT T10</option><option>DINERBOT T9</option><option>BUTLERBOT W3</option><option>KEENON S100</option><option>KLEENBOT C30</option><option>KLEENBOT C40</option><option>Necesito asesoría</option></select></div>
 <div class="fg"><label>Mensaje (opcional)</label><textarea name="mensaje" rows="3" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
-<button type="submit" class="f-submit"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
+<!-- Honeypot para protección contra bots -->
+<input type="text" name="_gotcha" style="display:none">
+<!-- Configuración de Formspree -->
+<input type="hidden" name="_subject" value="🤖 Nuevo Lead KEENON Ecuador">
+<input type="hidden" name="_template" value="table">
+<button type="submit" class="f-submit" id="formSubmitBtn"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
 <p class="f-note"><i class="fas fa-lock" style="color:#10B981;margin-right:4px"></i> Tus datos están protegidos. No compartimos tu información.</p>
 <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)">
 <p style="font-size:.75rem;color:var(--g400);margin-bottom:8px">¿Prefieres contacto directo?</p>
@@ -693,22 +698,61 @@ document.addEventListener('DOMContentLoaded',function(){
   if(f){f.href='mailto:'+CONTACT_EMAIL;f.textContent='Email';}
 });
  
-function handleSubmit(e){
+// Formspree submission with visual feedback
+const form=document.getElementById('leadForm');
+if(form){
+form.addEventListener('submit',function(e){
 e.preventDefault();
-const fd=new FormData(e.target);const data=Object.fromEntries(fd);
-data.timestamp=new Date().toISOString();data.source='web_form';data.contact_email=CONTACT_EMAIL;
- 
-// Store locally + log
+const btn=form.querySelector('.f-submit');
+const originalHTML=btn.innerHTML;
+const originalBg=btn.style.background;
+
+// Loading state
+btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
+btn.disabled=true;
+
+// Submit to Formspree via fetch (AJAX)
+fetch(form.action,{
+method:'POST',
+body:new FormData(form),
+headers:{Accept:'application/json'}
+})
+.then(response=>{
+if(response.ok){
+// Success
+btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';
+btn.style.background='#10B981';
+form.reset();
+// Store locally as backup
 const leads=JSON.parse(localStorage.getItem('keenon_leads')||'[]');
-leads.push(data);localStorage.setItem('keenon_leads',JSON.stringify(leads));
- 
-const btn=e.target.querySelector('.f-submit');
-btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';btn.style.background='#10B981';
-setTimeout(()=>{btn.innerHTML='<i class="fas fa-paper-plane"></i> Enviar Solicitud';btn.style.background='';e.target.reset()},3000);
- 
-// WordPress integration point:
-// fetch(keenon_ajax.ajax_url, { method:'POST', body:formData_with_action_and_nonce })
-console.log('Lead:',data);
+leads.push({
+nombre:form.nombre.value,
+email:form.email.value,
+timestamp:new Date().toISOString(),
+source:'formspree_form'
+});
+localStorage.setItem('keenon_leads',JSON.stringify(leads));
+setTimeout(()=>{
+btn.innerHTML=originalHTML;
+btn.style.background=originalBg;
+btn.disabled=false;
+},3000);
+}else{
+// Error from server
+throw new Error('Server error');
+}
+})
+.catch(error=>{
+// Error state
+btn.innerHTML='<i class="fas fa-exclamation-circle"></i> Error, intenta de nuevo';
+btn.style.background='#EF4444';
+setTimeout(()=>{
+btn.innerHTML=originalHTML;
+btn.style.background=originalBg;
+btn.disabled=false;
+},2500);
+});
+});
 }
  
 // ═══ CHATBOT ═══
