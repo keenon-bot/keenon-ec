@@ -338,11 +338,13 @@ section{padding:60px 0}
 /* ── POP UP AGRADECIMIENTO FORMSPREE ── */
 .popup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease;backdrop-filter:blur(4px);}
 .popup-overlay.activo{display:flex;opacity:1;}
-.popup-content{background:#0164A8;color:#fff;border-radius:16px;max-width:480px;width:90%;max-height:90vh;overflow-y:auto;position:relative;padding:40px 32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);transform:scale(.85) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);border:2px solid rgba(255,255,255,.1);}
+.popup-content{background:#0164A8;color:#fff;border-radius:16px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;position:relative;padding:0;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);transform:scale(.85) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);border:2px solid rgba(255,255,255,.1);overflow:hidden;}
 .popup-overlay.activo .popup-content{transform:scale(1) translateY(0);}
 .popup-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#fff;font-size:36px;line-height:1;cursor:pointer;opacity:.8;transition:all .2s;padding:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
 .popup-close:hover{opacity:1;background:rgba(255,255,255,.15);transform:rotate(90deg);}
-.popup-image{max-width:180px;height:auto;margin:0 auto 24px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.popup-image-wrap{background:#ffffff;padding:28px 28px 20px;display:flex;align-items:center;justify-content:center;}
+.popup-image{max-width:220px;height:180px;object-fit:contain;border-radius:10px;display:block;margin:0 auto;}
+.popup-body{padding:28px 32px 32px;background:#0164A8;}
 .popup-title{font-size:32px;margin-bottom:16px;color:#fff;font-weight:700;letter-spacing:-.5px;}
 .popup-message{font-size:17px;line-height:1.65;margin-bottom:28px;color:rgba(255,255,255,.95);max-width:380px;margin-left:auto;margin-right:auto;}
 .popup-btn{background:#fff;color:#0164A8;border:none;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;transition:all .25s ease;box-shadow:0 4px 15px rgba(0,0,0,.2);}
@@ -503,16 +505,13 @@ section{padding:60px 0}
 <div class="form-card">
 <h3>Solicita tu Demo Gratuita</h3>
 <p>Completa los datos y te contactaremos pronto.</p>
-<form id="leadForm" action="https://formspree.io/f/myklepba" method="POST">
+<form id="leadForm">
 <div class="f-row"><div class="fg"><label>Nombre completo *</label><input type="text" name="nombre" placeholder="Tu nombre" required></div><div class="fg"><label>Empresa *</label><input type="text" name="empresa" placeholder="Nombre de tu empresa" required></div></div>
 <div class="f-row"><div class="fg"><label>Email *</label><input type="email" name="email" placeholder="correo@empresa.com" required></div><div class="fg"><label>Teléfono / WhatsApp *</label><input type="tel" name="telefono" placeholder="+593 9XX XXX XXXX" required></div></div>
 <div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Deportes</option><option>Logística / Industrial</option><option>Otro</option></select></div>
 <div class="fg"><label>¿Qué producto te interesa?</label><select name="producto"><option value="">Selecciona</option><option>DINERBOT T10</option><option>DINERBOT T9</option><option>BUTLERBOT W3</option><option>KEENON S100</option><option>KLEENBOT C30</option><option>KLEENBOT C40</option><option>Necesito asesoría</option></select></div>
 <div class="fg"><label>Mensaje (opcional)</label><textarea name="mensaje" rows="3" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
-<!-- Honeypot desactivado temporalmente para pruebas -->
-<!-- Configuración de Formspree -->
-<input type="hidden" name="_subject" value="🤖 Nuevo Lead KEENON Ecuador">
-<input type="hidden" name="_template" value="table">
+<!-- Google Sheets via Apps Script -->
 <button type="submit" class="f-submit" id="formSubmitBtn"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
 <p class="f-note"><i class="fas fa-lock" style="color:#10B981;margin-right:4px"></i> Tus datos están protegidos. No compartimos tu información.</p>
 <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)">
@@ -759,72 +758,68 @@ if(popup&&popup.classList.contains('activo')){cerrarPopup();}
 });
 
 // Formspree submission without reCAPTCHA (simple AJAX)
+// ═══════════════════════════════════════════════════════
+// GOOGLE SHEETS VIA APPS SCRIPT
+// Reemplaza la URL de abajo con la que obtienes al
+// publicar el Apps Script (Implementar → URL de aplicación web)
+// ═══════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvp1dHmkcwHgV8aQXj80AvgxuvepjQ5ZHcYKz1J20mc-dw5h1UxoFAiEkwNd-O56Pn/exec';
+
 const form=document.getElementById('leadForm');
 if(form){
 form.addEventListener('submit',function(e){
 e.preventDefault();
 const btn=form.querySelector('.f-submit');
 const originalHTML=btn.innerHTML;
-const originalBg=btn.style.background;
 
-// Loading state
+// Estado cargando
 btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Enviando...';
 btn.disabled=true;
 
-// Preparar datos
-const formData=new FormData(form);
+// Recoger datos del formulario
+const fd=new FormData(form);
+const params=new URLSearchParams();
+params.append('nombre',    fd.get('nombre')    ||'');
+params.append('empresa',   fd.get('empresa')   ||'');
+params.append('email',     fd.get('email')     ||'');
+params.append('telefono',  fd.get('telefono')  ||'');
+params.append('industria', fd.get('industria') ||'');
+params.append('producto',  fd.get('producto')  ||'');
+params.append('mensaje',   fd.get('mensaje')   ||'');
+params.append('fuente',    'web_form');
 
-// Submit to Formspree via fetch
-fetch(form.action,{
-method:'POST',
-body:formData,
-headers:{'Accept':'application/json'}
+// Enviar a Google Apps Script
+fetch(APPS_SCRIPT_URL, {
+  method: 'POST',
+  headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+  body: params.toString()
 })
-.then(async response=>{
-const data=await response.json().catch(()=>null);
-
-if(response.ok){
-// Success
-btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';
-btn.style.background='#10B981';
-form.reset();
-// Store locally as backup
-const leads=JSON.parse(localStorage.getItem('keenon_leads')||'[]');
-leads.push({
-nombre:formData.get('nombre'),
-email:formData.get('email'),
-timestamp:new Date().toISOString(),
-source:'formspree_form'
-});
-localStorage.setItem('keenon_leads',JSON.stringify(leads));
-// Mostrar POP UP de agradecimiento
-mostrarPopup();
-setTimeout(()=>{
-btn.innerHTML=originalHTML;
-btn.style.background=originalBg;
-btn.disabled=false;
-},3000);
-}else{
-// Error from server
-console.error('Formspree error:',response.status,data);
-const errorMsg=data?.error||'Error '+response.status;
-btn.innerHTML='<i class="fas fa-exclamation-circle"></i> '+errorMsg;
-setTimeout(()=>{
-btn.innerHTML=originalHTML;
-btn.style.background=originalBg;
-btn.disabled=false;
-},3000);
-}
+.then(response => response.json())
+.then(data => {
+  if(data.result === 'success'){
+    // ✅ Éxito
+    btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';
+    btn.style.background='#10B981';
+    form.reset();
+    mostrarPopup();
+    setTimeout(()=>{
+      btn.innerHTML=originalHTML;
+      btn.style.background='';
+      btn.disabled=false;
+    },3000);
+  } else {
+    throw new Error(data.message||'Error del servidor');
+  }
 })
 .catch(error=>{
-console.error('Form submission error:',error);
-btn.innerHTML='<i class="fas fa-exclamation-circle"></i> Error, intenta de nuevo';
-btn.style.background='#EF4444';
-setTimeout(()=>{
-btn.innerHTML=originalHTML;
-btn.style.background=originalBg;
-btn.disabled=false;
-},2500);
+  console.error('Error al enviar:', error);
+  btn.innerHTML='<i class="fas fa-exclamation-circle"></i> Error, intenta de nuevo';
+  btn.style.background='#EF4444';
+  setTimeout(()=>{
+    btn.innerHTML=originalHTML;
+    btn.style.background='';
+    btn.disabled=false;
+  },3000);
 });
 });
 }
@@ -900,13 +895,19 @@ function closeVideoBtn(){
 <!-- POP UP AGRADECIMIENTO FORMSPREE -->
 <div id="graciasPopup" class="popup-overlay">
   <div class="popup-content">
-    <button class="popup-close" onclick="cerrarPopup()" aria-label="Cerrar">×</button>
-    <img src="images/Pop up t10.png" alt="Gracias" class="popup-image">
-    <h2 class="popup-title">¡Gracias!</h2>
-    <p class="popup-message">
-      Gracias por enviar el formulario. Tendrás una respuesta lo más pronto posible por parte de nuestros expertos.
-    </p>
-    <button class="popup-btn" onclick="cerrarPopup()">Aceptar</button>
+    <button class="popup-close" onclick="cerrarPopup()" aria-label="Cerrar" style="position:absolute;top:10px;right:14px;z-index:10;background:rgba(0,0,0,.2);border:none;color:#fff;font-size:28px;line-height:1;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s;">×</button>
+    <!-- Sección imagen: fondo blanco para que contraste -->
+    <div class="popup-image-wrap">
+      <img src="images/Pop up t10.png" alt="KEENON Robotics" class="popup-image">
+    </div>
+    <!-- Sección mensaje: fondo azul -->
+    <div class="popup-body">
+      <h2 class="popup-title">¡Gracias!</h2>
+      <p class="popup-message">
+        Hemos recibido tu solicitud. Un asesor KEENON te contactará en menos de 24 horas.
+      </p>
+      <button class="popup-btn" onclick="cerrarPopup()">Aceptar</button>
+    </div>
   </div>
 </div>
 
