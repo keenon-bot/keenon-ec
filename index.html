@@ -219,13 +219,13 @@ section{padding:90px 0}
 .footer-social a:hover{background:var(--sky);color:var(--white)}
  
 /* ──── FLOATING BTNS ──── */
-.wa-float{position:fixed;bottom:24px;left:24px;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.4rem;z-index:9999;box-shadow:0 4px 16px rgba(37,211,102,.35);transition:transform .2s}
+.wa-float{position:fixed;bottom:90px;left:24px;width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.4rem;z-index:9999;box-shadow:0 4px 16px rgba(37,211,102,.35);transition:transform .2s}
 .wa-float:hover{transform:scale(1.1)}
-.chat-toggle{position:fixed;bottom:24px;right:24px;width:54px;height:54px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.3rem;z-index:9999;box-shadow:0 4px 20px rgba(1,100,168,.35);transition:all .2s;animation:pulse 2.5s infinite}
+.chat-toggle{position:fixed;bottom:90px;right:24px;width:54px;height:54px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.3rem;z-index:9999;box-shadow:0 4px 20px rgba(1,100,168,.35);transition:all .2s;animation:pulse 2.5s infinite}
 .chat-toggle:hover{transform:scale(1.08);animation:none}
 .chat-toggle.on{animation:none}
  
-.chat-win{position:fixed;bottom:92px;right:24px;width:360px;max-height:480px;background:var(--white);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.18);z-index:9998;display:none;flex-direction:column;overflow:hidden;border:1px solid var(--g100)}
+.chat-win{position:fixed;bottom:158px;right:24px;width:360px;max-height:480px;background:var(--white);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.18);z-index:9998;display:none;flex-direction:column;overflow:hidden;border:1px solid var(--g100)}
 .chat-win.open{display:flex}
 .chat-head{background:linear-gradient(135deg,var(--blue),#0a3d6b);padding:18px;color:var(--white);display:flex;align-items:center;gap:10px}
 .chat-avatar{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem}
@@ -546,10 +546,22 @@ section{padding:60px 0}
 <div class="footer-bottom">
 <p>&copy; 2026 KEENON Robotics Ecuador. Todos los derechos reservados.</p>
 <div class="footer-social">
-<a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-<a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-<a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-<a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+  <!-- LinkedIn: reemplaza TU_USUARIO_LINKEDIN con tu perfil/página ej: keenon-ecuador -->
+  <a href="https://www.linkedin.com/showcase/keenon-robotics-ecuador/" target="_blank"
+     onclick="if(/Android|iPhone|iPad/i.test(navigator.userAgent)){window.open('linkedin://company/TU_USUARIO_LINKEDIN','_blank');return false;}"
+     aria-label="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+  <!-- YouTube: reemplaza TU_CANAL_YOUTUBE con el handle de tu canal ej: @keenon_ec -->
+  <a href="https://www.youtube.com/@KeenonEcuador" target="_blank"
+     onclick="if(/Android|iPhone|iPad/i.test(navigator.userAgent)){window.open('vnd.youtube://www.youtube.com/@TU_CANAL_YOUTUBE','_blank');return false;}"
+     aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+  <!-- Instagram: reemplaza TU_USUARIO_INSTAGRAM con tu usuario ej: keenon.ecuador -->
+  <a href="https://www.instagram.com/keenonecuador/" target="_blank"
+     onclick="if(/Android|iPhone|iPad/i.test(navigator.userAgent)){window.open('instagram://user?username=TU_USUARIO_INSTAGRAM','_blank');return false;}"
+     aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+  <!-- Facebook: reemplaza TU_PAGINA_FACEBOOK con el nombre de tu página ej: keenonecu -->
+  <a href="https://www.facebook.com/KeenonEcuador" target="_blank"
+     onclick="if(/Android|iPhone|iPad/i.test(navigator.userAgent)){window.open('fb://page/TU_PAGINA_FACEBOOK','_blank');return false;}"
+     aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
 </div>
 </div>
 </div>
@@ -831,6 +843,16 @@ const chatToggle=document.getElementById('chatToggle'),chatWin=document.getEleme
 let chatState='init',leadD={};
 chatToggle.onclick=()=>{const o=chatWin.classList.toggle('open');chatToggle.classList.toggle('on',o);chatIcon.className=o?'fas fa-times':'fas fa-comments';if(o&&!chatMsgs.children.length)setTimeout(()=>addMsg('¡Hola! Soy el asistente de KEENON Ecuador. ¿En qué puedo ayudarte?','bot',[{l:'Ver productos',a:()=>botFlow('prods')},{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Hablar con asesor',a:()=>botFlow('asesor')}]),400)};
 chatInp.onkeypress=e=>{if(e.key==='Enter')sendChat()};
+
+// Opciones de industria y producto (mismas que el formulario)
+const INDUSTRIAS=[
+  'Restaurante / Food Service','Hotel / Hospedaje','Hospital / Clínica',
+  'Retail / Centro Comercial','Entretenimiento / Deportes','Logística / Industrial','Otro'
+];
+const PRODUCTOS=[
+  'DINERBOT T10','DINERBOT T9','BUTLERBOT W3',
+  'KEENON S100','KLEENBOT C30','KLEENBOT C40','Necesito asesoría'
+];
  
 function addMsg(t,type,opts){
 const m=document.createElement('div');m.className='cmsg '+type;m.textContent=t;
@@ -845,15 +867,70 @@ else if(f==='demo'){chatState='name';setTimeout(()=>addMsg('Para agendar tu demo
 else if(f==='asesor')setTimeout(()=>addMsg('Puedes contactar a nuestro asesor directamente por WhatsApp o dejarnos tus datos.','bot',[{l:'Abrir WhatsApp',a:()=>window.open('https://wa.me/593997161797?text=Hola,%20necesito%20asesoría%20sobre%20robots%20KEENON','_blank')},{l:'Dejar mis datos',a:()=>botFlow('demo')}]),500);
 }
 function showProd(id){const p=PRODUCTS[id];setTimeout(()=>addMsg(`El ${p.name}: ${p.tagline}. ${p.desc.substring(0,150)}...`,'bot',[{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Ver otros',a:()=>botFlow('prods')}]),500)}
- 
+
+// Mostrar industrias como botones clickeables
+function askIndustria(){
+  const opts=INDUSTRIAS.map(ind=>({l:ind,a:()=>{
+    leadD.industria=ind;
+    chatState='producto';
+    setTimeout(()=>askProducto(),400);
+  }}));
+  setTimeout(()=>addMsg('¿Cuál es tu tipo de negocio?','bot',opts),400);
+}
+
+// Mostrar productos como botones clickeables
+function askProducto(){
+  const opts=PRODUCTOS.map(prod=>({l:prod,a:()=>{
+    leadD.producto=prod;
+    chatState='email';
+    setTimeout(()=>addMsg('¿Y tu correo electrónico?','bot'),400);
+  }}));
+  addMsg('¿Qué producto te interesa?','bot',opts);
+}
+
+// Enviar lead del chatbot a Google Sheets
+function enviarLeadChatbot(){
+  const params=new URLSearchParams();
+  params.append('nombre',    leadD.nombre    ||'');
+  params.append('empresa',   leadD.empresa   ||'');
+  params.append('email',     leadD.email     ||'');
+  params.append('telefono',  leadD.telefono  ||'');
+  params.append('industria', leadD.industria ||'');
+  params.append('producto',  leadD.producto  ||'');
+  params.append('mensaje',   '');
+  params.append('fuente',    'chatbot_form');
+  fetch(APPS_SCRIPT_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:params.toString()
+  }).catch(err=>console.log('Chatbot lead error:',err));
+}
+
 function sendChat(){
 const t=chatInp.value.trim();if(!t)return;addMsg(t,'usr');chatInp.value='';
-if(chatState==='name'){leadD.nombre=t;chatState='empresa';setTimeout(()=>addMsg(`Gracias, ${t}. ¿Cuál es tu empresa?`,'bot'),500)}
-else if(chatState==='empresa'){leadD.empresa=t;chatState='tel';setTimeout(()=>addMsg('¿Tu número de WhatsApp?','bot'),500)}
-else if(chatState==='tel'){leadD.telefono=t;chatState='email';setTimeout(()=>addMsg('¿Y tu correo electrónico?','bot'),500)}
-else if(chatState==='email'){leadD.email=t;leadD.timestamp=new Date().toISOString();leadD.source='chatbot';
-const leads=JSON.parse(localStorage.getItem('keenon_leads')||'[]');leads.push(leadD);localStorage.setItem('keenon_leads',JSON.stringify(leads));
-chatState='done';setTimeout(()=>addMsg(`¡Listo, ${leadD.nombre}! Tu solicitud fue registrada. Te contactaremos en menos de 24 horas.`,'bot',[{l:'Ver productos',a:()=>{showPage('home');chatWin.classList.remove('open');chatIcon.className='fas fa-comments';setTimeout(()=>document.getElementById('productos').scrollIntoView({behavior:'smooth'}),200)}},{l:'WhatsApp',a:()=>window.open('https://wa.me/593997161797','_blank')}]),600)}
+if(chatState==='name'){
+  leadD.nombre=t;chatState='empresa';
+  setTimeout(()=>addMsg(`Gracias, ${t}. ¿Cuál es tu empresa?`,'bot'),500);
+}
+else if(chatState==='empresa'){
+  leadD.empresa=t;chatState='tel';
+  setTimeout(()=>addMsg('¿Tu número de WhatsApp? (solo números)','bot'),500);
+}
+else if(chatState==='tel'){
+  leadD.telefono=t.replace(/[^0-9+\s\-()]/g,'');
+  chatState='industria';
+  askIndustria();
+}
+else if(chatState==='email'){
+  leadD.email=t;
+  leadD.timestamp=new Date().toISOString();
+  enviarLeadChatbot();
+  chatState='done';
+  setTimeout(()=>addMsg(`¡Listo, ${leadD.nombre}! Tu solicitud fue registrada. Te contactaremos en menos de 24 horas.`,'bot',[
+    {l:'Ver productos',a:()=>{showPage('home');chatWin.classList.remove('open');chatIcon.className='fas fa-comments';setTimeout(()=>document.getElementById('productos').scrollIntoView({behavior:'smooth'}),200)}},
+    {l:'WhatsApp',a:()=>window.open('https://wa.me/593997161797','_blank')}
+  ]),600);
+}
 else setTimeout(()=>addMsg('¿En qué más puedo ayudarte?','bot',[{l:'Ver productos',a:()=>botFlow('prods')},{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Hablar con asesor',a:()=>botFlow('asesor')}]),500);
 }
  
