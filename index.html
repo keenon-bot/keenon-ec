@@ -682,6 +682,255 @@ Object.values(PRODUCTS).forEach(p=>{
 initObserver();
 }
  
+const CASOS_EXITO={
+  't10': `
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/dinerbot_t10 exitoVID1.jpg" alt="Burger King Finlandia" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=2bUUkzk3qlQ')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-utensils"></i> Restaurante</div>
+      <div class="caso-title">Burger King Finlandia</div>
+      <p class="caso-desc">Optimiza el servicio a la mesa con robots T10, mejorando la eficiencia y experiencia familiar</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/dinerbot_t10 exitoVID2.jpg" alt="Cadena de Restaurantes — Caso 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_T10_2_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-utensils"></i> Restaurante</div>
+      <div class="caso-title">Cadena de Restaurantes — Caso 2</div>
+      <p class="caso-desc">La pantalla publicitaria del T10 incrementó ventas cruzadas mientras automatizó entregas a la mesa.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/dinerbot_t10 exitoVID3.jpg" alt="Centro Comercial — Caso 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_T10_3_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-store"></i> Retail / Food Court</div>
+      <div class="caso-title">Centro Comercial — Caso 3</div>
+      <p class="caso-desc">Implementación del T10 en food court con contenido publicitario dinámico y navegación autónoma entre locales.</p>
+    </div>
+  </div>
+`,
+  't9': `
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/dinerbot_t9 exitoVID1.jpg" alt="Buffet / Restaurante — Caso 1" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_T9_1_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-utensils"></i> Restaurante de Alto Volumen</div>
+      <div class="caso-title">Buffet / Restaurante — Caso 1</div>
+      <p class="caso-desc">El T9 gestionó hasta 400 entregas diarias en servicio de buffet, reduciendo personal de planta en un 30%.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/dinerbot_t9 exitoVID2.jpg" alt="Servicio de Catering — Caso 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_T9_2_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-utensils"></i> Catering</div>
+      <div class="caso-title">Servicio de Catering — Caso 2</div>
+      <p class="caso-desc">Coordinación multi-robot T9 en eventos de catering de gran escala con bandejas de alta capacidad.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/dinerbot_t9 exitoVID3.jpg" alt="Hotel con Restaurante — Caso 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_T9_3_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-concierge-bell"></i> Hotel / Restaurante</div>
+      <div class="caso-title">Hotel con Restaurante — Caso 3</div>
+      <p class="caso-desc">Servicio de desayunos y cenas con carga autónoma, liberando al personal para atención personalizada.</p>
+    </div>
+  </div>
+`,
+  'w3': `
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/butlerbot_w3 exitoVID1.jpg" alt="Hotel de Lujo — Caso 1" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_W3_1_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-hotel"></i> Hotel</div>
+      <div class="caso-title">Hotel de Lujo — Caso 1</div>
+      <p class="caso-desc">El W3 realiza hasta 150 entregas de room service diarias de forma silenciosa y discreta en todos los pisos.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/butlerbot_w3 exitoVID2.jpg" alt="Centro Médico — Caso 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_W3_2_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-hospital"></i> Hospital</div>
+      <div class="caso-title">Centro Médico — Caso 2</div>
+      <p class="caso-desc">Distribución higiénica de suministros y medicamentos entre pisos sin contacto humano innecesario.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/butlerbot_w3 exitoVID3.jpg" alt="Torre de Oficinas — Caso 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_W3_3_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-building"></i> Edificio Corporativo</div>
+      <div class="caso-title">Torre de Oficinas — Caso 3</div>
+      <p class="caso-desc">Entrega segura de paquetes y documentos en múltiples pisos con acceso autónomo al ascensor.</p>
+    </div>
+  </div>
+`,
+  's100': `
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/keenon_s100 exitoVID1.jpg" alt="Hospital / Clínica — Caso 1" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_S100_1_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-hospital"></i> Hospital</div>
+      <div class="caso-title">Hospital / Clínica — Caso 1</div>
+      <p class="caso-desc">Transporte autónomo de ropa de cama y suministros médicos entre pisos, reduciendo lesiones laborales.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/keenon_s100 exitoVID2.jpg" alt="Hotel de Gran Capacidad — Caso 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_S100_2_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-hotel"></i> Hotel</div>
+      <div class="caso-title">Hotel de Gran Capacidad — Caso 2</div>
+      <p class="caso-desc">El S100 transporta sábanas, amenities y equipos pesados en hoteles de múltiples plantas 24/7.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/keenon_s100 exitoVID3.jpg" alt="Centro Logístico — Caso 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_S100_3_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-industry"></i> Logística Industrial</div>
+      <div class="caso-title">Centro Logístico — Caso 3</div>
+      <p class="caso-desc">Transporte de carga superior a 100 kg entre áreas de almacén con navegación plug-and-play.</p>
+    </div>
+  </div>
+`,
+  'c30': `
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/kleenbot_c30 exitoVID1.jpg" alt="Centro Comercial — Caso 1" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_C30_1_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-shopping-cart"></i> Centro Comercial</div>
+      <div class="caso-title">Centro Comercial — Caso 1</div>
+      <p class="caso-desc">El C30 cubre más de 2,500 m² por carga en pasillos y áreas comunes con aspirado, barrido y desempolvado.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/kleenbot_c30 exitoVID2.jpg" alt="Aeropuerto / Terminal — Caso 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_C30_2_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-plane"></i> Aeropuerto / Terminal</div>
+      <div class="caso-title">Aeropuerto / Terminal — Caso 2</div>
+      <p class="caso-desc">Limpieza continua en salas de espera y áreas de tránsito de alta afluencia con seguimiento remoto.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/kleenbot_c30 exitoVID3.jpg" alt="Cadena de Tiendas — Caso 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_C30_3_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-store"></i> Retail</div>
+      <div class="caso-title">Cadena de Tiendas — Caso 3</div>
+      <p class="caso-desc">Autocarga inteligente y operación en 3 modos adaptables a diferentes superficies de tiendas.</p>
+    </div>
+  </div>
+`,
+  'c40': `
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/kleenbot_c40 exitoVID1.jpg" alt="Cadena de Supermercados — Caso 1" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_C40_1_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-shopping-cart"></i> Supermercado</div>
+      <div class="caso-title">Cadena de Supermercados — Caso 1</div>
+      <p class="caso-desc">El C40 friega y barre en una sola pasada entre góndolas, con secado rápido para seguridad de clientes.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/kleenbot_c40 exitoVID2.jpg" alt="Campus Corporativo — Caso 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_C40_2_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-building"></i> Oficinas Corporativas</div>
+      <div class="caso-title">Campus Corporativo — Caso 2</div>
+      <p class="caso-desc">Limpieza 4-en-1 nocturna de grandes oficinas con control vía App y depósito extraíble sin olores.</p>
+    </div>
+  </div>
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/kleenbot_c40 exitoVID3.jpg" alt="Hospital / Centro de Salud — Caso 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_C40_3_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-hospital"></i> Hospital</div>
+      <div class="caso-title">Hospital / Centro de Salud — Caso 3</div>
+      <p class="caso-desc">Fregado con secado rápido en pasillos hospitalarios, minimizando riesgos de resbalones en áreas críticas.</p>
+    </div>
+  </div>
+`,
+};
+
 // ═══ PRODUCT DETAIL PAGE ═══
 function showProduct(id){
 const p=PRODUCTS[id];if(!p)return;
@@ -729,52 +978,7 @@ ${p.video ? `<div class="play-btn-wrap"><button class="play-btn" onclick="openVi
   <p class="sec-sub" style="color:rgba(255,255,255,.55)">Negocios reales que ya transformaron sus operaciones con KEENON.</p>
 </div>
 <div class="casos-grid">
-
-  <!-- CASO 1: reemplaza images/caso1.jpg y el VIDEO_ID de YouTube -->
-  <div class="caso-card">
-    <div class="caso-shine"></div>
-    <div class="caso-img-wrap">
-      <img src="images/dinerbot_t10 exitoVID1.jpg" alt="Caso de éxito 1" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
-      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=2bUUkzk3qlQ')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
-    </div>
-    <div class="caso-body">
-      <div class="caso-badge"><i class="fas fa-utensils"></i> Restaurante</div>
-      <div class="caso-title">Burger King Finlandia</div>
-      <p class="caso-desc">Optimiza el servicio a la mesa con robots T10, mejorando la eficiencia y experiencia familiar</p>
-    </div>
-  </div>
-
-  <!-- CASO 2: reemplaza images/caso2.jpg y el VIDEO_ID de YouTube -->
-  <div class="caso-card">
-    <div class="caso-shine"></div>
-    <div class="caso-img-wrap">
-      <img src="images/caso2.jpg" alt="Caso de éxito 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
-      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO2_VIDEO_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
-    </div>
-    <div class="caso-body">
-      <div class="caso-badge"><i class="fas fa-hotel"></i> Hotel</div>
-      <div class="caso-title">Nombre del Cliente 2</div>
-      <p class="caso-desc">Descripción del resultado obtenido con el robot KEENON en este negocio.</p>
-    </div>
-  </div>
-
-  <!-- CASO 3: reemplaza images/caso3.jpg y el VIDEO_ID de YouTube -->
-  <div class="caso-card">
-    <div class="caso-shine"></div>
-    <div class="caso-img-wrap">
-      <img src="images/caso3.jpg" alt="Caso de éxito 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
-      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO3_VIDEO_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
-    </div>
-    <div class="caso-body">
-      <div class="caso-badge"><i class="fas fa-hospital"></i> Hospital</div>
-      <div class="caso-title">Nombre del Cliente 3</div>
-      <p class="caso-desc">Descripción del resultado obtenido con el robot KEENON en este negocio.</p>
-    </div>
-  </div>
-
+${CASOS_EXITO[p.id] || ''}
 </div>
 </div>
 </section>`;
