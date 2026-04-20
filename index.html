@@ -393,10 +393,12 @@ section{padding:60px 0}
   background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 60%);
   pointer-events:none;border-radius:20px;
 }
-.caso-img{width:100%;height:200px;object-fit:cover;display:block;border-radius:20px 20px 0 0;}
-.caso-img-placeholder{width:100%;height:200px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;border-radius:20px 20px 0 0;border-bottom:1px solid rgba(255,255,255,.08);}
+/* Ratio 1928/1760 ≈ 1.096:1 → padding-top = (1760/1928)*100% ≈ 91.3% */
+.caso-img-wrap{position:relative;width:100%;padding-top:91.3%;border-radius:20px 20px 0 0;overflow:hidden;}
+.caso-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:rgba(255,255,255,.05);}
+.caso-img-placeholder{position:absolute;inset:0;width:100%;height:100%;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;border-bottom:1px solid rgba(255,255,255,.08);}
 .caso-img-placeholder i{font-size:2.5rem;color:rgba(255,255,255,.2);}
-.caso-img-wrap{position:relative;}
+.caso-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
 .caso-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
 .caso-body{padding:20px 22px 24px;}
 .caso-badge{display:inline-flex;align-items:center;gap:5px;font-size:.65rem;font-weight:800;color:var(--sky);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;background:rgba(83,186,237,.12);padding:4px 10px;border-radius:50px;border:1px solid rgba(83,186,237,.2);}
