@@ -682,40 +682,6 @@ Object.values(PRODUCTS).forEach(p=>{
 initObserver();
 }
  
-// ═══ CASOS DE ÉXITO POR PRODUCTO ═══
-const CASOS={
-  t10:[
-    {img:'images/dinerbot_t10 exitoVID1.jpg',video:'https://www.youtube.com/watch?v=2bUUkzk3qlQ',icon:'fa-utensils',sector:'Restaurante',title:'Burger King Finlandia',desc:'Optimiza el servicio a la mesa con robots T10, mejorando la eficiencia y la experiencia familiar en horas pico.'},
-    {img:'images/t10_caso2.jpg',video:'',icon:'fa-utensils',sector:'Food Service',title:'Cadena de Restaurantes — Asia',desc:'Red de restaurantes implementa T10 con pantalla publicitaria activa para mostrar promociones del menú y reducir tiempos de espera en un 35%.'},
-    {img:'images/t10_caso3.jpg',video:'',icon:'fa-shopping-bag',sector:'Retail / Food Court',title:'Centro Comercial — Europa',desc:'Food court de alto tráfico despliega T10 para entrega autónoma y difusión de publicidad dinámica, incrementando ventas cruzadas.'}
-  ],
-  t9:[
-    {img:'images/t9_caso1.jpg',video:'',icon:'fa-utensils',sector:'Restaurante',title:'Buffet de Alta Capacidad — China',desc:'Gran buffet implementa T9 para manejo de hasta 400 entregas diarias, eliminando tiempos muertos del personal en horas pico.'},
-    {img:'images/t9_caso2.jpg',video:'',icon:'fa-utensils',sector:'Catering Industrial',title:'Servicio de Catering — Europa',desc:'Empresa de catering corporativo usa T9 para coordinar entregas multi-robot, reduciendo el personal de planta en un 30%.'},
-    {img:'images/t9_caso3.jpg',video:'',icon:'fa-utensils',sector:'Food Service',title:'Cadena de Restauración — Medio Oriente',desc:'Cadena de restaurantes de alto volumen adopta T9 con navegación VSLAM para servicio continuo 24/7 en múltiples sedes.'}
-  ],
-  w3:[
-    {img:'images/w3_caso1.jpg',video:'',icon:'fa-hotel',sector:'Hotel',title:'Hotel de Lujo — Singapur',desc:'Hotel 5 estrellas implementa W3 para room service autónomo 24/7, reduciendo la carga del personal nocturno en un 45%.'},
-    {img:'images/w3_caso2.jpg',video:'',icon:'fa-hospital',sector:'Hospital',title:'Clínica Privada — Japón',desc:'Clínica usa W3 para entrega higiénica de medicamentos y suministros entre pisos vía ascensor, garantizando trazabilidad total.'},
-    {img:'images/w3_caso3.jpg',video:'',icon:'fa-hotel',sector:'Hotelería',title:'Resort Multi-Piso — EAU',desc:'Resort de lujo despliega W3 con acceso E-BOX a ascensores para entregas discretas a habitaciones sin intervención humana.'}
-  ],
-  s100:[
-    {img:'images/s100_caso1.jpg',video:'',icon:'fa-hotel',sector:'Hotel',title:'Gran Hotel — China',desc:'Hotel de gran escala usa S100 para transportar ropa de cama y suministros entre pisos, reduciendo riesgo de lesiones laborales.'},
-    {img:'images/s100_caso2.jpg',video:'',icon:'fa-hospital',sector:'Hospital',title:'Hospital Universitario — Corea',desc:'Hospital de alta complejidad implementa S100 para traslado autónomo de equipos y suministros pesados entre áreas clínicas.'},
-    {img:'images/s100_caso3.jpg',video:'',icon:'fa-industry',sector:'Logística',title:'Centro Logístico — Europa',desc:'Centro de distribución interna usa S100 con modo plug-and-play para transporte autónomo de cargas de más de 100 kg las 24 horas.'}
-  ],
-  c30:[
-    {img:'images/c30_caso1.jpg',video:'',icon:'fa-shopping-cart',sector:'Centro Comercial',title:'Mall de Gran Superficie — Asia',desc:'Gran centro comercial despliega C30 para limpieza autónoma nocturna de 2,500 m² por carga, reduciendo costos operativos de limpieza.'},
-    {img:'images/c30_caso2.jpg',video:'',icon:'fa-plane',sector:'Aeropuerto',title:'Terminal Aeroportuaria — Europa',desc:'Terminal de pasajeros implementa C30 en horario de baja afluencia para barrer, aspirar y desempolvar pasillos de forma continua.'},
-    {img:'images/c30_caso3.jpg',video:'',icon:'fa-building',sector:'Oficinas Corporativas',title:'Campus Corporativo — EE.UU.',desc:'Edificio de oficinas de gran escala usa C30 con autocarga inteligente y seguimiento remoto para garantizar limpieza en seco sin supervisión constante.'}
-  ],
-  c40:[
-    {img:'images/c40_caso1.jpg',video:'',icon:'fa-shopping-cart',sector:'Supermercado',title:'Cadena de Supermercados — Europa',desc:'Red de supermercados usa C40 para fregar y aspirar pasillos en una sola pasada, con secado rápido que reduce accidentes por resbalones.'},
-    {img:'images/c40_caso2.jpg',video:'',icon:'fa-store',sector:'Retail',title:'Tienda Departamental — Asia',desc:'Gran tienda por departamentos implementa C40 para limpieza 4 en 1 de pisos de mármol y vinilo, controlada vía App sin intervención manual.'},
-    {img:'images/c40_caso3.jpg',video:'',icon:'fa-building',sector:'Oficinas / Coworking',title:'Espacio de Coworking — Latinoamérica',desc:'Hub de trabajo comparte C40 entre múltiples plantas para limpieza húmeda y seca con depósito extraíble, manteniendo ambientes sin olores.'}
-  ]
-};
-
 // ═══ PRODUCT DETAIL PAGE ═══
 function showProduct(id){
 const p=PRODUCTS[id];if(!p)return;
@@ -763,23 +729,55 @@ ${p.video ? `<div class="play-btn-wrap"><button class="play-btn" onclick="openVi
   <p class="sec-sub" style="color:rgba(255,255,255,.55)">Negocios reales que ya transformaron sus operaciones con KEENON.</p>
 </div>
 <div class="casos-grid">
-${(CASOS[id]||[]).map(c=>`
+
+  <!-- CASO 1: reemplaza images/caso1.jpg y el VIDEO_ID de YouTube -->
   <div class="caso-card">
     <div class="caso-shine"></div>
     <div class="caso-img-wrap">
-      <img src="${c.img}" alt="${c.title}" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <img src="images/dinerbot_t10 exitoVID1.jpg" alt="Caso de éxito 1" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
-      ${c.video ? `<div class="caso-play"><button class="play-btn" onclick="openVideo('${c.video}')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>` : ''}
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=2bUUkzk3qlQ')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
     </div>
     <div class="caso-body">
-      <div class="caso-badge"><i class="fas ${c.icon}"></i> ${c.sector}</div>
-      <div class="caso-title">${c.title}</div>
-      <p class="caso-desc">${c.desc}</p>
+      <div class="caso-badge"><i class="fas fa-utensils"></i> Restaurante</div>
+      <div class="caso-title">Burger King Finlandia</div>
+      <p class="caso-desc">Optimiza el servicio a la mesa con robots T10, mejorando la eficiencia y experiencia familiar</p>
     </div>
-  </div>`).join('')}
+  </div>
+
+  <!-- CASO 2: reemplaza images/caso2.jpg y el VIDEO_ID de YouTube -->
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/caso2.jpg" alt="Caso de éxito 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO2_VIDEO_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-hotel"></i> Hotel</div>
+      <div class="caso-title">Nombre del Cliente 2</div>
+      <p class="caso-desc">Descripción del resultado obtenido con el robot KEENON en este negocio.</p>
+    </div>
+  </div>
+
+  <!-- CASO 3: reemplaza images/caso3.jpg y el VIDEO_ID de YouTube -->
+  <div class="caso-card">
+    <div class="caso-shine"></div>
+    <div class="caso-img-wrap">
+      <img src="images/caso3.jpg" alt="Caso de éxito 3" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO3_VIDEO_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+    </div>
+    <div class="caso-body">
+      <div class="caso-badge"><i class="fas fa-hospital"></i> Hospital</div>
+      <div class="caso-title">Nombre del Cliente 3</div>
+      <p class="caso-desc">Descripción del resultado obtenido con el robot KEENON en este negocio.</p>
+    </div>
+  </div>
+
 </div>
 </div>
-</section>\`;
+</section>`;
 showPage('detail');
 window.scrollTo({top:0,behavior:'smooth'});
 }
