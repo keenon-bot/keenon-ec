@@ -500,7 +500,7 @@ section{padding:60px 0}
 <div class="ind-card anim"><div class="ind-icon"><i class="fas fa-hospital"></i></div><h3>Hospitales</h3><p>Entrega de suministros y desinfección autónoma.</p></div>
 <div class="ind-card anim"><div class="ind-icon"><i class="fas fa-shopping-cart"></i></div><h3>Retail</h3><p>Promociones interactivas y transporte de productos.</p></div>
 <div class="ind-card anim"><div class="ind-icon"><i class="fas fa-building"></i></div><h3>Centros Comerciales</h3><p>Limpieza de grandes superficies y guía de visitantes.</p></div>
-<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-futbol"></i></div><h3>Deportes</h3><p>Entrega de F&B en venues y transporte de equipo.</p></div>
+<div class="ind-card anim"><div class="ind-icon"><i class="fas fa-futbol"></i></div><h3>Clubes Deportivos</h3><p>Entrega de F&B en venues y transporte de equipo.</p></div>
 <div class="ind-card anim"><div class="ind-icon"><i class="fas fa-car"></i></div><h3>Concesionarios</h3><p>Orientación, servicio premium y refuerzo de marca.</p></div>
 <div class="ind-card anim"><div class="ind-icon"><i class="fas fa-industry"></i></div><h3>Logística</h3><p>Transporte de cargas pesadas entre pisos y áreas.</p></div>
 </div>
@@ -555,7 +555,7 @@ section{padding:60px 0}
 <form id="leadForm">
 <div class="f-row"><div class="fg"><label>Nombre completo *</label><input type="text" name="nombre" placeholder="Tu nombre" required></div><div class="fg"><label>Empresa *</label><input type="text" name="empresa" placeholder="Nombre de tu empresa" required></div></div>
 <div class="f-row"><div class="fg"><label>Email *</label><input type="email" name="email" placeholder="correo@empresa.com" required></div><div class="fg"><label>Teléfono / WhatsApp *</label><input type="tel" name="telefono" placeholder="593 9XX XXX XXXX" required inputmode="numeric" pattern="[0-9\s\-()]{7,20}" maxlength="20" oninput="this.value=this.value.replace(/[^0-9\s\-()]/g,'')" onkeydown="if(!/[0-9\s\-()Backspace Tab ArrowLeft ArrowRight Delete]/.test(event.key)&&!event.ctrlKey&&!event.metaKey){event.preventDefault()}"></div></div>
-<div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Deportes</option><option>Logística / Industrial</option><option>Otro</option></select></div>
+<div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Clubes Deportivos</option><option>Logística / Industrial</option><option>Otro</option></select></div>
 <div class="fg"><label>¿Qué producto te interesa?</label><select name="producto"><option value="">Selecciona</option><option>DINERBOT T10</option><option>DINERBOT T9</option><option>BUTLERBOT W3</option><option>KEENON S100</option><option>KLEENBOT C30</option><option>KLEENBOT C40</option><option>Necesito asesoría</option></select></div>
 <div class="fg"><label>Mensaje (opcional)</label><textarea name="mensaje" rows="3" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
 <!-- Google Sheets via Apps Script -->
@@ -864,14 +864,14 @@ const CASOS_EXITO={
   <div class="caso-card">
     <div class="caso-shine"></div>
     <div class="caso-img-wrap">
-      <img src="images/kleenbot_c30 exitoVID2.jpg" alt="Aeropuerto / Terminal — Caso 2" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <img src="images/kleenbot_c30 exitoVID2.jpg" alt="PGA Golf Club - Japón" class="caso-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="caso-img-placeholder" style="display:none"><i class="fas fa-image"></i></div>
-      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=CASO_C30_2_ID')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
+      <div class="caso-play"><button class="play-btn" onclick="openVideo('https://www.youtube.com/watch?v=ClVYPvATvK4')"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></button></div>
     </div>
     <div class="caso-body">
-      <div class="caso-badge"><i class="fas fa-plane"></i> Aeropuerto / Terminal</div>
-      <div class="caso-title">Aeropuerto / Terminal — Caso 2</div>
-      <p class="caso-desc">Limpieza continua en salas de espera y áreas de tránsito de alta afluencia con seguimiento remoto.</p>
+      <div class="caso-badge"><i class="fas fa-futbol"></i> Club Deportivo</div>
+      <div class="caso-title">PGA Golf Club - Japón</div>
+      <p class="caso-desc">Robot C30 automatiza la limpieza diaria, reduciendo costos de mantenimiento y mejorando la atención al cliente</p>
     </div>
   </div>
   <div class="caso-card">
@@ -1179,7 +1179,7 @@ chatInp.onkeypress=e=>{if(e.key==='Enter')sendChat()};
 // Opciones de industria y producto (mismas que el formulario)
 const INDUSTRIAS=[
   'Restaurante / Food Service','Hotel / Hospedaje','Hospital / Clínica',
-  'Retail / Centro Comercial','Entretenimiento / Deportes','Logística / Industrial','Otro'
+  'Retail / Centro Comercial','Entretenimiento / Clubes Deportivos','Logística / Industrial','Otro'
 ];
 const PRODUCTOS=[
   'DINERBOT T10','DINERBOT T9','BUTLERBOT W3',
