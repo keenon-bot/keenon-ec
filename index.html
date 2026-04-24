@@ -66,8 +66,8 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit}
 .nav .container{display:flex;align-items:center;justify-content:space-between}
 .nav-brand{display:flex;align-items:center;gap:8px}
 .nav-brand svg{height:32px;width:auto}
-.nav-brand span{font-family:var(--font);font-weight:800;font-size:1.8rem;color:var(--white);letter-spacing:-.5px;transition:color .3s}
-.nav-brand span em{font-style:normal;font-weight:400;opacity:.5;font-size:1rem;margin-left:2px}
+.nav-brand span{font-family:var(--font);font-weight:800;font-size:1.3rem;color:var(--white);letter-spacing:-.5px;transition:color .3s}
+.nav-brand span em{font-style:normal;font-weight:400;opacity:.5;font-size:.75rem;margin-left:2px}
 .nav.solid .nav-brand span{color:var(--dark)}
 .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
 .nav-links a{font-size:.88rem;font-weight:600;color:rgba(255,255,255,.85);transition:color .2s}
@@ -101,9 +101,27 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit}
 .hero-stat-num em{font-style:normal;color:var(--sky)}
 .hero-stat-lab{font-size:.72rem;color:var(--g300);margin-top:2px;font-weight:500}
  
+/* KEENON LOGO BG — absolute inside .hero section */
+.keenon-logo-bg {
+  position: absolute;
+  right: -20%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(420px, 44vw, 700px);
+  height: clamp(420px, 44vw, 700px);
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 0 40px rgba(83,186,237,0.12));
+}
+.keenon-logo-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
 /* CAROUSEL */
 .hero-right{position:relative;animation:slideR .9s ease-out both;display:flex;flex-direction:column;align-items:center}
-.carousel{position:relative;width:100%;max-width:480px;height:460px;margin:0 auto;perspective:1000px}
+.carousel{position:relative;width:100%;max-width:480px;height:460px;margin:0 auto;perspective:1000px;z-index:2}
 .carousel-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:all .8s cubic-bezier(.4,0,.2,1);transform:scale(.92);pointer-events:none}
 .carousel-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 .carousel-slide {position: absolute;inset: 0;display: flex;align-items: center;justify-content: center;opacity: 0; visibility: hidden; transition: opacity .8s ease, transform .8s cubic-bezier(.4,0,.2,1);transform: scale(.92);pointer-events: none;z-index: 1;}
@@ -114,7 +132,7 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit}
 .carousel-slide .robot-name{font-family:var(--font);font-size:1.6rem;font-weight:900;color:var(--white);letter-spacing:-1px;position:relative;z-index:1}
 .carousel-slide .robot-tag{font-size:.78rem;color:var(--sky);font-weight:600;position:relative;z-index:1}
 .carousel-slide .robot-note{font-size:.65rem;color:var(--g400);background:rgba(83,186,237,.08);padding:6px 14px;border-radius:50px;border:1px dashed rgba(83,186,237,.2);position:relative;z-index:1;margin-top:8px}
-.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:16px;position:relative;z-index:2}
 .carousel-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .3s}
 .carousel-dot.active{background:var(--sky);width:28px;border-radius:5px}
  
@@ -289,6 +307,7 @@ section{padding:90px 0}
 .detail-hero .container{grid-template-columns:1fr}
 .specs-grid{grid-template-columns:repeat(2,1fr)}
 .sec-title{font-size:2rem}
+.keenon-logo-bg{right:-28%;width:clamp(280px,65vw,480px);height:clamp(280px,65vw,480px);top:50%}
 }
 @media(max-width:768px){
 .nav-links{display:none}.burger{display:flex}
@@ -311,6 +330,7 @@ section{padding:60px 0}
 .robot-frame {padding: 15px;min-height: 320px;}
 .robot-name {font-size: 16px;}
 .robot-image {background: #ffffff;border-radius: 12px;}
+.keenon-logo-bg{right:-35%;width:clamp(200px,80vw,360px);height:clamp(200px,80vw,360px)}
 }
 @media(max-width:480px){
 .hero h1{font-size:1.7rem}.hero-btns{flex-direction:column;align-items:center}
@@ -435,6 +455,64 @@ section{padding:60px 0}
 <!-- HERO -->
 <section class="hero">
 <div class="hero-grid"></div>
+
+<!-- KEENON LOGO BG — detrás del carrusel, pegado al borde derecho -->
+<div class="keenon-logo-bg" aria-hidden="true">
+  <svg class="keenon-logo-svg" viewBox="0 0 759.21 759.21" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <filter id="logo-blur" x="-10%" y="-10%" width="120%" height="120%">
+        <feGaussianBlur stdDeviation="1"/>
+      </filter>
+      <!-- Grid pattern with clearly visible lines -->
+      <pattern id="logoGrid" x="0" y="0" width="48" height="48" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="48" height="48" fill="none" stroke="rgba(83,186,237,0.35)" stroke-width="0.8"/>
+      </pattern>
+      <clipPath id="logoClip">
+        <path d="M747.49,285.74l-73.58,18.77c6.66,26.02,9.69,52.51,9.37,78.74-.37,26.61-4.1,53.01-11.28,78.5l73.11,20.51c8.94-31.82,13.66-64.81,14.08-98.09.42-32.8-3.35-65.88-11.7-98.43Z"/>
+        <path d="M528.29,644.45l37.16,66.19c29.61-16.63,56.14-36.71,79.35-59.36l-53.05-54.33c-18.56,18.12-39.76,34.2-63.46,47.5Z"/>
+        <path d="M461.73,87.17l20.53-73.1C450.42,5.13,417.44.42,384.16,0l-.92,75.91c26.62.35,53.04,4.11,78.48,11.27Z"/>
+        <path d="M454.66,673.94c-26.03,6.64-52.48,9.68-78.73,9.32-26.62-.35-53.04-4.1-78.49-11.27-25.45-7.13-49.97-17.68-72.86-31.24-22.58-13.38-43.6-29.74-62.35-48.98-18.12-18.57-34.16-39.78-47.49-63.5-13.29-23.71-23.03-48.46-29.47-73.6l-73.6,18.77c8.06,31.43,20.2,62.37,36.84,92.02,16.66,29.62,36.72,56.15,59.37,79.36,23.45,24.04,49.7,44.49,77.95,61.23,28.62,16.96,59.25,30.12,91.06,39.06,31.83,8.94,64.82,13.64,98.11,14.08,32.83.44,65.89-3.35,98.42-11.68l-18.76-73.55Z"/>
+        <path d="M114.38,107.9c-24.07,23.44-44.51,49.7-61.23,77.93-16.98,28.65-30.14,59.27-39.09,91.09C5.12,308.73.44,341.73,0,375.01l75.93.92c.36-26.6,4.1-53.02,11.25-78.45,7.15-25.48,17.7-49.97,31.26-72.88,13.38-22.59,29.75-43.6,48.96-62.34l-53.01-54.35Z"/>
+        <path d="M436.39,602.21l18.27,71.73c25.16-6.45,49.89-16.19,73.62-29.48l-36.24-64.53c-17.93,10.07-36.64,17.42-55.65,22.28Z"/>
+        <path d="M673.16,304.7l.74-.19c-6.42-25.12-16.14-49.89-29.46-73.6l-.35.2s-.02-.04-.03-.06l-64.69,35.96c9.53,17.16,17.03,35.84,22.03,55.77l.74-.18c.02.07.05.15.07.23l48.07-12.27,22.92-5.74s-.02-.07-.03-.11Z"/>
+        <path d="M540.09,543.99l51.66,52.97c19.24-18.76,35.63-39.77,49.02-62.36l-63.64-37.77c-10.13,17.1-22.5,32.98-37.04,47.17Z"/>
+        <path d="M492.05,579.92l36.24,64.53c23.7-13.3,44.9-29.39,63.46-47.5l-51.66-52.97c-14.08,13.72-30.11,25.85-48.05,35.93Z"/>
+        <path d="M673.9,304.51l-71.69,18.31c5.02,19.68,7.33,39.7,7.07,59.53-.25,20.16-3.1,40.1-8.52,59.36l71.22,20.05c7.18-25.49,10.9-51.89,11.28-78.5.32-26.23-2.71-52.71-9.37-78.74Z"/>
+        <path d="M436.39,602.21c-19.71,5.04-39.72,7.33-59.58,7.07-20.14-.25-40.1-3.11-59.36-8.52-19.26-5.42-37.78-13.39-55.11-23.65-17.08-10.11-32.97-22.48-47.15-37.02-13.74-14.07-25.88-30.11-35.93-48.03-10.09-17.94-17.45-36.66-22.29-55.68l-71.7,18.28c6.43,25.14,16.18,49.89,29.47,73.6,13.33,23.72,29.38,44.93,47.49,63.5,18.75,19.24,39.77,35.6,62.35,48.98,22.89,13.57,47.41,24.11,72.86,31.24,25.45,7.17,51.87,10.92,78.49,11.27,26.25.35,52.7-2.68,78.73-9.32l-18.27-71.73Z"/>
+        <path d="M382.37,149.9l.88-74c-26.24-.34-52.71,2.7-78.74,9.35l18.31,71.69c19.68-5.02,39.69-7.31,59.55-7.04Z"/>
+        <path d="M441.72,158.42l20.02-71.25c-25.44-7.16-51.86-10.92-78.48-11.27l-.88,74c20.1.25,40.09,3.11,59.34,8.52Z"/>
+        <path d="M149.9,376.81l-73.98-.89c-.34,26.26,2.69,52.71,9.35,78.74l71.7-18.28c-5.05-19.68-7.33-39.71-7.08-59.57Z"/>
+        <path d="M267.13,179.26l-36.22-64.53c-23.69,13.33-44.91,29.37-63.51,47.51l51.71,52.96c14.06-13.72,30.09-25.87,48.02-35.94Z"/>
+        <path d="M167.4,162.24c-19.21,18.74-35.58,39.75-48.96,62.34-13.56,22.91-24.11,47.4-31.26,72.88-7.15,25.43-10.89,51.86-11.25,78.45l73.98.89c.26-20.13,3.11-40.1,8.52-59.35,5.4-19.28,13.39-37.77,23.64-55.11,10.14-17.09,22.5-32.98,37.05-47.15l-51.71-52.96Z"/>
+        <path d="M421.8,229.36l19.92-70.94c-19.25-5.42-39.24-8.27-59.34-8.52l-.89,73.77c13.66.17,27.22,2,40.32,5.69Z"/>
+        <path d="M579.38,267c-9.78-17.63-21.76-33.65-35.47-47.82l.08-.08c-14.18-14.54-30.09-27.53-47.14-37.64l-37.68,64.04c11.43,6.76,21.98,15.05,31.5,24.72,9.36,9.68,18.32,21,25,33.03l63.71-36.24Z"/>
+        <path d="M381.48,223.67l.89-73.77c-19.86-.27-39.87,2.02-59.55,7.04l18.23,71.59c13.38-3.45,26.93-5.04,40.44-4.86Z"/>
+        <path d="M602.21,322.81c-4.87-19.03-12.72-38.06-22.76-55.97l-63.8,36.35c6.86,12.21,11.71,24.93,15.02,37.88,3.39,13.35,5,26.92,4.81,40.4-.17,13.66-2.01,27.26-5.68,40.31-3.66,13.09-9.18,25.63-16.14,37.41-6.86,11.58-15.32,22.33-25.2,31.95-9.53,9.33-20.31,17.67-32.48,24.5-12.21,6.85-24.95,11.71-37.86,14.99-13.37,3.44-26.95,5.06-40.42,4.89-13.66-.19-27.25-2.03-40.32-5.71-13.1-3.66-25.63-9.18-37.38-16.14-11.6-6.87-22.36-15.3-31.98-25.17-9.32-9.57-17.67-20.33-24.5-32.53-6.85-12.19-11.71-24.91-15.02-37.86-3.41-13.35-5.01-26.93-4.83-40.41.17-13.68,2-27.24,5.67-40.3,3.66-13.09,9.18-25.64,16.13-37.4,6.89-11.59,15.32-22.33,25.21-31.96,9.54-9.31,20.32-17.69,32.5-24.53l-36.07-64.24c-17.93,10.07-33.96,22.22-48.02,35.94-14.55,14.16-26.92,30.05-37.05,47.15-10.25,17.33-18.23,35.83-23.64,55.11-5.41,19.25-8.26,39.22-8.52,59.35-.25,19.86,2.03,39.89,7.08,59.57,4.84,19.02,12.2,37.74,22.29,55.68,10.05,17.92,22.2,33.97,35.93,48.03,14.18,14.54,30.06,26.91,47.15,37.02,17.33,10.26,35.86,18.24,55.11,23.65,19.26,5.4,39.22,8.26,59.36,8.52,19.86.25,39.87-2.03,59.58-7.07,19.02-4.86,37.73-12.21,55.65-22.28,17.94-10.09,33.96-22.21,48.05-35.93,14.54-14.19,26.91-30.07,37.04-47.17,10.26-17.31,18.23-35.84,23.64-55.11,5.42-19.26,8.26-39.2,8.52-59.36.26-19.83-2.05-39.85-7.07-59.53Z"/>
+        <path d="M458.52,367.1c7.12,44.56-23.2,86.41-67.73,93.54-44.51,7.1-86.38-23.2-93.51-67.74-7.11-44.51,23.18-86.37,67.71-93.5,44.51-7.11,86.4,23.19,93.52,67.69Z"/>
+        <path d="M543.63,218.86l53.16-51.45c-18.54-19.12-39.41-35.72-62.09-49.32l-38.02,63.46c17.16,10.29,32.93,22.85,46.95,37.31Z"/>
+      </clipPath>
+    </defs>
+
+    <!-- Clipped group: fill + grid lines + animated wave cells -->
+    <g clip-path="url(#logoClip)">
+      <!-- Subtle base fill -->
+      <rect x="0" y="0" width="759.21" height="759.21" fill="rgba(83,186,237,0.06)"/>
+      <!-- Visible grid lines -->
+      <rect x="0" y="0" width="759.21" height="759.21" fill="url(#logoGrid)"/>
+      <!-- JS-animated wave cells -->
+      <g id="logoWaveCells"></g>
+    </g>
+
+    <!-- Glowing outline edges of logo shape -->
+    <path
+      d="M747.49,285.74l-73.58,18.77c6.66,26.02,9.69,52.51,9.37,78.74-.37,26.61-4.1,53.01-11.28,78.5l73.11,20.51c8.94-31.82,13.66-64.81,14.08-98.09.42-32.8-3.35-65.88-11.7-98.43ZM528.29,644.45l37.16,66.19c29.61-16.63,56.14-36.71,79.35-59.36l-53.05-54.33c-18.56,18.12-39.76,34.2-63.46,47.5ZM461.73,87.17l20.53-73.1C450.42,5.13,417.44.42,384.16,0l-.92,75.91c26.62.35,53.04,4.11,78.48,11.27ZM454.66,673.94c-26.03,6.64-52.48,9.68-78.73,9.32-26.62-.35-53.04-4.1-78.49-11.27-25.45-7.13-49.97-17.68-72.86-31.24-22.58-13.38-43.6-29.74-62.35-48.98-18.12-18.57-34.16-39.78-47.49-63.5-13.29-23.71-23.03-48.46-29.47-73.6l-73.6,18.77c8.06,31.43,20.2,62.37,36.84,92.02,16.66,29.62,36.72,56.15,59.37,79.36,23.45,24.04,49.7,44.49,77.95,61.23,28.62,16.96,59.25,30.12,91.06,39.06,31.83,8.94,64.82,13.64,98.11,14.08,32.83.44,65.89-3.35,98.42-11.68l-18.76-73.55ZM114.38,107.9c-24.07,23.44-44.51,49.7-61.23,77.93-16.98,28.65-30.14,59.27-39.09,91.09C5.12,308.73.44,341.73,0,375.01l75.93.92c.36-26.6,4.1-53.02,11.25-78.45,7.15-25.48,17.7-49.97,31.26-72.88,13.38-22.59,29.75-43.6,48.96-62.34l-53.01-54.35ZM602.21,322.81c-4.87-19.03-12.72-38.06-22.76-55.97l-63.8,36.35c6.86,12.21,11.71,24.93,15.02,37.88,3.39,13.35,5,26.92,4.81,40.4-.17,13.66-2.01,27.26-5.68,40.31-3.66,13.09-9.18,25.63-16.14,37.41-6.86,11.58-15.32,22.33-25.2,31.95-9.53,9.33-20.31,17.67-32.48,24.5-12.21,6.85-24.95,11.71-37.86,14.99-13.37,3.44-26.95,5.06-40.42,4.89-13.66-.19-27.25-2.03-40.32-5.71-13.1-3.66-25.63-9.18-37.38-16.14-11.6-6.87-22.36-15.3-31.98-25.17-9.32-9.57-17.67-20.33-24.5-32.53-6.85-12.19-11.71-24.91-15.02-37.86-3.41-13.35-5.01-26.93-4.83-40.41.17-13.68,2-27.24,5.67-40.3,3.66-13.09,9.18-25.64,16.13-37.4,6.89-11.59,15.32-22.33,25.21-31.96,9.54-9.31,20.32-17.69,32.5-24.53l-36.07-64.24c-17.93,10.07-33.96,22.22-48.02,35.94-14.55,14.16-26.92,30.05-37.05,47.15-10.25,17.33-18.23,35.83-23.64,55.11-5.41,19.25-8.26,39.22-8.52,59.35-.25,19.86,2.03,39.89,7.08,59.57,4.84,19.02,12.2,37.74,22.29,55.68,10.05,17.92,22.2,33.97,35.93,48.03,14.18,14.54,30.06,26.91,47.15,37.02,17.33,10.26,35.86,18.24,55.11,23.65,19.26,5.4,39.22,8.26,59.36,8.52,19.86.25,39.87-2.03,59.58-7.07,19.02-4.86,37.73-12.21,55.65-22.28,17.94-10.09,33.96-22.21,48.05-35.93,14.54-14.19,26.91-30.07,37.04-47.17,10.26-17.31,18.23-35.84,23.64-55.11,5.42-19.26,8.26-39.2,8.52-59.36.26-19.83-2.05-39.85-7.07-59.53Z"
+      fill="none"
+      stroke="rgba(83,186,237,0.45)"
+      stroke-width="2"
+    />
+  </svg>
+</div>
+
 <div class="container">
 <div class="hero-left">
 <div class="hero-trust">
@@ -457,6 +535,7 @@ section{padding:60px 0}
 </div>
 </div>
 <div class="hero-right">
+
 <div class="carousel" id="carousel">
 <div class="carousel-slide" data-idx="0">
 <div class="robot-frame"><div class="robot-image"><img src="images/dinerbot_t10.jpg" alt="DINERBOT T10"></div><div class="robot-name">DINERBOT T10</div><div class="robot-tag">Entrega + Publicidad Dinámica</div></div>
@@ -1266,6 +1345,52 @@ else if(chatState==='email'){
 else setTimeout(()=>addMsg('¿En qué más puedo ayudarte?','bot',[{l:'Ver productos',a:()=>botFlow('prods')},{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Hablar con asesor',a:()=>botFlow('asesor')}]),500);
 }
  
+// ═══ KEENON LOGO WAVE ANIMATION ═══
+(function(){
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const container = document.getElementById('logoWaveCells');
+  if(!container) return;
+
+  const LOGO_W = 759.21, LOGO_H = 759.21;
+  const CELL = 50;
+  const COLS = Math.ceil(LOGO_W / CELL);
+  const ROWS = Math.ceil(LOGO_H / CELL);
+
+  // Build cell grid
+  const cells = [];
+  for(let r = 0; r < ROWS; r++){
+    for(let c = 0; c < COLS; c++){
+      const rect = document.createElementNS(svgNS, 'rect');
+      rect.setAttribute('x', c * CELL + 0.5);
+      rect.setAttribute('y', r * CELL + 0.5);
+      rect.setAttribute('width', CELL - 1);
+      rect.setAttribute('height', CELL - 1);
+      rect.setAttribute('fill', 'rgba(83,186,237,0)');
+      rect.setAttribute('rx', '2');
+      rect.style.transition = 'fill 0.35s ease, opacity 0.35s ease';
+      container.appendChild(rect);
+      cells.push({el: rect, r, c, phase: 0});
+    }
+  }
+
+  // Wave animation: diagonal wave sweeping across grid
+  let t = 0;
+  function animateWave(){
+    t += 0.025;
+    cells.forEach(({el, r, c}) => {
+      // Diagonal wave: phase based on column + row
+      const wave1 = Math.sin(t + (c + r) * 0.35);
+      const wave2 = Math.sin(t * 0.7 + c * 0.5 - r * 0.3);
+      const combined = (wave1 + wave2) / 2; // -1 to 1
+      // Map to opacity: 0..0.22
+      const alpha = Math.max(0, combined) * 0.22;
+      el.setAttribute('fill', `rgba(83,186,237,${alpha.toFixed(3)})`);
+    });
+    requestAnimationFrame(animateWave);
+  }
+  animateWave();
+})();
+
 // ═══ SMOOTH SCROLL ═══
 document.querySelectorAll('a[href^="#"]').forEach
  
