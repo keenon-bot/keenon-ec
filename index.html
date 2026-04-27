@@ -430,15 +430,30 @@ section{padding:60px 0}
 @media(max-width:900px){.casos-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:560px){.casos-grid{grid-template-columns:1fr;gap:20px;}.caso-card:hover{transform:perspective(900px) rotateX(2deg) translateZ(10px) scale(1.02);}}
 
-/* ── PRODUCTO CHECKBOXES ── */
-.prod-check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px;}
-.prod-check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);cursor:pointer;transition:all .2s;user-select:none;font-size:.88rem;color:var(--g600);}
-.prod-check-item:hover:not(.disabled){border-color:var(--sky);background:rgba(83,186,237,.08);}
-.prod-check-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0;}
-.prod-check-item.checked{border-color:var(--blue);background:rgba(1,100,168,.12);color:var(--blue);font-weight:600;}
-.prod-check-item.disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
-.prod-check-asesoria{grid-column:1/-1;border-style:dashed;}
-@media(max-width:480px){.prod-check-grid{grid-template-columns:1fr;}}
+/* ── PRODUCTO DROPDOWN SELECTOR ── */
+.prod-dropdown-wrap{position:relative;margin-top:6px;}
+.prod-dropdown-trigger{width:100%;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:var(--white);font-family:inherit;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:border-color .2s;text-align:left;}
+.prod-dropdown-trigger:hover,.prod-dropdown-trigger.open{border-color:var(--sky);box-shadow:0 0 0 3px rgba(83,186,237,.12);}
+.prod-dropdown-trigger .trigger-text{flex:1;color:var(--g400);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prod-dropdown-trigger .trigger-text.has-sel{color:var(--white);}
+.prod-dropdown-trigger .trigger-arrow{font-size:.65rem;color:var(--sky);transition:transform .25s;flex-shrink:0;}
+.prod-dropdown-trigger.open .trigger-arrow{transform:rotate(180deg);}
+.prod-dropdown-panel{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:#1a2e42;border:1px solid rgba(83,186,237,.25);border-radius:10px;padding:14px;z-index:50;box-shadow:0 12px 32px rgba(0,0,0,.35);}
+.prod-dropdown-panel.open{display:block;animation:fadeUp .2s ease-out both;}
+.prod-pills{display:flex;flex-wrap:wrap;gap:7px;}
+.prod-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:50px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .18s;user-select:none;white-space:nowrap;}
+.prod-pill:hover:not(.disabled){border-color:var(--sky);background:rgba(83,186,237,.1);color:var(--white);}
+.prod-pill.selected{border-color:var(--sky);background:rgba(83,186,237,.22);color:var(--white);box-shadow:0 0 0 2px rgba(83,186,237,.18);}
+.prod-pill.selected .pill-icon{display:inline;}
+.prod-pill .pill-icon{display:none;font-size:.6rem;color:var(--sky);}
+.prod-pill.disabled{opacity:.3;cursor:not-allowed;pointer-events:none;}
+.prod-pill-asesoria{border-style:dashed;width:100%;}
+.prod-pill-asesoria.selected{border-color:var(--sky);background:rgba(83,186,237,.22);}
+.prod-dropdown-confirm{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;}
+.prod-dropdown-count{font-size:.72rem;color:var(--g300);}
+.prod-dropdown-ok{background:var(--sky);color:#fff;border:none;padding:7px 18px;border-radius:50px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.prod-dropdown-ok:hover{background:var(--blue);}
+@media(max-width:480px){.prod-pill{font-size:.73rem;padding:6px 11px;}}
 </style>
 </head>
 <body>
@@ -647,14 +662,26 @@ section{padding:60px 0}
 <div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Clubes Deportivos</option><option>Logística / Industrial</option><option>Otro</option></select></div>
 <div class="fg" id="prod-selector">
   <label>¿Qué producto te interesa? <span style="font-size:.75rem;color:var(--g400);font-weight:400">(puedes elegir varios)</span></label>
-  <div class="prod-check-grid" id="prodCheckGrid">
-    <label class="prod-check-item" data-prod="DINERBOT T10"><input type="checkbox" name="producto" value="DINERBOT T10" onchange="handleProdCheck(this)"><span>DINERBOT T10</span></label>
-    <label class="prod-check-item" data-prod="DINERBOT T9"><input type="checkbox" name="producto" value="DINERBOT T9" onchange="handleProdCheck(this)"><span>DINERBOT T9</span></label>
-    <label class="prod-check-item" data-prod="BUTLERBOT W3"><input type="checkbox" name="producto" value="BUTLERBOT W3" onchange="handleProdCheck(this)"><span>BUTLERBOT W3</span></label>
-    <label class="prod-check-item" data-prod="KEENON S100"><input type="checkbox" name="producto" value="KEENON S100" onchange="handleProdCheck(this)"><span>KEENON S100</span></label>
-    <label class="prod-check-item" data-prod="KLEENBOT C30"><input type="checkbox" name="producto" value="KLEENBOT C30" onchange="handleProdCheck(this)"><span>KLEENBOT C30</span></label>
-    <label class="prod-check-item" data-prod="KLEENBOT C40"><input type="checkbox" name="producto" value="KLEENBOT C40" onchange="handleProdCheck(this)"><span>KLEENBOT C40</span></label>
-    <label class="prod-check-item prod-check-asesoria" data-prod="Necesito asesoría"><input type="checkbox" name="producto" value="Necesito asesoría" onchange="handleProdCheck(this)"><span>Necesito asesoría</span></label>
+  <div class="prod-dropdown-wrap" id="prodDropdownWrap">
+    <button type="button" class="prod-dropdown-trigger" id="prodDropdownTrigger" onclick="toggleProdDropdown()">
+      <span class="trigger-text" id="prodTriggerText">Selecciona los productos...</span>
+      <i class="fas fa-chevron-down trigger-arrow" id="prodTriggerArrow"></i>
+    </button>
+    <div class="prod-dropdown-panel" id="prodDropdownPanel">
+      <div class="prod-pills" id="prodPills">
+        <span class="prod-pill" data-prod="DINERBOT T10" onclick="toggleProdPill(this)"><i class="fas fa-check pill-icon"></i>DINERBOT T10</span>
+        <span class="prod-pill" data-prod="DINERBOT T9" onclick="toggleProdPill(this)"><i class="fas fa-check pill-icon"></i>DINERBOT T9</span>
+        <span class="prod-pill" data-prod="BUTLERBOT W3" onclick="toggleProdPill(this)"><i class="fas fa-check pill-icon"></i>BUTLERBOT W3</span>
+        <span class="prod-pill" data-prod="KEENON S100" onclick="toggleProdPill(this)"><i class="fas fa-check pill-icon"></i>KEENON S100</span>
+        <span class="prod-pill" data-prod="KLEENBOT C30" onclick="toggleProdPill(this)"><i class="fas fa-check pill-icon"></i>KLEENBOT C30</span>
+        <span class="prod-pill" data-prod="KLEENBOT C40" onclick="toggleProdPill(this)"><i class="fas fa-check pill-icon"></i>KLEENBOT C40</span>
+        <span class="prod-pill prod-pill-asesoria" data-prod="Necesito asesoría" onclick="toggleProdPill(this)"><i class="fas fa-check pill-icon"></i>Necesito asesoría</span>
+      </div>
+      <div class="prod-dropdown-confirm">
+        <span class="prod-dropdown-count" id="prodDropdownCount">0 seleccionados</span>
+        <button type="button" class="prod-dropdown-ok" onclick="closeProdDropdown()">Listo ✓</button>
+      </div>
+    </div>
   </div>
   <!-- campo oculto que recibe el valor final para el submit -->
   <input type="hidden" name="producto_final" id="productoFinal">
@@ -1133,45 +1160,89 @@ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.tar
 document.querySelectorAll('.anim').forEach(el=>obs.observe(el));
 }
  
-// ═══ PRODUCTO CHECKBOXES — exclusión mutua ═══
-function handleProdCheck(cb){
-  const grid = document.getElementById('prodCheckGrid');
-  const allCbs = grid.querySelectorAll('input[type=checkbox]');
-  const asesoriaCb = grid.querySelector('input[value="Necesito asesoría"]');
-  const modelCbs = Array.from(allCbs).filter(c => c.value !== 'Necesito asesoría');
-  const anyModelChecked = modelCbs.some(c => c.checked);
-  const asesoriaChecked = asesoriaCb.checked;
+// ═══ PRODUCTO DROPDOWN PILL SELECTOR ═══
+let selectedProds = [];
 
-  // Si marcó "Necesito asesoría" → deshabilitar todos los modelos
-  modelCbs.forEach(c => {
-    const item = c.closest('.prod-check-item');
-    if(asesoriaChecked){
-      c.checked = false;
-      item.classList.add('disabled');
-      item.classList.remove('checked');
+function toggleProdDropdown(){
+  const trigger = document.getElementById('prodDropdownTrigger');
+  const panel   = document.getElementById('prodDropdownPanel');
+  const isOpen  = panel.classList.contains('open');
+  if(isOpen){ closeProdDropdown(); }
+  else {
+    trigger.classList.add('open');
+    panel.classList.add('open');
+  }
+}
+
+function closeProdDropdown(){
+  document.getElementById('prodDropdownTrigger').classList.remove('open');
+  document.getElementById('prodDropdownPanel').classList.remove('open');
+}
+
+// Cierra el panel al hacer clic fuera
+document.addEventListener('click', function(e){
+  const wrap = document.getElementById('prodDropdownWrap');
+  if(wrap && !wrap.contains(e.target)) closeProdDropdown();
+});
+
+function toggleProdPill(pill){
+  const prod = pill.dataset.prod;
+  const ASESORIA = 'Necesito asesoría';
+  const isAsesoria = prod === ASESORIA;
+  const alreadySel = selectedProds.includes(prod);
+
+  if(alreadySel){
+    // Deseleccionar
+    selectedProds = selectedProds.filter(p => p !== prod);
+    pill.classList.remove('selected');
+  } else {
+    // Si es asesoría → limpiar modelos; si es modelo → limpiar asesoría
+    if(isAsesoria){
+      selectedProds = selectedProds.filter(p => p === ASESORIA); // vacía modelos
+      document.querySelectorAll('#prodPills .prod-pill').forEach(p => {
+        if(p.dataset.prod !== ASESORIA) p.classList.remove('selected');
+      });
+      selectedProds = [ASESORIA];
+      pill.classList.add('selected');
     } else {
-      item.classList.remove('disabled');
+      // Quitar asesoría si estaba
+      selectedProds = selectedProds.filter(p => p !== ASESORIA);
+      document.querySelector('#prodPills .prod-pill-asesoria').classList.remove('selected');
+      selectedProds.push(prod);
+      pill.classList.add('selected');
+    }
+  }
+
+  // Actualizar disabled visual
+  const asesoriaSelected = selectedProds.includes(ASESORIA);
+  const modelSelected    = selectedProds.some(p => p !== ASESORIA);
+  document.querySelectorAll('#prodPills .prod-pill').forEach(p => {
+    const pIsAsesoria = p.dataset.prod === ASESORIA;
+    if((pIsAsesoria && modelSelected) || (!pIsAsesoria && asesoriaSelected)){
+      p.classList.add('disabled');
+    } else {
+      p.classList.remove('disabled');
     }
   });
 
-  // Si marcó cualquier modelo → deshabilitar "Necesito asesoría"
-  const asesoriaItem = asesoriaCb.closest('.prod-check-item');
-  if(anyModelChecked && !asesoriaChecked){
-    asesoriaCb.checked = false;
-    asesoriaItem.classList.add('disabled');
-    asesoriaItem.classList.remove('checked');
-  } else if(!asesoriaChecked) {
-    asesoriaItem.classList.remove('disabled');
+  // Actualizar contador y campo oculto
+  const count = selectedProds.length;
+  document.getElementById('prodDropdownCount').textContent = count === 0
+    ? '0 seleccionados'
+    : count === 1 ? '1 seleccionado' : count + ' seleccionados';
+
+  // ← AQUÍ: todos los seleccionados separados por ", "
+  document.getElementById('productoFinal').value = selectedProds.join(', ');
+
+  // Actualizar texto del trigger
+  const triggerText = document.getElementById('prodTriggerText');
+  if(count === 0){
+    triggerText.textContent = 'Selecciona los productos...';
+    triggerText.classList.remove('has-sel');
+  } else {
+    triggerText.textContent = selectedProds.join(', ');
+    triggerText.classList.add('has-sel');
   }
-
-  // Actualizar clases visuales
-  allCbs.forEach(c => {
-    c.closest('.prod-check-item').classList.toggle('checked', c.checked);
-  });
-
-  // Actualizar campo oculto con los seleccionados (separados por coma)
-  const selected = Array.from(allCbs).filter(c=>c.checked).map(c=>c.value);
-  document.getElementById('productoFinal').value = selected.join(', ');
 }
 
 // ═══ FORM ═══
@@ -1247,7 +1318,7 @@ params.append('empresa',   fd.get('empresa')   ||'');
 params.append('email',     fd.get('email')     ||'');
 params.append('telefono',  fd.get('telefono')  ||'');
 params.append('industria', fd.get('industria') ||'');
-params.append('producto',  fd.get('productoFinal') || fd.get('producto') ||'');
+params.append('producto',  fd.get('producto_final') || fd.get('productoFinal') || selectedProds.join(', ') ||'');
 params.append('mensaje',   fd.get('mensaje')   ||'');
 params.append('fuente',    'web_form');
 
@@ -1264,6 +1335,14 @@ fetch(APPS_SCRIPT_URL, {
     btn.innerHTML='<i class="fas fa-check-circle"></i> ¡Solicitud Enviada!';
     btn.style.background='#10B981';
     form.reset();
+    // Reset producto dropdown
+    selectedProds = [];
+    document.querySelectorAll('#prodPills .prod-pill').forEach(p => p.classList.remove('selected','disabled'));
+    const tt = document.getElementById('prodTriggerText');
+    if(tt){ tt.textContent='Selecciona los productos...'; tt.classList.remove('has-sel'); }
+    const cnt = document.getElementById('prodDropdownCount');
+    if(cnt) cnt.textContent = '0 seleccionados';
+    document.getElementById('productoFinal').value = '';
     mostrarPopup();
     setTimeout(()=>{
       btn.innerHTML=originalHTML;
