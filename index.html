@@ -429,6 +429,16 @@ section{padding:60px 0}
 /* Responsive */
 @media(max-width:900px){.casos-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:560px){.casos-grid{grid-template-columns:1fr;gap:20px;}.caso-card:hover{transform:perspective(900px) rotateX(2deg) translateZ(10px) scale(1.02);}}
+
+/* ── PRODUCTO CHECKBOXES ── */
+.prod-check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px;}
+.prod-check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);cursor:pointer;transition:all .2s;user-select:none;font-size:.88rem;color:var(--g600);}
+.prod-check-item:hover:not(.disabled){border-color:var(--sky);background:rgba(83,186,237,.08);}
+.prod-check-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0;}
+.prod-check-item.checked{border-color:var(--blue);background:rgba(1,100,168,.12);color:var(--blue);font-weight:600;}
+.prod-check-item.disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+.prod-check-asesoria{grid-column:1/-1;border-style:dashed;}
+@media(max-width:480px){.prod-check-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -635,7 +645,20 @@ section{padding:60px 0}
 <div class="f-row"><div class="fg"><label>Nombre completo *</label><input type="text" name="nombre" placeholder="Tu nombre" required></div><div class="fg"><label>Empresa *</label><input type="text" name="empresa" placeholder="Nombre de tu empresa" required></div></div>
 <div class="f-row"><div class="fg"><label>Email *</label><input type="email" name="email" placeholder="correo@empresa.com" required></div><div class="fg"><label>Teléfono / WhatsApp *</label><input type="tel" name="telefono" placeholder="593 9XX XXX XXXX" required inputmode="numeric" pattern="[0-9\s\-()]{7,20}" maxlength="20" oninput="this.value=this.value.replace(/[^0-9\s\-()]/g,'')" onkeydown="if(!/[0-9\s\-()Backspace Tab ArrowLeft ArrowRight Delete]/.test(event.key)&&!event.ctrlKey&&!event.metaKey){event.preventDefault()}"></div></div>
 <div class="fg"><label>Tipo de negocio *</label><select name="industria" required><option value="">Selecciona</option><option>Restaurante / Food Service</option><option>Hotel / Hospedaje</option><option>Hospital / Clínica</option><option>Retail / Centro Comercial</option><option>Entretenimiento / Clubes Deportivos</option><option>Logística / Industrial</option><option>Otro</option></select></div>
-<div class="fg"><label>¿Qué producto te interesa?</label><select name="producto"><option value="">Selecciona</option><option>DINERBOT T10</option><option>DINERBOT T9</option><option>BUTLERBOT W3</option><option>KEENON S100</option><option>KLEENBOT C30</option><option>KLEENBOT C40</option><option>Necesito asesoría</option></select></div>
+<div class="fg" id="prod-selector">
+  <label>¿Qué producto te interesa? <span style="font-size:.75rem;color:var(--g400);font-weight:400">(puedes elegir varios)</span></label>
+  <div class="prod-check-grid" id="prodCheckGrid">
+    <label class="prod-check-item" data-prod="DINERBOT T10"><input type="checkbox" name="producto" value="DINERBOT T10" onchange="handleProdCheck(this)"><span>DINERBOT T10</span></label>
+    <label class="prod-check-item" data-prod="DINERBOT T9"><input type="checkbox" name="producto" value="DINERBOT T9" onchange="handleProdCheck(this)"><span>DINERBOT T9</span></label>
+    <label class="prod-check-item" data-prod="BUTLERBOT W3"><input type="checkbox" name="producto" value="BUTLERBOT W3" onchange="handleProdCheck(this)"><span>BUTLERBOT W3</span></label>
+    <label class="prod-check-item" data-prod="KEENON S100"><input type="checkbox" name="producto" value="KEENON S100" onchange="handleProdCheck(this)"><span>KEENON S100</span></label>
+    <label class="prod-check-item" data-prod="KLEENBOT C30"><input type="checkbox" name="producto" value="KLEENBOT C30" onchange="handleProdCheck(this)"><span>KLEENBOT C30</span></label>
+    <label class="prod-check-item" data-prod="KLEENBOT C40"><input type="checkbox" name="producto" value="KLEENBOT C40" onchange="handleProdCheck(this)"><span>KLEENBOT C40</span></label>
+    <label class="prod-check-item prod-check-asesoria" data-prod="Necesito asesoría"><input type="checkbox" name="producto" value="Necesito asesoría" onchange="handleProdCheck(this)"><span>Necesito asesoría</span></label>
+  </div>
+  <!-- campo oculto que recibe el valor final para el submit -->
+  <input type="hidden" name="producto_final" id="productoFinal">
+</div>
 <div class="fg"><label>Mensaje (opcional)</label><textarea name="mensaje" rows="3" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
 <!-- Google Sheets via Apps Script -->
 <button type="submit" class="f-submit" id="formSubmitBtn"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
@@ -1110,6 +1133,47 @@ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.tar
 document.querySelectorAll('.anim').forEach(el=>obs.observe(el));
 }
  
+// ═══ PRODUCTO CHECKBOXES — exclusión mutua ═══
+function handleProdCheck(cb){
+  const grid = document.getElementById('prodCheckGrid');
+  const allCbs = grid.querySelectorAll('input[type=checkbox]');
+  const asesoriaCb = grid.querySelector('input[value="Necesito asesoría"]');
+  const modelCbs = Array.from(allCbs).filter(c => c.value !== 'Necesito asesoría');
+  const anyModelChecked = modelCbs.some(c => c.checked);
+  const asesoriaChecked = asesoriaCb.checked;
+
+  // Si marcó "Necesito asesoría" → deshabilitar todos los modelos
+  modelCbs.forEach(c => {
+    const item = c.closest('.prod-check-item');
+    if(asesoriaChecked){
+      c.checked = false;
+      item.classList.add('disabled');
+      item.classList.remove('checked');
+    } else {
+      item.classList.remove('disabled');
+    }
+  });
+
+  // Si marcó cualquier modelo → deshabilitar "Necesito asesoría"
+  const asesoriaItem = asesoriaCb.closest('.prod-check-item');
+  if(anyModelChecked && !asesoriaChecked){
+    asesoriaCb.checked = false;
+    asesoriaItem.classList.add('disabled');
+    asesoriaItem.classList.remove('checked');
+  } else if(!asesoriaChecked) {
+    asesoriaItem.classList.remove('disabled');
+  }
+
+  // Actualizar clases visuales
+  allCbs.forEach(c => {
+    c.closest('.prod-check-item').classList.toggle('checked', c.checked);
+  });
+
+  // Actualizar campo oculto con los seleccionados (separados por coma)
+  const selected = Array.from(allCbs).filter(c=>c.checked).map(c=>c.value);
+  document.getElementById('productoFinal').value = selected.join(', ');
+}
+
 // ═══ FORM ═══
 // CONFIG — email destino (modificable)
 const _e=['keenonecuador','gmail.com'];
@@ -1183,7 +1247,7 @@ params.append('empresa',   fd.get('empresa')   ||'');
 params.append('email',     fd.get('email')     ||'');
 params.append('telefono',  fd.get('telefono')  ||'');
 params.append('industria', fd.get('industria') ||'');
-params.append('producto',  fd.get('producto')  ||'');
+params.append('producto',  fd.get('productoFinal') || fd.get('producto') ||'');
 params.append('mensaje',   fd.get('mensaje')   ||'');
 params.append('fuente',    'web_form');
 
@@ -1254,6 +1318,12 @@ chatToggle.onclick=()=>{
   checkNearFooter();
 })();
 chatInp.onkeypress=e=>{if(e.key==='Enter')sendChat()};
+chatInp.oninput=()=>{
+  if(chatState==='tel'){
+    // Strip non-numeric characters in real time (allow +, space, -, ())
+    chatInp.value=chatInp.value.replace(/[^0-9+\s\-()]/g,'');
+  }
+};
 
 // Opciones de industria y producto (mismas que el formulario)
 const INDUSTRIAS=[
@@ -1289,14 +1359,93 @@ function askIndustria(){
   setTimeout(()=>addMsg('¿Cuál es tu tipo de negocio?','bot',opts),400);
 }
 
-// Mostrar productos como botones clickeables
+// Mostrar productos como botones con exclusión mutua
 function askProducto(){
-  const opts=PRODUCTOS.map(prod=>({l:prod,a:()=>{
-    leadD.producto=prod;
-    chatState='email';
-    setTimeout(()=>addMsg('¿Y tu correo electrónico?','bot'),400);
-  }}));
-  addMsg('¿Qué producto te interesa?','bot',opts);
+  // Estado de selección del chat
+  let chatProds = [];
+  const ASESORIA = 'Necesito asesoría';
+  const MODELOS = PRODUCTOS.filter(p => p !== ASESORIA);
+
+  function renderProdBtns(){
+    const msgEl = document.createElement('div');
+    msgEl.className = 'cmsg bot';
+    msgEl.innerHTML = '<span>¿Qué producto(s) te interesan?<br><small style="opacity:.65;font-size:.75rem">Puedes elegir varios o "Necesito asesoría"</small></span>';
+
+    const grid = document.createElement('div');
+    grid.className = 'chat-opts';
+    grid.style.cssText = 'flex-wrap:wrap;gap:6px;';
+
+    const allProds = [...MODELOS, ASESORIA];
+    allProds.forEach(prod => {
+      const btn = document.createElement('button');
+      btn.className = 'chat-opt';
+      btn.textContent = prod;
+      btn.dataset.prod = prod;
+
+      function updateState(){
+        const isAsesoria = prod === ASESORIA;
+        const asesoriaSelected = chatProds.includes(ASESORIA);
+        const modelSelected = chatProds.some(p => p !== ASESORIA);
+
+        if((isAsesoria && modelSelected) || (!isAsesoria && asesoriaSelected)){
+          btn.disabled = true;
+          btn.style.cssText = 'opacity:.3;cursor:not-allowed;';
+        } else {
+          btn.disabled = false;
+          btn.style.cssText = chatProds.includes(prod)
+            ? 'background:var(--blue);color:#fff;border-color:var(--blue);'
+            : '';
+        }
+      }
+
+      btn.onclick = () => {
+        if(btn.disabled) return;
+        const idx = chatProds.indexOf(prod);
+        if(idx >= 0){ chatProds.splice(idx, 1); }
+        else { chatProds.push(prod); }
+        // actualizar todos los botones
+        grid.querySelectorAll('.chat-opt').forEach(b => {
+          const p = b.dataset.prod;
+          const isAsesoria = p === ASESORIA;
+          const asesoriaSelected = chatProds.includes(ASESORIA);
+          const modelSelected = chatProds.some(x => x !== ASESORIA);
+          if((isAsesoria && modelSelected) || (!isAsesoria && asesoriaSelected)){
+            b.disabled = true; b.style.cssText = 'opacity:.3;cursor:not-allowed;';
+          } else {
+            b.disabled = false;
+            b.style.cssText = chatProds.includes(p)
+              ? 'background:var(--blue);color:#fff;border-color:var(--blue);'
+              : '';
+          }
+        });
+      };
+      updateState();
+      grid.appendChild(btn);
+    });
+
+    // Botón confirmar
+    const confirm = document.createElement('button');
+    confirm.className = 'chat-opt';
+    confirm.textContent = 'Confirmar selección →';
+    confirm.style.cssText = 'background:var(--sky);color:#fff;border-color:var(--sky);width:100%;margin-top:4px;';
+    confirm.onclick = () => {
+      if(chatProds.length === 0){
+        addMsg('Por favor selecciona al menos un producto.','bot');
+        return;
+      }
+      leadD.producto = chatProds.join(', ');
+      grid.parentElement.querySelector('.chat-opts').remove();
+      addMsg(leadD.producto,'usr');
+      chatState='email';
+      setTimeout(()=>addMsg('¿Y tu correo electrónico?','bot'),400);
+    };
+    grid.appendChild(confirm);
+    msgEl.appendChild(grid);
+    chatMsgs.appendChild(msgEl);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  renderProdBtns();
 }
 
 // Enviar lead del chatbot a Google Sheets
@@ -1328,11 +1477,22 @@ else if(chatState==='empresa'){
   setTimeout(()=>addMsg('¿Tu número de WhatsApp? (solo números)','bot'),500);
 }
 else if(chatState==='tel'){
-  leadD.telefono=t.replace(/[^0-9+\s\-()]/g,'');
+  // Solo aceptar dígitos y símbolos de teléfono
+  const soloNums = t.replace(/[^0-9+\s\-()]/g,'');
+  if(soloNums.replace(/[^0-9]/g,'').length < 7){
+    setTimeout(()=>addMsg('Por favor ingresa un número de WhatsApp válido (solo números, mínimo 7 dígitos).','bot'),400);
+    return;
+  }
+  leadD.telefono = soloNums;
   chatState='industria';
   askIndustria();
 }
 else if(chatState==='email'){
+  // Validar que tenga @ y al menos un punto después
+  if(!t.includes('@') || !t.slice(t.indexOf('@')).includes('.')){
+    setTimeout(()=>addMsg('Correo inválido, por favor ingrésalo nuevamente (debe contener @ y dominio, ej: nombre@empresa.com).','bot'),400);
+    return;
+  }
   leadD.email=t;
   leadD.timestamp=new Date().toISOString();
   enviarLeadChatbot();
