@@ -245,13 +245,13 @@ section{padding:90px 0}
 .chat-toggle.near-footer{bottom:90px}
 .chat-toggle:hover{transform:scale(1.08);animation:none}
 .chat-toggle.on{animation:none}
-/* Robot miniatura animado - detrás del botón */
+/* Robot miniatura animado - detrás del botón (PNG transparente) */
 .chat-robot-container{position:fixed;bottom:24px;right:24px;width:54px;height:54px;z-index:9998;pointer-events:none;display:flex;align-items:center;justify-content:center;transition:bottom .3s ease}
 .chat-robot-container.near-footer{bottom:90px}
-.chat-robot-mini{position:absolute;width:36px;height:36px;border-radius:50%;background:var(--white);box-shadow:0 4px 12px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0;bottom:-40px;transition:all .5s ease-in-out}
-.chat-robot-mini img{width:28px;height:28px;object-fit:contain}
-.chat-robot-mini.rising{opacity:1;bottom:60px}
-.chat-robot-mini.falling{opacity:0;bottom:-40px}
+.chat-robot-mini{position:absolute;width:54px;height:54px;display:flex;align-items:center;justify-content:center;opacity:0;bottom:-54px;transition:bottom .4s ease-in-out}
+.chat-robot-mini img{width:54px;height:54px;object-fit:contain}
+.chat-robot-mini.rising{opacity:1;bottom:54px}
+.chat-robot-mini.falling{opacity:0;bottom:-54px;transition:none}
 .chat-toggle.on ~ .chat-robot-container{opacity:0}
  
 .chat-win{position:fixed;bottom:88px;right:24px;width:360px;max-height:480px;background:var(--white);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.18);z-index:9998;display:none;flex-direction:column;overflow:hidden;border:1px solid var(--g100)}
@@ -758,9 +758,9 @@ section{padding:60px 0}
 <a href="https://wa.me/593997161797?text=Hola,%20me%20interesa%20conocer%20más%20sobre%20los%20robots%20KEENON" class="wa-float" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <button class="chat-toggle" id="chatToggle" aria-label="Chat"><i class="fas fa-comments" id="chatIcon"></i></button>
 <div class="chat-robot-container" id="chatRobotContainer">
-  <div class="chat-robot-mini" id="robot1"><img src="images/dinerbot_t10.jpg" alt="Robot 1"></div>
-  <div class="chat-robot-mini" id="robot2"><img src="images/kleenbot_c30.jpg" alt="Robot 2"></div>
-  <div class="chat-robot-mini" id="robot3"><img src="images/butlerbot_w3.jpg" alt="Robot 3"></div>
+  <div class="chat-robot-mini" id="robot1"><img src="images/robot1.png" alt="Robot KEENON 1"></div>
+  <div class="chat-robot-mini" id="robot2"><img src="images/robot2.png" alt="Robot KEENON 2"></div>
+  <div class="chat-robot-mini" id="robot3"><img src="images/robot3.png" alt="Robot KEENON 3"></div>
 </div>
 <div class="chat-win" id="chatWin">
 <div class="chat-head"><div class="chat-avatar"><i class="fas fa-robot"></i></div><div class="chat-head-info"><h4>Asistente KEENON</h4><p>En línea — Respuesta inmediata</p></div></div>
@@ -1484,39 +1484,34 @@ let robotAnimationInterval=null;
 let robotAnimationPaused=false;
 let robotElements=[];
 
-// Animación de robots miniatura - suben y bajan por detrás del botón
+// Animación de robots miniatura - suben y bajan por detrás del botón (sin transición visible)
 function initRobotAnimation(){
   robotElements=[document.getElementById('robot1'),document.getElementById('robot2'),document.getElementById('robot3')];
   let currentIndex=0;
-  let isRising=true;
 
-  function animateRobot(){
+  function showRobot(){
     if(robotAnimationPaused)return;
 
-    const currentRobot=robotElements[currentIndex];
-    const nextRobot=robotElements[(currentIndex+1)%robotElements.length];
+    // Resetear todos los robots (ocultos detrás del botón)
+    robotElements.forEach(r=>{
+      r.classList.remove('rising');
+      r.classList.add('falling');
+    });
 
-    if(isRising){
-      // Robot actual sube desde atrás del botón
-      currentRobot.classList.add('rising');
-      currentRobot.classList.remove('falling');
-      isRising=false;
-    }else{
-      // Robot actual baja detrás del botón
-      currentRobot.classList.add('falling');
-      currentRobot.classList.remove('rising');
-      // Siguiente robot comienza a subir
-      nextRobot.classList.add('rising');
-      nextRobot.classList.remove('falling');
-      currentIndex=(currentIndex+1)%robotElements.length;
-      isRising=true;
-    }
+    // El robot actual sube inmediatamente sin fade
+    const robot=robotElements[currentIndex];
+    setTimeout(()=>{
+      robot.classList.remove('falling');
+      robot.classList.add('rising');
+    },50);
+
+    currentIndex=(currentIndex+1)%robotElements.length;
   }
 
-  // Iniciar animación
-  animateRobot();
-  // Cambiar estado cada 1.25 segundos (subida + bajada = 2.5s por robot)
-  robotAnimationInterval=setInterval(animateRobot,1250);
+  // Mostrar primer robot
+  showRobot();
+  // Cambiar robot cada 2 segundos
+  robotAnimationInterval=setInterval(showRobot,2000);
 }
 
 chatToggle.onclick=()=>{
