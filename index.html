@@ -1320,17 +1320,104 @@ const originalHTML=btn.innerHTML;
 btn.innerHTML='<span class="spin-icon"><i class="fas fa-circle-notch"></i></span> Enviando...';
 btn.disabled=true;
 
+// ── DETECCIÓN DE DISPOSITIVO ──────────────────────────────────────
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+  const platform = navigator.platform || '';
+  const screen_w = window.screen.width;
+  const screen_h = window.screen.height;
+
+  // ── Sistema Operativo ──
+  let os = 'Desconocido';
+  let modelo = '';
+
+  if (/iPhone/.test(ua)) {
+    os = 'iOS (iPhone)';
+    // Apple no revela modelo exacto en UA; usamos resolución para aproximar
+    const ratio = window.devicePixelRatio || 1;
+    const w = Math.min(screen_w, screen_h) * ratio;
+    if      (w >= 1290) modelo = 'iPhone 14 Pro / 15 / 16 (aprox.)';
+    else if (w >= 1179) modelo = 'iPhone 12 / 13 / 14 (aprox.)';
+    else if (w >= 1080) modelo = 'iPhone X / 11 Pro (aprox.)';
+    else if (w >= 828)  modelo = 'iPhone XR / 11 / 12 mini (aprox.)';
+    else                modelo = 'iPhone (modelo no identificado)';
+
+  } else if (/iPad/.test(ua) || (navigator.maxTouchPoints > 1 && /Mac/.test(platform))) {
+    os = 'iPadOS';
+    modelo = 'iPad (modelo exacto no disponible en iOS)';
+
+  } else if (/Android/.test(ua)) {
+    os = 'Android';
+    // En Android el modelo viene en el UA: "... (Linux; Android 14; Pixel 8 Build/..."
+    const mAndroid = ua.match(/Android[\s\/][\d.]+;\s*([^)]+?)\s*(Build|;|\))/);
+    if (mAndroid && mAndroid[1]) {
+      modelo = mAndroid[1].trim();
+    } else {
+      modelo = 'Android (modelo no detectado)';
+    }
+
+  } else if (/Windows NT/.test(ua)) {
+    os = 'Windows';
+    const v = ua.match(/Windows NT ([\d.]+)/);
+    const versions = {'10.0':'10/11','6.3':'8.1','6.2':'8','6.1':'7'};
+    os += ' ' + (v ? (versions[v[1]] || v[1]) : '');
+    modelo = '';
+
+  } else if (/Macintosh|MacIntel/.test(ua)) {
+    os = 'macOS';
+    modelo = '';
+
+  } else if (/Linux/.test(ua)) {
+    os = 'Linux';
+  } else if (/CrOS/.test(ua)) {
+    os = 'Chrome OS';
+  }
+
+  // ── Tipo de dispositivo ──
+  let tipo = 'Computadora / Laptop';
+  if (/iPhone/.test(ua)) {
+    tipo = '📱 Teléfono';
+  } else if (/iPad/.test(ua) || (navigator.maxTouchPoints > 1 && /Mac/.test(platform))) {
+    tipo = '📟 Tablet';
+  } else if (/Android/.test(ua)) {
+    // En Android distinguimos tablet de teléfono por tamaño de pantalla
+    tipo = (Math.min(screen_w, screen_h) >= 600) ? '📟 Tablet' : '📱 Teléfono';
+  }
+
+  // ── Navegador ──
+  let browser = 'Otro';
+  if (/CriOS/.test(ua))        browser = 'Chrome (iOS)';
+  else if (/FxiOS/.test(ua))   browser = 'Firefox (iOS)';
+  else if (/EdgA/.test(ua))    browser = 'Edge (Android)';
+  else if (/SamsungBrowser/.test(ua)) browser = 'Samsung Internet';
+  else if (/OPR|Opera/.test(ua))     browser = 'Opera';
+  else if (/Edg\//.test(ua))         browser = 'Microsoft Edge';
+  else if (/Firefox/.test(ua))       browser = 'Firefox';
+  else if (/Chrome/.test(ua))        browser = 'Chrome';
+  else if (/Safari/.test(ua))        browser = 'Safari';
+
+  // ── Armar string resumen ──
+  let info = tipo + ' | ' + os;
+  if (modelo) info += ' — ' + modelo;
+  info += ' | ' + browser;
+  info += ' | ' + screen_w + 'x' + screen_h + 'px';
+
+  return info;
+}
+// ─────────────────────────────────────────────────────────────────
+
 // Recoger datos del formulario
 const fd=new FormData(form);
 const params=new URLSearchParams();
-params.append('nombre',    fd.get('nombre')    ||'');
-params.append('empresa',   fd.get('empresa')   ||'');
-params.append('email',     fd.get('email')     ||'');
-params.append('telefono',  fd.get('telefono')  ||'');
-params.append('industria', fd.get('industria') ||'');
-params.append('producto',  fd.get('producto_final') || fd.get('productoFinal') || selectedProds.join(', ') ||'');
-params.append('mensaje',   fd.get('mensaje')   ||'');
-params.append('fuente',    'web_form');
+params.append('nombre',      fd.get('nombre')    ||'');
+params.append('empresa',     fd.get('empresa')   ||'');
+params.append('email',       fd.get('email')     ||'');
+params.append('telefono',    fd.get('telefono')  ||'');
+params.append('industria',   fd.get('industria') ||'');
+params.append('producto',    fd.get('producto_final') || fd.get('productoFinal') || selectedProds.join(', ') ||'');
+params.append('mensaje',     fd.get('mensaje')   ||'');
+params.append('fuente',      'web_form');
+params.append('dispositivo', getDeviceInfo());
 
 // Enviar a Google Apps Script
 fetch(APPS_SCRIPT_URL, {
