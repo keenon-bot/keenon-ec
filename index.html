@@ -248,10 +248,10 @@ section{padding:90px 0}
 /* Robot miniatura animado - detrás del botón (PNG transparente) */
 .chat-robot-container{position:fixed;bottom:24px;right:24px;width:54px;height:54px;z-index:9998;pointer-events:none;display:flex;align-items:center;justify-content:center;transition:bottom .3s ease}
 .chat-robot-container.near-footer{bottom:90px}
-.chat-robot-mini{position:absolute;width:54px;height:54px;display:flex;align-items:center;justify-content:center;opacity:0;bottom:-54px;transition:bottom .4s ease-in-out}
+.chat-robot-mini{position:absolute;width:54px;height:54px;display:flex;align-items:center;justify-content:center;opacity:0;bottom:0;transition:bottom .4s ease-in-out}
 .chat-robot-mini img{width:54px;height:54px;object-fit:contain}
 .chat-robot-mini.rising{opacity:1;bottom:54px}
-.chat-robot-mini.falling{opacity:0;bottom:-54px;transition:none}
+.chat-robot-mini.falling{opacity:0;bottom:0;transition:none}
 .chat-toggle.on ~ .chat-robot-container{opacity:0}
  
 .chat-win{position:fixed;bottom:88px;right:24px;width:360px;max-height:480px;background:var(--white);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.18);z-index:9998;display:none;flex-direction:column;overflow:hidden;border:1px solid var(--g100)}
