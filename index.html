@@ -32,14 +32,148 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG2Z9CE9NQ"></script>
+<!-- Consent-controlled Google Analytics and Meta Pixel -->
 <script>
+// KEENON: optional measurement only after a visitor's explicit choice.
+(function () {
+  'use strict';
+  const GA_ID = 'G-ZG2Z9CE9NQ';
+  const META_ID = '1353878253494875'; // Keenon Ecuador — keenon.ec
+  const KEY = 'keenon_consent_v1';
+  const MAX_AGE = 180 * 24 * 60 * 60 * 1000;
+  let choice = {analytics:false, marketing:false};
+  let saved = false, googleStarted = false, metaStarted = false;
+  try {
+    const stored = JSON.parse(localStorage.getItem(KEY));
+    if (stored && stored.version === 1 && typeof stored.analytics === 'boolean' &&
+        typeof stored.marketing === 'boolean' && Number.isFinite(stored.at) &&
+        stored.at <= Date.now() && Date.now() - stored.at < MAX_AGE) {
+      choice = stored;
+      saved = true;
+    }
+  } catch (_) { /* Storage restrictions must not break the form. */ }
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window['ga-disable-' + GA_ID] = !choice.analytics;
+  gtag('consent', 'default', {
+    analytics_storage:'denied', ad_storage:'denied',
+    ad_user_data:'denied', ad_personalization:'denied'
+  });
+  function loadScript(src) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = src;
+    document.head.appendChild(script);
+  }
+  function applyChoice() {
+    window['ga-disable-' + GA_ID] = !choice.analytics;
+    gtag('consent', 'update', {
+      analytics_storage:choice.analytics ? 'granted' : 'denied',
+      ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied'
+    });
+    if (choice.analytics && !googleStarted) {
+      googleStarted = true;
+      gtag('js', new Date());
+      gtag('config', GA_ID, {allow_google_signals:false, allow_ad_personalization_signals:false});
+      loadScript('https://www.googletagmanager.com/gtag/js?id=' + GA_ID);
+    }
+    if (choice.marketing && META_ID && !metaStarted) {
+      metaStarted = true;
+      const f = window.fbq = function () {
+        f.callMethod ? f.callMethod.apply(f, arguments) : f.queue.push(arguments);
+      };
+      if (!window._fbq) window._fbq = f;
+      f.push = f; f.loaded = true; f.version = '2.0'; f.queue = [];
+      // No automatic events or advanced matching with form details.
+      f('set', 'autoConfig', false, META_ID);
+      f('init', META_ID);
+      f('consent', 'grant');
+      f('track', 'PageView');
+      loadScript('https://connect.facebook.net/en_US/fbevents.js');
+    } else if (metaStarted) {
+      window.fbq('consent', choice.marketing ? 'grant' : 'revoke');
+    }
+  }
+  function clearMeasurementCookies() {
+    const domains = [location.hostname, '.' + location.hostname, '.keenon.ec'];
+    document.cookie.split(';').forEach(function (cookie) {
+      const name = cookie.split('=')[0].trim();
+      if ((!choice.analytics && /^_ga(?:_|$)|^_gid$|^_gat/.test(name)) ||
+          (!choice.marketing && /^_fb[pc]$/.test(name))) {
+        document.cookie = name + '=; Max-Age=0; path=/';
+        domains.forEach(function (domain) {
+          document.cookie = name + '=; Max-Age=0; path=/; domain=' + domain;
+        });
+      }
+    });
+  }
+  function saveChoice(analytics, marketing) {
+    choice = {version:1, analytics:analytics, marketing:marketing, at:Date.now()};
+    saved = true;
+    try { localStorage.setItem(KEY, JSON.stringify(choice)); } catch (_) {}
+    applyChoice();
+    clearMeasurementCookies();
+    document.getElementById('cookieBanner').hidden = true;
+    document.getElementById('cookiePreferences').close();
+  }
+  function measure(googleEvent, metaEvent, source) {
+    // Only fixed labels: never pass names, emails, phone numbers or free text.
+    try {
+      if (choice.analytics && googleStarted) gtag('event', googleEvent, {contact_source:source, transport_type:'beacon'});
+    } catch (_) {}
+    try {
+      if (choice.marketing && metaStarted) window.fbq('track', metaEvent, {content_name:source});
+    } catch (_) {}
+  }
+  window.keenonTrackLead = function (source) {
+    measure('generate_lead', 'Lead', source === 'chatbot_form' ? 'chatbot_form' : 'web_form');
+  };
+  window.keenonOpenWhatsApp = function (url) {
+    measure('contact_whatsapp', 'Contact', 'chatbot');
+    window.open(url, '_blank', 'noopener');
+  };
+  function trackLink(event) {
+    if (event.type === 'auxclick' && event.button !== 1) return;
+    const a = event.target.closest && event.target.closest('a[href]');
+    if (!a) return;
+    let url;
+    try { url = new URL(a.href); } catch (_) { return; }
+    if (url.hostname !== 'wa.me' && url.hostname !== 'api.whatsapp.com') return;
+    const source = a.classList.contains('wa-float') ? 'floating_button' :
+      a.closest('footer') ? 'footer' : a.closest('#detailContent') ? 'product' : 'contact_section';
+    measure('contact_whatsapp', 'Contact', source);
+  }
+  document.addEventListener('click', trackLink);
+  document.addEventListener('auxclick', trackLink);
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('cookieBanner').hidden = saved;
+    document.querySelectorAll('[data-cookie-choice]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        const accept = button.dataset.cookieChoice === 'accept';
+        saveChoice(accept, accept);
+      });
+    });
+    document.querySelectorAll('[data-cookie-settings]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        document.getElementById('consentAnalytics').checked = choice.analytics;
+        document.getElementById('consentMarketing').checked = choice.marketing;
+        document.getElementById('cookiePreferences').showModal();
+      });
+    });
+    document.getElementById('saveCookiePreferences').addEventListener('click', function () {
+      saveChoice(document.getElementById('consentAnalytics').checked, document.getElementById('consentMarketing').checked);
+    });
+    document.querySelectorAll('[data-privacy-open]').forEach(function (button) {
+      button.addEventListener('click', function () { document.getElementById('privacyNotice').showModal(); });
+    });
+    document.querySelectorAll('[data-dialog-close]').forEach(function (button) {
+      button.addEventListener('click', function () { button.closest('dialog').close(); });
+    });
+  });
+  applyChoice();
+  clearMeasurementCookies();
+}());
 
-  gtag('config', 'G-ZG2Z9CE9NQ');
 </script>
  
 <style>
@@ -763,7 +897,7 @@ section{padding:60px 0}
 <div class="fg"><label>Mensaje (opcional)</label><textarea name="mensaje" rows="3" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
 <!-- Google Sheets via Apps Script -->
 <button type="submit" class="f-submit" id="formSubmitBtn"><i class="fas fa-paper-plane"></i> Enviar Solicitud</button>
-<p class="f-note"><i class="fas fa-lock" style="color:#10B981;margin-right:4px"></i> Tus datos están protegidos. No compartimos tu información.</p>
+<p class="privacy-form-note">Al enviar, solicitas que usemos tus datos para atender tu consulta y coordinar la demostración. Consulta la <button type="button" class="privacy-link" data-privacy-open>Política de privacidad y cookies</button>. La medición opcional se configura por separado.</p>
 <div style="text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)">
 <p style="font-size:.75rem;color:var(--g400);margin-bottom:8px">¿Prefieres contacto directo?</p>
 <a href="https://wa.me/593997161797?text=Hola,%20me%20interesa%20una%20demostración%20de%20robots%20KEENON%20para%20mi%20negocio" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#25D366;color:white;padding:10px 20px;border-radius:50px;font-size:.82rem;font-weight:700;transition:all .2s"><i class="fab fa-whatsapp"></i> Escríbenos por WhatsApp</a>
@@ -792,7 +926,7 @@ section{padding:60px 0}
 <div class="footer-col"><h4>Contacto</h4><a href="#contacto" onclick="showPage('home')">Solicitar Demo</a><a href="https://wa.me/593997161797" target="_blank">WhatsApp</a><a id="footer-email-link" href="#">Email</a><a href="https://www.keenon.com" target="_blank">KEENON Global</a></div>
 </div>
 <div class="footer-bottom">
-<p>&copy; 2026 KEENON Robotics Ecuador. Todos los derechos reservados.</p>
+<div><p>&copy; 2026 KEENON Robotics Ecuador. Todos los derechos reservados.</p><p style="margin-top:8px"><button type="button" class="privacy-link" data-privacy-open>Política de privacidad y cookies</button> · <button type="button" class="privacy-link" data-cookie-settings>Configurar cookies</button></p></div>
 <div class="footer-social">
   <!-- LinkedIn: reemplaza TU_USUARIO_LINKEDIN con tu perfil/página ej: keenon-ecuador -->
   <a href="https://www.linkedin.com/showcase/keenon-robotics-ecuador/" target="_blank"
@@ -1056,7 +1190,7 @@ const CASOS_EXITO={
     <div class="caso-body">
        <div class="caso-badge"><i class="fas fa-hotel"></i> Hotel</div>
       <div class="caso-title">Hotel AROUND - Corea del Sur</div>
-      <p class="caso-desc">Reactivasión del room service de forma eficiente con el despliegue de robots para delivery y limpieza.</p>
+      <p class="caso-desc">Reactivación del room service de forma eficiente con el despliegue de robots para delivery y limpieza.</p>
     </div>
   </div>
 `,
@@ -1138,7 +1272,7 @@ const CASOS_EXITO={
     <div class="caso-body">
       <div class="caso-badge"><i class="fas fa-hotel"></i> Hotel</div>
       <div class="caso-title">Premier Pearl Hotel - Vietnam</div>
-      <p class="caso-desc">Reactivasión del room service de forma eficiente con el despliegue de robots para delivery y limpieza</p>
+      <p class="caso-desc">Reactivación del room service de forma eficiente con el despliegue de robots para delivery y limpieza</p>
     </div>
   </div>
 `,
@@ -1519,6 +1653,7 @@ fetch(APPS_SCRIPT_URL, {
     const cnt = document.getElementById('prodDropdownCount');
     if(cnt) cnt.textContent = '0 seleccionados';
     document.getElementById('productoFinal').value = '';
+    if (window.keenonTrackLead) window.keenonTrackLead('web_form');
     mostrarPopup();
     setTimeout(()=>{
       btn.innerHTML=originalHTML;
@@ -1637,8 +1772,8 @@ chatMsgs.appendChild(m);chatMsgs.scrollTop=chatMsgs.scrollHeight;
  
 function botFlow(f){
 if(f==='prods')setTimeout(()=>addMsg('Tenemos 6 modelos disponibles en Ecuador. ¿Qué tipo de solución buscas?','bot',[{l:'Entrega de alimentos',a:()=>showProd('t10')},{l:'Hotelería',a:()=>showProd('w3')},{l:'Limpieza',a:()=>showProd('c40')},{l:'Carga pesada',a:()=>showProd('s100')}]),500);
-else if(f==='demo'){chatState='name';setTimeout(()=>addMsg('Para agendar tu demo gratuita, ¿cuál es tu nombre?','bot'),500)}
-else if(f==='asesor')setTimeout(()=>addMsg('Puedes contactar a nuestro asesor directamente por WhatsApp o dejarnos tus datos.','bot',[{l:'Abrir WhatsApp',a:()=>window.open('https://wa.me/593997161797?text=Hola,%20necesito%20asesoría%20sobre%20robots%20KEENON','_blank')},{l:'Dejar mis datos',a:()=>botFlow('demo')}]),500);
+else if(f==='demo'){chatState='name';setTimeout(()=>addMsg('Usaremos los datos que compartas para atender tu solicitud de demo. Puedes consultar la Política de privacidad en el pie de página y escribir a keenonecuador@gmail.com. Para continuar, ¿cuál es tu nombre?','bot'),500)}
+else if(f==='asesor')setTimeout(()=>addMsg('Puedes contactar a nuestro asesor directamente por WhatsApp o dejarnos tus datos.','bot',[{l:'Abrir WhatsApp',a:()=>keenonOpenWhatsApp('https://wa.me/593997161797?text=Hola,%20necesito%20asesoría%20sobre%20robots%20KEENON')},{l:'Dejar mis datos',a:()=>botFlow('demo')}]),500);
 }
 function showProd(id){const p=PRODUCTS[id];setTimeout(()=>addMsg(`El ${p.name}: ${p.tagline}. ${p.desc.substring(0,150)}...`,'bot',[{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Ver otros',a:()=>botFlow('prods')}]),500)}
 
@@ -1753,14 +1888,18 @@ function enviarLeadChatbot(){
   params.append('producto',  leadD.producto  ||'');
   params.append('mensaje',   '');
   params.append('fuente',    'chatbot_form');
-  fetch(APPS_SCRIPT_URL,{
+  return fetch(APPS_SCRIPT_URL,{
     method:'POST',
     headers:{'Content-Type':'application/x-www-form-urlencoded'},
     body:params.toString()
-  }).catch(err=>console.log('Chatbot lead error:',err));
+  }).then(response=>response.json()).then(data=>{
+    if(data.result!=='success') throw new Error('No se pudo registrar la solicitud');
+    if(window.keenonTrackLead) window.keenonTrackLead('chatbot_form');
+  });
 }
 
 function sendChat(){
+if(chatState==='sending')return;
 const t=chatInp.value.trim();if(!t)return;addMsg(t,'usr');chatInp.value='';
 if(chatState==='name'){
   leadD.nombre=t;chatState='empresa';
@@ -1789,12 +1928,14 @@ else if(chatState==='email'){
   }
   leadD.email=t;
   leadD.timestamp=new Date().toISOString();
-  enviarLeadChatbot();
+  chatState='sending';
+  enviarLeadChatbot().then(()=>{
   chatState='done';
   setTimeout(()=>addMsg(`¡Listo, ${leadD.nombre}! Tu solicitud fue registrada. Te contactaremos en menos de 24 horas.`,'bot',[
     {l:'Ver productos',a:()=>{showPage('home');chatWin.classList.remove('open');chatIcon.className='fas fa-comments';setTimeout(()=>document.getElementById('productos').scrollIntoView({behavior:'smooth'}),200)}},
-    {l:'WhatsApp',a:()=>window.open('https://wa.me/593997161797','_blank')}
+    {l:'WhatsApp',a:()=>keenonOpenWhatsApp('https://wa.me/593997161797')}
   ]),600);
+  }).catch(()=>{chatState='email';addMsg('No pudimos registrar tu solicitud. Vuelve a enviar tu correo para intentarlo otra vez, o contáctanos por WhatsApp.','bot');});
 }
 else setTimeout(()=>addMsg('¿En qué más puedo ayudarte?','bot',[{l:'Ver productos',a:()=>botFlow('prods')},{l:'Solicitar demo',a:()=>botFlow('demo')},{l:'Hablar con asesor',a:()=>botFlow('asesor')}]),500);
 }
@@ -1900,6 +2041,69 @@ function closeVideoBtn(){
     </div>
   </div>
 </div>
+
+<style>
+[hidden]{display:none!important}
+.privacy-panel{font-family:var(--body);color:#253c50;background:#fff;border:1px solid #d5e3ec;border-radius:18px;padding:24px;box-shadow:0 12px 45px #162c4430;line-height:1.6}
+.cookie-banner{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:min(760px,calc(100% - 28px));z-index:10010;max-height:75vh;overflow:auto}
+.privacy-panel h2{font-family:var(--font);font-size:1.45rem;color:#0164A8;margin:0 0 10px}
+.privacy-panel h3{font-size:1rem;margin:20px 0 5px}
+.privacy-panel p{font-size:.88rem;margin:8px 0}
+.privacy-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.privacy-btn{font:600 .85rem var(--body);border:1px solid #0164A8;border-radius:8px;background:#fff;color:#0164A8;padding:10px 16px;cursor:pointer}
+.privacy-btn:hover{background:#eaf5fc}.privacy-btn:focus-visible,.privacy-link:focus-visible{outline:3px solid #53BAED;outline-offset:3px}
+.privacy-link{font:inherit;background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer;padding:0}
+dialog.privacy-panel{margin:auto;width:min(680px,calc(100% - 28px));max-height:85vh;overflow:auto}
+dialog.privacy-panel::backdrop{background:#142a46aa}
+.privacy-panel a{color:#0164A8;text-decoration:underline}
+.privacy-option{display:block;border-top:1px solid #e2ebf1;padding:14px 0;font-size:.9rem}
+.privacy-option input{width:18px;height:18px;vertical-align:middle;margin-right:8px;accent-color:#0164A8}
+.privacy-option small{display:block;color:#526b7d;margin:5px 0 0 28px}
+.privacy-form-note{font-size:.76rem;color:var(--g300);line-height:1.6;margin:12px 0}
+@media(max-width:560px){.privacy-panel{padding:18px}.cookie-banner{bottom:10px}.privacy-actions .privacy-btn{flex:1 1 130px}}
+</style>
+<section id="cookieBanner" class="privacy-panel cookie-banner" aria-labelledby="cookieTitle" hidden>
+  <h2 id="cookieTitle">Tú eliges tus cookies</h2>
+  <p>Con tu permiso, usamos Google Analytics para medir visitas y solicitudes, y el píxel de Meta para medir resultados de publicidad. Puedes aceptar, rechazar o elegir por categoría. El formulario funciona sin cookies de medición.</p>
+  <button type="button" class="privacy-link" data-privacy-open>Política de privacidad y cookies</button>
+  <div class="privacy-actions">
+    <button type="button" class="privacy-btn" data-cookie-choice="reject">Rechazar opcionales</button>
+    <button type="button" class="privacy-btn" data-cookie-settings>Configurar cookies</button>
+    <button type="button" class="privacy-btn" data-cookie-choice="accept">Aceptar todas</button>
+  </div>
+</section>
+<dialog id="cookiePreferences" class="privacy-panel" aria-labelledby="preferencesTitle">
+  <h2 id="preferencesTitle">Preferencias de cookies</h2>
+  <p>Puedes cambiar tu elección en cualquier momento desde el pie de página.</p>
+  <div class="privacy-option"><strong>Necesarias · siempre activas</strong><small>Guardan tu elección en este navegador durante un máximo de 180 días.</small></div>
+  <label class="privacy-option"><input type="checkbox" id="consentAnalytics">Analítica de Google<small>Nos ayuda a conocer las visitas, los formularios enviados y los clics en WhatsApp.</small></label>
+  <label class="privacy-option"><input type="checkbox" id="consentMarketing">Publicidad de Meta<small>Permite medir visitas y contactos procedentes de campañas de Facebook e Instagram.</small></label>
+  <div class="privacy-actions">
+    <button type="button" class="privacy-btn" id="saveCookiePreferences">Guardar preferencias</button>
+    <button type="button" class="privacy-btn" data-dialog-close>Cerrar sin cambiar</button>
+  </div>
+</dialog>
+<dialog id="privacyNotice" class="privacy-panel" aria-labelledby="privacyTitle">
+  <h2 id="privacyTitle">Política de privacidad y cookies</h2>
+  <p>Última actualización: 23 de septiembre de 2026.</p>
+  <h3>Contacto de privacidad</h3>
+  <p>Esta política describe el uso de datos en keenon.ec, sitio de KEENON Ecuador. Para consultas y solicitudes sobre tus datos, escribe a <a href="mailto:keenonecuador@gmail.com">keenonecuador@gmail.com</a>.</p>
+  <h3>Datos y finalidades</h3>
+  <p>Cuando solicitas una demostración mediante el formulario o el asistente, recibimos los datos que proporcionas: nombre, empresa, correo, teléfono, tipo de negocio, productos de interés y, si lo incluyes, tu mensaje. El formulario también comunica información técnica del dispositivo y navegador. Usamos esta información para atender tu solicitud, coordinar una demostración y dar seguimiento a tu consulta.</p>
+  <p>Los campos obligatorios permiten responderte. El mensaje es opcional. Evita incluir información sensible o datos de otras personas. La atención de tu solicitud es independiente de aceptar cookies de analítica o publicidad.</p>
+  <h3>Servicios que intervienen</h3>
+  <p>Las solicitudes se envían a Google Apps Script y se almacenan en Google Sheets para su gestión por el equipo de KEENON Ecuador. El sitio se aloja en GitHub Pages y utiliza recursos externos, como fuentes e iconos, cuyos proveedores pueden recibir datos técnicos de conexión. Si abres WhatsApp u otros enlaces externos, se aplican las políticas de esos servicios.</p>
+  <p>Si autorizas las categorías correspondientes, Google Analytics y Meta reciben datos de navegación y eventos de visitas, solicitudes completadas y clics en WhatsApp. Nuestro código de medición no incluye los nombres, correos, teléfonos ni mensajes del formulario en esos eventos. Los proveedores pueden procesar información fuera de Ecuador conforme a sus condiciones y políticas: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google</a>, <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">Meta</a> y <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub</a>.</p>
+  <h3>Cookies y preferencias</h3>
+  <p>La analítica y la publicidad permanecen desactivadas hasta que las aceptes. Google Analytics puede utilizar cookies como <strong>_ga</strong> y Meta cookies como <strong>_fbp</strong> o <strong>_fbc</strong>. Guardamos tu elección en el almacenamiento local de este navegador durante un máximo de 180 días; después volvemos a solicitarla. Los plazos de las cookies de terceros dependen del proveedor y su configuración.</p>
+  <p>Puedes rechazar categorías o retirar tu consentimiento desde «Configurar cookies» en el pie de página. El cambio detiene nuestra medición futura para las categorías rechazadas y elimina las cookies de medición de este sitio que podemos gestionar. No elimina datos ya recibidos por los proveedores; puedes solicitar información o ejercer tus derechos por el correo indicado.</p>
+  <h3>Conservación y derechos</h3>
+  <p>Los datos de contacto se conservarán durante el tiempo necesario para atender la solicitud y su seguimiento, y cuando corresponda para cumplir obligaciones aplicables. Puedes consultar el plazo aplicable a tu caso y solicitar acceso, rectificación, actualización, eliminación, oposición, suspensión o portabilidad, según corresponda, escribiendo a nuestro contacto de privacidad. También puedes retirar el consentimiento otorgado y acudir a la <a href="https://spdp.gob.ec/" target="_blank" rel="noopener">Superintendencia de Protección de Datos Personales</a>.</p>
+  <p>Para proteger tu información, podremos solicitar los datos mínimos necesarios para verificar tu identidad antes de atender una petición. Ningún sistema de transmisión o almacenamiento ofrece seguridad absoluta.</p>
+  <h3>Cambios</h3>
+  <p>Publicaremos en esta sección las actualizaciones de esta política e indicaremos su fecha.</p>
+  <div class="privacy-actions"><button type="button" class="privacy-btn" data-dialog-close>Cerrar política</button></div>
+</dialog>
 
 </body>
 </html>
